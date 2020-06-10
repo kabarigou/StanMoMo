@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Bayesian Lee Carter with Stan
 ================
 
@@ -376,4 +375,4 @@ text(1980, qxt[c("65", "75", "85"), "2000"],
 ```
 
 ![](leecarter_files/figure-markdown_github/unnamed-chunk-6-1.png)
->>>>>>> c23731f45ec70fe788e58ee35ad54807265409f3
+
