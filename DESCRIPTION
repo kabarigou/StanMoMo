@@ -1,13 +1,13 @@
 Package: StanMoMo
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Title: Bayesian Mortality Modelling with Stan
+Version: 1.0
+Authors@R: c(
+    person(given = "Karim", family = "Barigou", role = c("aut", "cre"), 
+    email = "karim.barigou@univ-lyon1.fr"),
+    person(given = "Pierre-O", family = "Goffard"),
+    person(given = "Yahia", family = "Salhi"),
+    person(given = "Stephane", family = "Loisel"))
+Description: This package performs Bayesian inference for popular mortality models and provide tools to perform Bayesian model averaging.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to
     pick a license
 Encoding: UTF-8
