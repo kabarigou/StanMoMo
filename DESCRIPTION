@@ -18,6 +18,7 @@ Biarch: true
 Depends: 
     R (>= 3.4.0)
 Imports: 
+    loo,
     methods,
     Rcpp (>= 0.12.0),
     rstan (>= 2.18.1),
