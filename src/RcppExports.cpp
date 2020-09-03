@@ -7,28 +7,18 @@
 using namespace Rcpp;
 
 
-RcppExport SEXP _rcpp_module_boot_stan_fit4APCmodelfinal_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4APCmodelfinalnb_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4CBDmodelfinal_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4CBDmodelfinalnb_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4M6modelfinal_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4M6modelfinalnb_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4RHmodelfinal_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4RHmodelfinalnb_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4leecarterfinal_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4leecarterfinalnb_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4APCmodel_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4CBDmodel_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4M6model_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4RHmodel_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4leecarter_mod();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcpp_module_boot_stan_fit4APCmodelfinal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4APCmodelfinal_mod, 0},
-    {"_rcpp_module_boot_stan_fit4APCmodelfinalnb_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4APCmodelfinalnb_mod, 0},
-    {"_rcpp_module_boot_stan_fit4CBDmodelfinal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4CBDmodelfinal_mod, 0},
-    {"_rcpp_module_boot_stan_fit4CBDmodelfinalnb_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4CBDmodelfinalnb_mod, 0},
-    {"_rcpp_module_boot_stan_fit4M6modelfinal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4M6modelfinal_mod, 0},
-    {"_rcpp_module_boot_stan_fit4M6modelfinalnb_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4M6modelfinalnb_mod, 0},
-    {"_rcpp_module_boot_stan_fit4RHmodelfinal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4RHmodelfinal_mod, 0},
-    {"_rcpp_module_boot_stan_fit4RHmodelfinalnb_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4RHmodelfinalnb_mod, 0},
-    {"_rcpp_module_boot_stan_fit4leecarterfinal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4leecarterfinal_mod, 0},
-    {"_rcpp_module_boot_stan_fit4leecarterfinalnb_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4leecarterfinalnb_mod, 0},
+    {"_rcpp_module_boot_stan_fit4APCmodel_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4APCmodel_mod, 0},
+    {"_rcpp_module_boot_stan_fit4CBDmodel_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4CBDmodel_mod, 0},
+    {"_rcpp_module_boot_stan_fit4M6model_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4M6model_mod, 0},
+    {"_rcpp_module_boot_stan_fit4RHmodel_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4RHmodel_mod, 0},
+    {"_rcpp_module_boot_stan_fit4leecarter_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4leecarter_mod, 0},
     {NULL, NULL, 0}
 };
 

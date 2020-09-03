@@ -44,7 +44,7 @@ $$
 Now, the model can be estimated and forecast for the next 10 years by a simple call to the `lc_stan` function: 
 
 ```{r}
-fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",cores=4)
+fitLC=apc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",cores=4)
 ```
 
 By default, Stan samples four Markov chains with 2000 iterations with 1000 warmup iterations for each chain (hence, 4000 draws in total). The output is an object of class `stanfit` (cf. the **rstan** package) which contains the posterior draws of each parameter, the posterior log likelihoods as well as the mortality forecasts.
