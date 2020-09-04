@@ -1,4 +1,4 @@
-//Code for Renshaw-Haberman model with Poisson error
+//Code for Renshaw-Haberman model with Poisson and Negative-Binomial error
 
 data {
    int<lower = 1> J;                    // number of age categories
@@ -10,6 +10,7 @@ data {
   int dval[J*Tval];
   vector[J* Tval] eval;
   int<lower=0,upper=1> family;
+  vector[T-2] index;
 }
 transformed data {
   vector[J * T] offset = log(e);
@@ -20,12 +21,12 @@ transformed data {
   L=J*Tfor;
 }
 parameters {
-  real<lower=0.1> aux[family > 0]; // neg. binomial dispersion parameter
+  real<lower=0> aux[family > 0]; // neg. binomial dispersion parameter
   vector[J] a;                         // alpha_x
   simplex[J] b;                        // beta_x, strictly positive and sums to 1
 
 
-  real alpha;                          // drift in random walk
+  vector[3] alpha;   
   vector[T-1] ks;                     // vector of kappa
 
   real psi;                           // parameters of the AR(2) process
@@ -43,7 +44,7 @@ transformed parameters {      // This block defines a new vector where the first
   g[1]=0;
   g[2:(C-1)]=gs;
   g[C]=0;
-  if (family > 0) phi = aux[1];
+  if (family > 0) phi = inv(aux[1]);
     }
 
 model {
@@ -53,12 +54,13 @@ model {
     mu[pos] = offset[pos]+ a[x] + b[x]*k[t]+g[t-x+J];         // Predictor dynamics
     pos += 1;
   }
+ target += normal_lpdf(ks[1]|alpha[1]+2*alpha[2],sigma[1]);
+target += normal_lpdf(ks[2:(T-1)]|alpha[1]+alpha[2]*index+alpha[3]*ks[1:(T- 2)],sigma[1]);
 
-  ks[1] ~ normal(alpha,sigma[1]);
-  ks[2:(T-1)] ~ normal(alpha + ks[1:(T- 2)],sigma[1]);      // Dynamics of the random walk
-  gs[1] ~ normal(0,sigma[2]);
-  gs[2] ~ normal(psi*gs[1],sigma[2]);
-  gs[3:(C-2)] ~ normal(psi*gs[2:(C- 3)]+psi2*gs[1:(C- 4)],sigma[2]);    //Dynamics of the AR(2) process
+target+=normal_lpdf(gs[1]|0,sigma[2]) ;
+target+=normal_lpdf(gs[2]|psi*gs[1],sigma[2]) ;
+target+=normal_lpdf(gs[3:(C-2)]|psi*gs[2:(C- 3)]+psi2*gs[1:(C- 4)],sigma[2]) ;
+
   if (family ==0){
     target += poisson_log_lpmf(d |mu);                // Poisson log model
   }
@@ -66,8 +68,13 @@ model {
     target +=neg_binomial_2_log_lpmf (d|mu,phi);      // Negative-Binomial log model
   }
 
-  target += normal_lpdf(a|-3,2);              // Prior on alpha_x
-  target += exponential_lpdf(sigma | 1);        //Prior on sigma
+  target += normal_lpdf(a|0,10);              // Prior on alpha
+  target += normal_lpdf(psi|0,sqrt(10)); 
+  target += normal_lpdf(psi2|0,sqrt(10)); 
+  target += normal_lpdf(alpha|0,sqrt(10));              // Prior on alpha_x
+  target += dirichlet_lpdf(b|rep_vector(1, J));              // Prior on beta
+  target += exponential_lpdf(sigma | 0.1);        //Prior on sigma
+  if (family > 0) target += normal_lpdf(aux|0,10);
 }
 
 generated quantities {
@@ -81,8 +88,8 @@ generated quantities {
   int pos2= 1;
   int pos3= 1;
 
-  k_p[1] = k[T]+alpha + sigma[1] * normal_rng(0,1);
-  for (t in 2:Tfor) k_p[t] = k_p[t - 1] + alpha + sigma[1] * normal_rng(0,1);
+  k_p[1] = alpha[1]+alpha[2]*(T+1)+alpha[3]*k[T]+sigma[1] * normal_rng(0,1);
+  for (t in 2:Tfor) k_p[t] = alpha[1]+alpha[2]*(T+t)+alpha[3]*k_p[t - 1] + sigma[1] * normal_rng(0,1);
   g_p[1]=psi*g[C]+psi2*g[C-1]+sigma[2]*normal_rng(0,1);
   g_p[2]=psi*g_p[1]+psi2*g[C]+sigma[2]*normal_rng(0,1);
   for (t in 3:Tfor) g_p[t]=psi*g_p[t-1]+psi2*g_p[t-2]+sigma[2]*normal_rng(0,1);
@@ -105,8 +112,13 @@ generated quantities {
   }
   else if (family > 0){
     for (t in 1:Tfor) for (x in 1:J) {
-     mufor[pos] = gamma_rng(phi,phi/exp(a[x] + b[x] * k_p[t]+gf[T+t-x+J]));
+      if ( fabs(a[x] + b[x] * k_p[t]+gf[T+t-x+J])>15   ){
+         mufor[pos] = 0;
     pos += 1;
+      } else {
+         mufor[pos] = gamma_rng(phi,phi/exp(a[x] + b[x] * k_p[t]+gf[T+t-x+J]));
+    pos += 1;
+          }
   }
   for (t in 1:T) for (x in 1:J) {
      log_lik[pos2] = neg_binomial_2_log_lpmf (d[pos2] | offset[pos2]+ a[x] + b[x] * k[t]+g[t-x+J],phi);
