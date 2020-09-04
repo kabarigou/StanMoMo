@@ -1,8 +1,8 @@
 ---
 title: "Bayesian Lee Carter with Stan"
 output:
-  html_document: default
-  pdf_document: default
+  github_document:
+    pandoc_args: --webtex
 ---
 
 ```{r setup, include=FALSE}
@@ -34,7 +34,12 @@ D_{xt} &\sim Poisson (E_{xt}\mu_{xt})\\
 \log \mu_{xt}&=\alpha_x+\beta_x \kappa_t
 \end{aligned}
 $$
-To ensure identifiability of the model, we assume that $\sum_x \beta_x=1$ and $\kappa_1=0$. Moreover, we make the standard assumption that the period parameter follows a random walk with drift: 
+To ensure identifiability of the model, we assume that 
+$$
+\sum_x \beta_x=1,\kappa_1=0
+$$
+
+Moreover, we make the standard assumption that the period parameter follows a random walk with drift: 
 $$ 
 \kappa_t \sim \mathcal{N}(\mu+\kappa_{t-1},\sigma)
 $$

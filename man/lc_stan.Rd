@@ -4,7 +4,14 @@
 \alias{lc_stan}
 \title{Bayesian Lee-Carter with Stan}
 \usage{
-lc_stan(death, exposure, forecast, ...)
+lc_stan(
+  death,
+  exposure,
+  forecast,
+  validation = 0,
+  family = c("poisson", "nb"),
+  ...
+)
 }
 \arguments{
 \item{death}{Matrix of deaths}
@@ -12,6 +19,12 @@ lc_stan(death, exposure, forecast, ...)
 \item{exposure}{Matrix of exposures}
 
 \item{forecast}{Number of years to forecast}
+
+\item{validation}{Number of years for validation}
+
+\item{family}{specifies the random component of the mortality model. \code{"Poisson"} assumes a
+Poisson model with log link and \code{"nb"} assumes a negative-binomial model
+with log link and overdispersion parameter}
 
 \item{...}{Arguments passed to \code{rstan::sampling} (e.g. iter, chains).}
 }

@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_leecarter");
-    reader.add_event(103, 101, "end", "model_leecarter");
+    reader.add_event(113, 111, "end", "model_leecarter");
     return reader;
 }
 #include <stan_meta_header.hpp>
@@ -48,6 +48,7 @@ private:
         std::vector<int> dval;
         vector_d eval;
         int family;
+        vector_d index;
         vector_d offset;
         vector_d offset2;
         int L;
@@ -157,44 +158,55 @@ public:
             family = vals_i__[pos__++];
             check_greater_or_equal(function__, "family", family, 0);
             check_less_or_equal(function__, "family", family, 1);
+            current_statement_begin__ = 13;
+            validate_non_negative_index("index", "(T - 2)", (T - 2));
+            context__.validate_dims("data initialization", "index", "vector_d", context__.to_vec((T - 2)));
+            index = Eigen::Matrix<double, Eigen::Dynamic, 1>((T - 2));
+            vals_r__ = context__.vals_r("index");
+            pos__ = 0;
+            size_t index_j_1_max__ = (T - 2);
+            for (size_t j_1__ = 0; j_1__ < index_j_1_max__; ++j_1__) {
+                index(j_1__) = vals_r__[pos__++];
+            }
             // initialize transformed data variables
-            current_statement_begin__ = 15;
+            current_statement_begin__ = 16;
             validate_non_negative_index("offset", "(J * T)", (J * T));
             offset = Eigen::Matrix<double, Eigen::Dynamic, 1>((J * T));
             stan::math::fill(offset, DUMMY_VAR__);
             stan::math::assign(offset,stan::math::log(e));
-            current_statement_begin__ = 16;
+            current_statement_begin__ = 17;
             validate_non_negative_index("offset2", "(J * Tval)", (J * Tval));
             offset2 = Eigen::Matrix<double, Eigen::Dynamic, 1>((J * Tval));
             stan::math::fill(offset2, DUMMY_VAR__);
             stan::math::assign(offset2,stan::math::log(eval));
-            current_statement_begin__ = 17;
+            current_statement_begin__ = 18;
             L = int(0);
             stan::math::fill(L, std::numeric_limits<int>::min());
             // execute transformed data statements
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 19;
             stan::math::assign(L, (J * Tfor));
             // validate transformed data
-            current_statement_begin__ = 17;
+            current_statement_begin__ = 18;
             check_greater_or_equal(function__, "L", L, 1);
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 21;
+            current_statement_begin__ = 22;
             validate_non_negative_index("aux", "logical_gt(family, 0)", logical_gt(family, 0));
             num_params_r__ += (1 * logical_gt(family, 0));
-            current_statement_begin__ = 22;
+            current_statement_begin__ = 23;
             validate_non_negative_index("a", "J", J);
             num_params_r__ += J;
-            current_statement_begin__ = 23;
+            current_statement_begin__ = 24;
             validate_non_negative_index("b", "J", J);
             num_params_r__ += (J - 1);
-            current_statement_begin__ = 25;
-            num_params_r__ += 1;
             current_statement_begin__ = 26;
+            validate_non_negative_index("alpha", "3", 3);
+            num_params_r__ += 3;
+            current_statement_begin__ = 27;
             validate_non_negative_index("ks", "(T - 1)", (T - 1));
             num_params_r__ += (T - 1);
-            current_statement_begin__ = 28;
+            current_statement_begin__ = 29;
             validate_non_negative_index("sigma", "1", 1);
             num_params_r__ += (1 * 1);
         } catch (const std::exception& e) {
@@ -214,7 +226,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 21;
+        current_statement_begin__ = 22;
         if (!(context__.contains_r("aux")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable aux missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("aux");
@@ -234,7 +246,7 @@ public:
                 stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable aux: ") + e.what()), current_statement_begin__, prog_reader__());
             }
         }
-        current_statement_begin__ = 22;
+        current_statement_begin__ = 23;
         if (!(context__.contains_r("a")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable a missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("a");
@@ -251,7 +263,7 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable a: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 23;
+        current_statement_begin__ = 24;
         if (!(context__.contains_r("b")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable b missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("b");
@@ -268,20 +280,24 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable b: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 25;
+        current_statement_begin__ = 26;
         if (!(context__.contains_r("alpha")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable alpha missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("alpha");
         pos__ = 0U;
-        context__.validate_dims("parameter initialization", "alpha", "double", context__.to_vec());
-        double alpha(0);
-        alpha = vals_r__[pos__++];
+        validate_non_negative_index("alpha", "3", 3);
+        context__.validate_dims("parameter initialization", "alpha", "vector_d", context__.to_vec(3));
+        Eigen::Matrix<double, Eigen::Dynamic, 1> alpha(3);
+        size_t alpha_j_1_max__ = 3;
+        for (size_t j_1__ = 0; j_1__ < alpha_j_1_max__; ++j_1__) {
+            alpha(j_1__) = vals_r__[pos__++];
+        }
         try {
-            writer__.scalar_unconstrain(alpha);
+            writer__.vector_unconstrain(alpha);
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable alpha: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 26;
+        current_statement_begin__ = 27;
         if (!(context__.contains_r("ks")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable ks missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("ks");
@@ -298,7 +314,7 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable ks: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 28;
+        current_statement_begin__ = 29;
         if (!(context__.contains_r("sigma")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable sigma missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("sigma");
@@ -343,7 +359,7 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 21;
+            current_statement_begin__ = 22;
             std::vector<local_scalar_t__> aux;
             size_t aux_d_0_max__ = logical_gt(family, 0);
             aux.reserve(aux_d_0_max__);
@@ -353,35 +369,35 @@ public:
                 else
                     aux.push_back(in__.scalar_lb_constrain(0));
             }
-            current_statement_begin__ = 22;
+            current_statement_begin__ = 23;
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> a;
             (void) a;  // dummy to suppress unused var warning
             if (jacobian__)
                 a = in__.vector_constrain(J, lp__);
             else
                 a = in__.vector_constrain(J);
-            current_statement_begin__ = 23;
+            current_statement_begin__ = 24;
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> b;
             (void) b;  // dummy to suppress unused var warning
             if (jacobian__)
                 b = in__.simplex_constrain(J, lp__);
             else
                 b = in__.simplex_constrain(J);
-            current_statement_begin__ = 25;
-            local_scalar_t__ alpha;
+            current_statement_begin__ = 26;
+            Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> alpha;
             (void) alpha;  // dummy to suppress unused var warning
             if (jacobian__)
-                alpha = in__.scalar_constrain(lp__);
+                alpha = in__.vector_constrain(3, lp__);
             else
-                alpha = in__.scalar_constrain();
-            current_statement_begin__ = 26;
+                alpha = in__.vector_constrain(3);
+            current_statement_begin__ = 27;
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> ks;
             (void) ks;  // dummy to suppress unused var warning
             if (jacobian__)
                 ks = in__.vector_constrain((T - 1), lp__);
             else
                 ks = in__.vector_constrain((T - 1));
-            current_statement_begin__ = 28;
+            current_statement_begin__ = 29;
             std::vector<local_scalar_t__> sigma;
             size_t sigma_d_0_max__ = 1;
             sigma.reserve(sigma_d_0_max__);
@@ -392,37 +408,37 @@ public:
                     sigma.push_back(in__.scalar_lb_constrain(0));
             }
             // transformed parameters
-            current_statement_begin__ = 31;
+            current_statement_begin__ = 32;
             validate_non_negative_index("k", "T", T);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> k(T);
             stan::math::initialize(k, DUMMY_VAR__);
             stan::math::fill(k, DUMMY_VAR__);
-            current_statement_begin__ = 32;
+            current_statement_begin__ = 33;
             local_scalar_t__ phi;
             (void) phi;  // dummy to suppress unused var warning
             stan::math::initialize(phi, DUMMY_VAR__);
             stan::math::fill(phi, DUMMY_VAR__);
             stan::math::assign(phi,stan::math::negative_infinity());
             // transformed parameters block statements
-            current_statement_begin__ = 33;
+            current_statement_begin__ = 34;
             stan::model::assign(k, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         0, 
                         "assigning variable k");
-            current_statement_begin__ = 34;
+            current_statement_begin__ = 35;
             stan::model::assign(k, 
                         stan::model::cons_list(stan::model::index_min_max(2, T), stan::model::nil_index_list()), 
                         ks, 
                         "assigning variable k");
-            current_statement_begin__ = 35;
+            current_statement_begin__ = 36;
             if (as_bool(logical_gt(family, 0))) {
-                current_statement_begin__ = 35;
-                stan::math::assign(phi, get_base1(aux, 1, "aux", 1));
+                current_statement_begin__ = 36;
+                stan::math::assign(phi, inv(get_base1(aux, 1, "aux", 1)));
             }
             // validate transformed parameters
             const char* function__ = "validate transformed params";
             (void) function__;  // dummy to suppress unused var warning
-            current_statement_begin__ = 31;
+            current_statement_begin__ = 32;
             size_t k_j_1_max__ = T;
             for (size_t j_1__ = 0; j_1__ < k_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(k(j_1__))) {
@@ -431,7 +447,7 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable k: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 32;
+            current_statement_begin__ = 33;
             if (stan::math::is_uninitialized(phi)) {
                 std::stringstream msg__;
                 msg__ << "Undefined transformed parameter: phi";
@@ -439,43 +455,54 @@ public:
             }
             // model body
             {
-            current_statement_begin__ = 39;
+            current_statement_begin__ = 40;
             validate_non_negative_index("mu", "(J * T)", (J * T));
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> mu((J * T));
             stan::math::initialize(mu, DUMMY_VAR__);
             stan::math::fill(mu, DUMMY_VAR__);
-            current_statement_begin__ = 40;
+            current_statement_begin__ = 41;
             int pos(0);
             (void) pos;  // dummy to suppress unused var warning
             stan::math::fill(pos, std::numeric_limits<int>::min());
             stan::math::assign(pos,1);
-            current_statement_begin__ = 41;
+            current_statement_begin__ = 42;
             for (int t = 1; t <= T; ++t) {
-                current_statement_begin__ = 41;
+                current_statement_begin__ = 42;
                 for (int x = 1; x <= J; ++x) {
-                    current_statement_begin__ = 42;
+                    current_statement_begin__ = 43;
                     stan::model::assign(mu, 
                                 stan::model::cons_list(stan::model::index_uni(pos), stan::model::nil_index_list()), 
                                 ((get_base1(offset, pos, "offset", 1) + get_base1(a, x, "a", 1)) + (get_base1(b, x, "b", 1) * get_base1(k, t, "k", 1))), 
                                 "assigning variable mu");
-                    current_statement_begin__ = 43;
+                    current_statement_begin__ = 44;
                     stan::math::assign(pos, (pos + 1));
                 }
             }
-            current_statement_begin__ = 46;
-            lp_accum__.add(normal_log<propto__>(get_base1(ks, 1, "ks", 1), alpha, get_base1(sigma, 1, "sigma", 1)));
             current_statement_begin__ = 47;
-            lp_accum__.add(normal_log<propto__>(stan::model::rvalue(ks, stan::model::cons_list(stan::model::index_min_max(2, (T - 1)), stan::model::nil_index_list()), "ks"), add(alpha, stan::model::rvalue(ks, stan::model::cons_list(stan::model::index_min_max(1, (T - 2)), stan::model::nil_index_list()), "ks")), get_base1(sigma, 1, "sigma", 1)));
-            current_statement_begin__ = 49;
+            lp_accum__.add(normal_log(get_base1(ks, 1, "ks", 1), (get_base1(alpha, 1, "alpha", 1) + (2 * get_base1(alpha, 2, "alpha", 1))), get_base1(sigma, 1, "sigma", 1)));
+            current_statement_begin__ = 48;
+            lp_accum__.add(normal_log(stan::model::rvalue(ks, stan::model::cons_list(stan::model::index_min_max(2, (T - 1)), stan::model::nil_index_list()), "ks"), add(add(get_base1(alpha, 1, "alpha", 1), multiply(get_base1(alpha, 2, "alpha", 1), index)), multiply(get_base1(alpha, 3, "alpha", 1), stan::model::rvalue(ks, stan::model::cons_list(stan::model::index_min_max(1, (T - 2)), stan::model::nil_index_list()), "ks"))), get_base1(sigma, 1, "sigma", 1)));
+            current_statement_begin__ = 50;
             if (as_bool(logical_eq(family, 0))) {
-                current_statement_begin__ = 50;
+                current_statement_begin__ = 51;
                 lp_accum__.add(poisson_log_log(d, mu));
             } else {
-                current_statement_begin__ = 53;
+                current_statement_begin__ = 54;
                 lp_accum__.add(neg_binomial_2_log_log(d, mu, phi));
             }
-            current_statement_begin__ = 55;
-            lp_accum__.add(exponential_log(get_base1(sigma, 1, "sigma", 1), 1));
+            current_statement_begin__ = 56;
+            lp_accum__.add(normal_log(a, 0, 10));
+            current_statement_begin__ = 57;
+            lp_accum__.add(normal_log(alpha, 0, stan::math::sqrt(10)));
+            current_statement_begin__ = 58;
+            lp_accum__.add(dirichlet_log(b, rep_vector(1, J)));
+            current_statement_begin__ = 59;
+            lp_accum__.add(exponential_log(get_base1(sigma, 1, "sigma", 1), 0.1));
+            current_statement_begin__ = 60;
+            if (as_bool(logical_gt(family, 0))) {
+                current_statement_begin__ = 60;
+                lp_accum__.add(normal_log(aux, 0, 10));
+            }
             }
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -526,6 +553,7 @@ public:
         dims__.push_back(J);
         dimss__.push_back(dims__);
         dims__.resize(0);
+        dims__.push_back(3);
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back((T - 1));
@@ -591,8 +619,11 @@ public:
         for (size_t j_1__ = 0; j_1__ < b_j_1_max__; ++j_1__) {
             vars__.push_back(b(j_1__));
         }
-        double alpha = in__.scalar_constrain();
-        vars__.push_back(alpha);
+        Eigen::Matrix<double, Eigen::Dynamic, 1> alpha = in__.vector_constrain(3);
+        size_t alpha_j_1_max__ = 3;
+        for (size_t j_1__ = 0; j_1__ < alpha_j_1_max__; ++j_1__) {
+            vars__.push_back(alpha(j_1__));
+        }
         Eigen::Matrix<double, Eigen::Dynamic, 1> ks = in__.vector_constrain((T - 1));
         size_t ks_j_1_max__ = (T - 1);
         for (size_t j_1__ = 0; j_1__ < ks_j_1_max__; ++j_1__) {
@@ -616,32 +647,32 @@ public:
         if (!include_tparams__ && !include_gqs__) return;
         try {
             // declare and define transformed parameters
-            current_statement_begin__ = 31;
+            current_statement_begin__ = 32;
             validate_non_negative_index("k", "T", T);
             Eigen::Matrix<double, Eigen::Dynamic, 1> k(T);
             stan::math::initialize(k, DUMMY_VAR__);
             stan::math::fill(k, DUMMY_VAR__);
-            current_statement_begin__ = 32;
+            current_statement_begin__ = 33;
             double phi;
             (void) phi;  // dummy to suppress unused var warning
             stan::math::initialize(phi, DUMMY_VAR__);
             stan::math::fill(phi, DUMMY_VAR__);
             stan::math::assign(phi,stan::math::negative_infinity());
             // do transformed parameters statements
-            current_statement_begin__ = 33;
+            current_statement_begin__ = 34;
             stan::model::assign(k, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         0, 
                         "assigning variable k");
-            current_statement_begin__ = 34;
+            current_statement_begin__ = 35;
             stan::model::assign(k, 
                         stan::model::cons_list(stan::model::index_min_max(2, T), stan::model::nil_index_list()), 
                         ks, 
                         "assigning variable k");
-            current_statement_begin__ = 35;
+            current_statement_begin__ = 36;
             if (as_bool(logical_gt(family, 0))) {
-                current_statement_begin__ = 35;
-                stan::math::assign(phi, get_base1(aux, 1, "aux", 1));
+                current_statement_begin__ = 36;
+                stan::math::assign(phi, inv(get_base1(aux, 1, "aux", 1)));
             }
             if (!include_gqs__ && !include_tparams__) return;
             // validate transformed parameters
@@ -657,165 +688,176 @@ public:
             }
             if (!include_gqs__) return;
             // declare and define generated quantities
-            current_statement_begin__ = 59;
+            current_statement_begin__ = 64;
             validate_non_negative_index("k_p", "Tfor", Tfor);
             Eigen::Matrix<double, Eigen::Dynamic, 1> k_p(Tfor);
             stan::math::initialize(k_p, DUMMY_VAR__);
             stan::math::fill(k_p, DUMMY_VAR__);
-            current_statement_begin__ = 60;
+            current_statement_begin__ = 65;
             validate_non_negative_index("mufor", "L", L);
             Eigen::Matrix<double, Eigen::Dynamic, 1> mufor(L);
             stan::math::initialize(mufor, DUMMY_VAR__);
             stan::math::fill(mufor, DUMMY_VAR__);
-            current_statement_begin__ = 61;
+            current_statement_begin__ = 66;
             validate_non_negative_index("log_lik", "(J * T)", (J * T));
             Eigen::Matrix<double, Eigen::Dynamic, 1> log_lik((J * T));
             stan::math::initialize(log_lik, DUMMY_VAR__);
             stan::math::fill(log_lik, DUMMY_VAR__);
-            current_statement_begin__ = 62;
+            current_statement_begin__ = 67;
             validate_non_negative_index("log_lik2", "(J * Tval)", (J * Tval));
             Eigen::Matrix<double, Eigen::Dynamic, 1> log_lik2((J * Tval));
             stan::math::initialize(log_lik2, DUMMY_VAR__);
             stan::math::fill(log_lik2, DUMMY_VAR__);
-            current_statement_begin__ = 63;
+            current_statement_begin__ = 68;
             int pos;
             (void) pos;  // dummy to suppress unused var warning
             stan::math::fill(pos, std::numeric_limits<int>::min());
             stan::math::assign(pos,1);
-            current_statement_begin__ = 64;
+            current_statement_begin__ = 69;
             int pos2;
             (void) pos2;  // dummy to suppress unused var warning
             stan::math::fill(pos2, std::numeric_limits<int>::min());
             stan::math::assign(pos2,1);
-            current_statement_begin__ = 65;
+            current_statement_begin__ = 70;
             int pos3;
             (void) pos3;  // dummy to suppress unused var warning
             stan::math::fill(pos3, std::numeric_limits<int>::min());
             stan::math::assign(pos3,1);
             // generated quantities statements
-            current_statement_begin__ = 66;
+            current_statement_begin__ = 71;
             stan::model::assign(k_p, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
-                        ((get_base1(k, T, "k", 1) + alpha) + (get_base1(sigma, 1, "sigma", 1) * normal_rng(0, 1, base_rng__))), 
+                        (((get_base1(alpha, 1, "alpha", 1) + (get_base1(alpha, 2, "alpha", 1) * (T + 1))) + (get_base1(alpha, 3, "alpha", 1) * get_base1(k, T, "k", 1))) + (get_base1(sigma, 1, "sigma", 1) * normal_rng(0, 1, base_rng__))), 
                         "assigning variable k_p");
-            current_statement_begin__ = 67;
+            current_statement_begin__ = 72;
             for (int t = 2; t <= Tfor; ++t) {
-                current_statement_begin__ = 67;
+                current_statement_begin__ = 72;
                 stan::model::assign(k_p, 
                             stan::model::cons_list(stan::model::index_uni(t), stan::model::nil_index_list()), 
-                            ((get_base1(k_p, (t - 1), "k_p", 1) + alpha) + (get_base1(sigma, 1, "sigma", 1) * normal_rng(0, 1, base_rng__))), 
+                            (((get_base1(alpha, 1, "alpha", 1) + (get_base1(alpha, 2, "alpha", 1) * (T + t))) + (get_base1(alpha, 3, "alpha", 1) * get_base1(k_p, (t - 1), "k_p", 1))) + (get_base1(sigma, 1, "sigma", 1) * normal_rng(0, 1, base_rng__))), 
                             "assigning variable k_p");
             }
-            current_statement_begin__ = 68;
+            current_statement_begin__ = 73;
             if (as_bool(logical_eq(family, 0))) {
-                current_statement_begin__ = 69;
+                current_statement_begin__ = 74;
                 for (int t = 1; t <= Tfor; ++t) {
-                    current_statement_begin__ = 69;
+                    current_statement_begin__ = 74;
                     for (int x = 1; x <= J; ++x) {
-                        current_statement_begin__ = 70;
+                        current_statement_begin__ = 75;
                         stan::model::assign(mufor, 
                                     stan::model::cons_list(stan::model::index_uni(pos), stan::model::nil_index_list()), 
                                     (get_base1(a, x, "a", 1) + (get_base1(b, x, "b", 1) * get_base1(k_p, t, "k_p", 1))), 
                                     "assigning variable mufor");
-                        current_statement_begin__ = 71;
+                        current_statement_begin__ = 76;
                         stan::math::assign(pos, (pos + 1));
                     }
                 }
-                current_statement_begin__ = 73;
+                current_statement_begin__ = 78;
                 stan::math::assign(mufor, stan::math::exp(mufor));
-                current_statement_begin__ = 74;
+                current_statement_begin__ = 79;
                 for (int t = 1; t <= T; ++t) {
-                    current_statement_begin__ = 74;
+                    current_statement_begin__ = 79;
                     for (int x = 1; x <= J; ++x) {
-                        current_statement_begin__ = 75;
+                        current_statement_begin__ = 80;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(pos2), stan::model::nil_index_list()), 
                                     poisson_log_log(get_base1(d, pos2, "d", 1), ((get_base1(offset, pos2, "offset", 1) + get_base1(a, x, "a", 1)) + (get_base1(b, x, "b", 1) * get_base1(k, t, "k", 1)))), 
                                     "assigning variable log_lik");
-                        current_statement_begin__ = 76;
+                        current_statement_begin__ = 81;
                         stan::math::assign(pos2, (pos2 + 1));
                     }
                 }
-                current_statement_begin__ = 79;
+                current_statement_begin__ = 84;
                 for (int t = 1; t <= Tval; ++t) {
-                    current_statement_begin__ = 79;
+                    current_statement_begin__ = 84;
                     for (int x = 1; x <= J; ++x) {
-                        current_statement_begin__ = 80;
+                        current_statement_begin__ = 85;
                         stan::model::assign(log_lik2, 
                                     stan::model::cons_list(stan::model::index_uni(pos3), stan::model::nil_index_list()), 
                                     poisson_log_log(get_base1(dval, pos3, "dval", 1), ((get_base1(offset2, pos3, "offset2", 1) + get_base1(a, x, "a", 1)) + (get_base1(b, x, "b", 1) * get_base1(k_p, t, "k_p", 1)))), 
                                     "assigning variable log_lik2");
-                        current_statement_begin__ = 81;
+                        current_statement_begin__ = 86;
                         stan::math::assign(pos3, (pos3 + 1));
                     }
                 }
             } else if (as_bool(logical_gt(family, 0))) {
-                current_statement_begin__ = 85;
+                current_statement_begin__ = 90;
                 for (int t = 1; t <= Tfor; ++t) {
-                    current_statement_begin__ = 85;
+                    current_statement_begin__ = 90;
                     for (int x = 1; x <= J; ++x) {
-                        current_statement_begin__ = 86;
-                        stan::model::assign(mufor, 
-                                    stan::model::cons_list(stan::model::index_uni(pos), stan::model::nil_index_list()), 
-                                    gamma_rng(phi, (phi / stan::math::exp((get_base1(a, x, "a", 1) + (get_base1(b, x, "b", 1) * get_base1(k_p, t, "k_p", 1))))), base_rng__), 
-                                    "assigning variable mufor");
-                        current_statement_begin__ = 87;
-                        stan::math::assign(pos, (pos + 1));
+                        current_statement_begin__ = 91;
+                        if (as_bool(logical_gt(stan::math::fabs((get_base1(a, x, "a", 1) + (get_base1(b, x, "b", 1) * get_base1(k_p, t, "k_p", 1)))), 15))) {
+                            current_statement_begin__ = 92;
+                            stan::model::assign(mufor, 
+                                        stan::model::cons_list(stan::model::index_uni(pos), stan::model::nil_index_list()), 
+                                        0, 
+                                        "assigning variable mufor");
+                            current_statement_begin__ = 93;
+                            stan::math::assign(pos, (pos + 1));
+                        } else {
+                            current_statement_begin__ = 95;
+                            stan::model::assign(mufor, 
+                                        stan::model::cons_list(stan::model::index_uni(pos), stan::model::nil_index_list()), 
+                                        gamma_rng(phi, (phi / stan::math::exp((get_base1(a, x, "a", 1) + (get_base1(b, x, "b", 1) * get_base1(k_p, t, "k_p", 1))))), base_rng__), 
+                                        "assigning variable mufor");
+                            current_statement_begin__ = 96;
+                            stan::math::assign(pos, (pos + 1));
+                        }
                     }
                 }
-                current_statement_begin__ = 89;
+                current_statement_begin__ = 99;
                 for (int t = 1; t <= T; ++t) {
-                    current_statement_begin__ = 89;
+                    current_statement_begin__ = 99;
                     for (int x = 1; x <= J; ++x) {
-                        current_statement_begin__ = 90;
+                        current_statement_begin__ = 100;
                         stan::model::assign(log_lik, 
                                     stan::model::cons_list(stan::model::index_uni(pos2), stan::model::nil_index_list()), 
                                     neg_binomial_2_log_log(get_base1(d, pos2, "d", 1), ((get_base1(offset, pos2, "offset", 1) + get_base1(a, x, "a", 1)) + (get_base1(b, x, "b", 1) * get_base1(k, t, "k", 1))), phi), 
                                     "assigning variable log_lik");
-                        current_statement_begin__ = 91;
+                        current_statement_begin__ = 101;
                         stan::math::assign(pos2, (pos2 + 1));
                     }
                 }
-                current_statement_begin__ = 94;
+                current_statement_begin__ = 104;
                 for (int t = 1; t <= Tval; ++t) {
-                    current_statement_begin__ = 94;
+                    current_statement_begin__ = 104;
                     for (int x = 1; x <= J; ++x) {
-                        current_statement_begin__ = 95;
-                        stan::model::assign(log_lik, 
+                        current_statement_begin__ = 105;
+                        stan::model::assign(log_lik2, 
                                     stan::model::cons_list(stan::model::index_uni(pos3), stan::model::nil_index_list()), 
                                     neg_binomial_2_log_log(get_base1(dval, pos3, "dval", 1), ((get_base1(offset2, pos3, "offset2", 1) + get_base1(a, x, "a", 1)) + (get_base1(b, x, "b", 1) * get_base1(k_p, t, "k_p", 1))), phi), 
-                                    "assigning variable log_lik");
-                        current_statement_begin__ = 96;
+                                    "assigning variable log_lik2");
+                        current_statement_begin__ = 106;
                         stan::math::assign(pos3, (pos3 + 1));
                     }
                 }
             }
             // validate, write generated quantities
-            current_statement_begin__ = 59;
+            current_statement_begin__ = 64;
             size_t k_p_j_1_max__ = Tfor;
             for (size_t j_1__ = 0; j_1__ < k_p_j_1_max__; ++j_1__) {
                 vars__.push_back(k_p(j_1__));
             }
-            current_statement_begin__ = 60;
+            current_statement_begin__ = 65;
             size_t mufor_j_1_max__ = L;
             for (size_t j_1__ = 0; j_1__ < mufor_j_1_max__; ++j_1__) {
                 vars__.push_back(mufor(j_1__));
             }
-            current_statement_begin__ = 61;
+            current_statement_begin__ = 66;
             size_t log_lik_j_1_max__ = (J * T);
             for (size_t j_1__ = 0; j_1__ < log_lik_j_1_max__; ++j_1__) {
                 vars__.push_back(log_lik(j_1__));
             }
-            current_statement_begin__ = 62;
+            current_statement_begin__ = 67;
             size_t log_lik2_j_1_max__ = (J * Tval);
             for (size_t j_1__ = 0; j_1__ < log_lik2_j_1_max__; ++j_1__) {
                 vars__.push_back(log_lik2(j_1__));
             }
-            current_statement_begin__ = 63;
+            current_statement_begin__ = 68;
             vars__.push_back(pos);
-            current_statement_begin__ = 64;
+            current_statement_begin__ = 69;
             vars__.push_back(pos2);
-            current_statement_begin__ = 65;
+            current_statement_begin__ = 70;
             vars__.push_back(pos3);
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -865,9 +907,12 @@ public:
             param_name_stream__ << "b" << '.' << j_1__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
-        param_name_stream__.str(std::string());
-        param_name_stream__ << "alpha";
-        param_names__.push_back(param_name_stream__.str());
+        size_t alpha_j_1_max__ = 3;
+        for (size_t j_1__ = 0; j_1__ < alpha_j_1_max__; ++j_1__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "alpha" << '.' << j_1__ + 1;
+            param_names__.push_back(param_name_stream__.str());
+        }
         size_t ks_j_1_max__ = (T - 1);
         for (size_t j_1__ = 0; j_1__ < ks_j_1_max__; ++j_1__) {
             param_name_stream__.str(std::string());
@@ -949,9 +994,12 @@ public:
             param_name_stream__ << "b" << '.' << j_1__ + 1;
             param_names__.push_back(param_name_stream__.str());
         }
-        param_name_stream__.str(std::string());
-        param_name_stream__ << "alpha";
-        param_names__.push_back(param_name_stream__.str());
+        size_t alpha_j_1_max__ = 3;
+        for (size_t j_1__ = 0; j_1__ < alpha_j_1_max__; ++j_1__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "alpha" << '.' << j_1__ + 1;
+            param_names__.push_back(param_name_stream__.str());
+        }
         size_t ks_j_1_max__ = (T - 1);
         for (size_t j_1__ = 0; j_1__ < ks_j_1_max__; ++j_1__) {
             param_name_stream__.str(std::string());
