@@ -2,12 +2,27 @@
 
 #include <Rcpp.h>
 using namespace Rcpp ;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:src-i386/stanExports_M6model.cc
+#include "stanExports_M6model.h"
+
+RCPP_MODULE(stan_fit4M6model_mod) {
+
+
+    class_<rstan::stan_fit<stan_model, boost::random::ecuyer1988> >("model_M6model")
+=======
+>>>>>>> 29d36229bb3e961413905c03b5e6fe3d187d11c1
 #include "stanExports_RHmodel.h"
 
 RCPP_MODULE(stan_fit4RHmodel_mod) {
 
 
     class_<rstan::stan_fit<stan_model, boost::random::ecuyer1988> >("model_RHmodel")
+<<<<<<< HEAD
+=======
+>>>>>>> 29d36229bb3e961413905c03b5e6fe3d187d11c1:src/stanExports_RHmodel.cc
+>>>>>>> 29d36229bb3e961413905c03b5e6fe3d187d11c1
 
     .constructor<SEXP,SEXP,SEXP>()
 

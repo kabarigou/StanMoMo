@@ -3,6 +3,7 @@
 export(apc_stan)
 export(cbd_stan)
 export(lc_stan)
+export(load_HMD_data)
 export(m6_stan)
 export(mortality_weights)
 export(rh_stan)
