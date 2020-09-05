@@ -1,7 +1,6 @@
 # Save this file as `R/mortality_weights.R`
 
-#' Mortality Model averaging via stacking of predictive distributions, pseudo-BMA weighting and pseudo-BMA+ 
-#' weighting with the Bayesian bootstrap. Based on Yao et al. (2018) but adapted by Barigou et al. (2020) 
+#' Mortality Model averaging via stacking of predictive distributions and Pseudo-BMA weighting. Based on Yao et al. (2018) but adapted by Barigou et al. (2020) 
 #' for mortality forecasting.
 #' 
 #' 
@@ -26,6 +25,5 @@ mortality_weights <- function(X) {
   
   stacking <- loo::stacking_weights(lpd_point)
   pseudobma <- loo::pseudobma_weights(lpd_point, BB=FALSE)
-  pseudobmaplus <- loo::pseudobma_weights(lpd_point) # default is BB=TRUE
-  return(round(cbind(stacking, pseudobma, pseudobmaplus), 3))
+  return(round(cbind(stacking, pseudobma), 3))
 }
