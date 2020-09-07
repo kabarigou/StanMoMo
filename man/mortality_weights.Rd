@@ -2,8 +2,7 @@
 % Please edit documentation in R/mortality_weights.R
 \name{mortality_weights}
 \alias{mortality_weights}
-\title{Mortality Model averaging via stacking of predictive distributions, pseudo-BMA weighting and pseudo-BMA+
-weighting with the Bayesian bootstrap. Based on Yao et al. (2018) but adapted by Barigou et al. (2020)
+\title{Mortality Model averaging via stacking of predictive distributions and Pseudo-BMA weighting. Based on Yao et al. (2018) but adapted by Barigou et al. (2020)
 for mortality forecasting.}
 \usage{
 mortality_weights(X)
@@ -15,7 +14,6 @@ mortality_weights(X)
 A matrix containing one weight for each model and each approach.
 }
 \description{
-Mortality Model averaging via stacking of predictive distributions, pseudo-BMA weighting and pseudo-BMA+
-weighting with the Bayesian bootstrap. Based on Yao et al. (2018) but adapted by Barigou et al. (2020)
+Mortality Model averaging via stacking of predictive distributions and Pseudo-BMA weighting. Based on Yao et al. (2018) but adapted by Barigou et al. (2020)
 for mortality forecasting.
 }

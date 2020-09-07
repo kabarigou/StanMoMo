@@ -26,6 +26,6 @@ or a vector
 load_HMD_data: a function to download mortality data from the HMD website
 }
 \examples{
-death_fra <- retrieve_HMD_data(CNTRY, 'Deaths_1x1', 1970:2017, 50:90, "Male")
-exposure_fra <- retrieve_HMD_data(CNTRY, 'Exposures_1x1', 1970:2017, 50:90, "Male")
+death_fra <- load_HMD_data('FRATNP', 'Deaths_1x1', 1970:2017, 50:90, "Male")
+exposure_fra <- load_HMD_data('FRATNP', 'Exposures_1x1', 1970:2017, 50:90, "Male")
 }
