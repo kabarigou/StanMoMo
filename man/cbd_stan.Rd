@@ -15,19 +15,19 @@ cbd_stan(
 )
 }
 \arguments{
-\item{death}{Matrix of deaths}
+\item{death}{Matrix of deaths.}
 
-\item{exposure}{Matrix of exposures}
+\item{exposure}{Matrix of exposures.}
 
-\item{age}{Vector of ages}
+\item{age}{Vector of ages.}
 
-\item{forecast}{Number of years to forecast}
+\item{forecast}{Number of years to forecast.}
 
-\item{validation}{Number of years for validation}
+\item{validation}{Number of years for validation.}
 
 \item{family}{specifies the random component of the mortality model. \code{"Poisson"} assumes a
 Poisson model with log link and \code{"nb"} assumes a negative-binomial model
-with log link and overdispersion parameter}
+with log link and overdispersion parameter \eqn{\phi}.}
 
 \item{...}{Arguments passed to \code{rstan::sampling} (e.g. iter, chains).}
 }
@@ -35,5 +35,44 @@ with log link and overdispersion parameter}
 An object of class \code{stanfit} returned by \code{rstan::sampling}
 }
 \description{
-Bayesian Cairns-Blake-Dowd (CBD) model with Stan
+Fit and Forecast Bayesian CBD model. The model can be fitted with a Poisson or
+Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
+predicted death rates and log-likehoods.
+}
+\details{
+The created model is either a log-Poisson or a log-Negative-Binomial version of
+the CBD model:
+\deqn{D_{x,t} \sim \mathcal{P}(\mu_{x,t} e_{x,t})}
+or
+\deqn{D_{x,t}\sim NB\left(\mu_{x,t} e_{x,t},\phi\right)}
+with
+\deqn{\log \mu_{xt} = \kappa_t^{(1)} + (x-\bar{x})\kappa_t^{(2)},}
+where \eqn{\bar{x}} is the average age in the data.
+
+For the period terms, we consider a multivariate first order autoregressive process (AR(1)) with linear trend:
+\deqn{\bm{\kappa}_{t}=\bm{c}+\bm{\delta}t+\rho \bm{\kappa}_{t-1}+\boldsymbol{\epsilon}_{t}^{\kappa},\quad \bm{\kappa}_{t}=\left(\begin{array}{c}\kappa_{t}^{(1)} \\\kappa_{t}^{(2)}\end{array}\right), \quad \boldsymbol{\epsilon}_{t}^{\kappa} \sim N\left(\mathbf{0}, \Sigma\right),}
+with normal priors: \eqn{\bm{c},\bm{\delta},\rho \sim N(0,10)}.
+
+The variance-covariance matrix of the error term is defined by
+\deqn{\boldsymbol{\Sigma}=\left(\begin{array}{cc}\sigma_1^{2} & \rho_{\Sigma} \sigma_1 \sigma_2 \\\rho_{\Sigma} \sigma_1 \sigma_{Y} & \sigma_2^{2}\end{array}\right)}
+where the variance coefficients have independent exponential priors: \eqn{\sigma_1, \sigma_2 \sim Exp(0.1)}
+and the correlation parameter has a uniform prior: \eqn{\rho_{\Sigma} \sim U\left[-1,1\right]}.
+As for the other models, the overdisperion parameter has a prior distribution given by
+\deqn{\frac{1}{\phi} \sim Half-N(0,100).}
+}
+\examples{
+
+\dontrun{
+#10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-NB model
+ages.fit<-50:90
+years.fit<-1970:2017
+deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
+exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
+fitCBD=cbd_stan(death = deathFR,exposure=exposureFR, age=ages.fit, forecast = 10, family = "nb")
+}
+}
+\references{
+Cairns, A. J. G., Blake, D., & Dowd, K. (2006). A Two-Factor Model for
+Stochastic Mortality with Parameter Uncertainty: Theory and Calibration.
+Journal of Risk and Insurance, 73(4), 687-718.
 }

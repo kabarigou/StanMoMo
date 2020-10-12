@@ -1,15 +1,13 @@
 Package: StanMoMo
 Title: Bayesian Mortality Modelling with Stan
 Version: 1.0
-Authors@R: c(
-    person(given = "Karim", family = "Barigou", role = c("aut", "cre"), 
-    email = "karim.barigou@univ-lyon1.fr"),
-    person(given = "Pierre-O", family = "Goffard"),
-    person(given = "Yahia", family = "Salhi"),
-    person(given = "Stephane", family = "Loisel"))
-Description: This package performs Bayesian inference for popular mortality models and provide tools to perform Bayesian model averaging.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+Authors@R: c(person(given = "Karim", family = "Barigou", role = c("aut", "cre"), email = "karim.barigou@univ-lyon1.fr"),
+    person(given = "Pierre-Olivier", family = "Goffard",role="aut"))
+Description: The StanMoMo package performs Bayesian Mortality Modeling with Stan for a variety of popular mortality models. The current package supports the Lee-Carter (LC) model, 
+    the Renshaw-Haberman model (LC with cohort effect), the Age-Period-Cohort (APC) model, the Cairns-Blake-Dowd (CBD) model and the M6 model (CBD with cohort effect). By a simple call, 
+    the user inputs deaths and exposures and the package outputs the MCMC simulations for each parameter, the log likelihoods and predictions. Moreover, the package includes tools for model selection and 
+    Bayesian model averaging by future-out cross-validation.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -24,8 +22,9 @@ Imports:
     rstan (>= 2.18.1),
     rstantools (>= 2.0.0),
     tidyverse,
-    httr, 
-    matrixcalc
+    dplyr,
+    tibble,
+    httr
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
@@ -33,3 +32,7 @@ LinkingTo:
     rstan (>= 2.18.1),
     StanHeaders (>= 2.18.0)
 SystemRequirements: GNU make
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

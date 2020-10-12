@@ -1,0 +1,37 @@
+---
+title: "Bayesian Model Averaging"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bayesian Model Averaging}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(StanMoMo)
+```
+
+# Bayesian model averaging
+
+The package also includes the `mortality_weights` function which performs Bayesian model averaging via future-out cross-validation. The weights are obtained by stacking of predictive distributions and Pseudo-BMA weighting, based on Yao et al. (2018) but adapted for mortality forecasting in our paper. Roughly speaking, the last $K$ years of data are left out and the weights search for the optimal mortality model on these last $K$ years. For $K=10$ and 20 years of prediction, the weights can be obtained via
+```{r,eval=FALSE}
+fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 20, validation=10,family = "poisson",cores=4)
+fitRH=rh_stan(death = deathFR,exposure=exposureFR, forecast = 20, validation=10,family = "poisson",cores=4)
+fitAPC=apc_stan(death = deathFR,exposure=exposureFR, forecast = 20, validation=10,family = "poisson",cores=4)
+fitCBD=cbd_stan(death = deathFR,exposure=exposureFR, age=ages.fit, forecast=10,validation=10,family = "poisson",cores=4)
+fitM6=m6_stan(death = deathFR,exposure=exposureFR, age=ages.fit,forecast = 20, validation=10,family = "poisson",cores=4)
+model_weights<-mortality_weights(list(fitLC,fitRH,fitAPC,fitCBD,fitM6))
+```
+
+
+
+
+
+

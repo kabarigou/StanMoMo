@@ -14,23 +14,61 @@ lc_stan(
 )
 }
 \arguments{
-\item{death}{Matrix of deaths}
+\item{death}{Matrix of deaths.}
 
-\item{exposure}{Matrix of exposures}
+\item{exposure}{Matrix of exposures.}
 
-\item{forecast}{Number of years to forecast}
+\item{forecast}{Number of years to forecast.}
 
-\item{validation}{Number of years for validation}
+\item{validation}{Number of years for validation.}
 
 \item{family}{specifies the random component of the mortality model. \code{"Poisson"} assumes a
 Poisson model with log link and \code{"nb"} assumes a negative-binomial model
-with log link and overdispersion parameter}
+with log link and overdispersion parameter \eqn{\phi}.}
 
 \item{...}{Arguments passed to \code{rstan::sampling} (e.g. iter, chains).}
 }
 \value{
-An object of class \code{stanfit} returned by \code{rstan::sampling}
+An object of class \code{stanfit} returned by \code{rstan::sampling}.
 }
 \description{
-Bayesian Lee-Carter with Stan
+Fit and Forecast Bayesian Lee-Carter model. The model can be fitted with a Poisson or
+Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
+predicted death rates and log-likehoods.
+}
+\details{
+The created model is either a log-Poisson or a log-Negative-Binomial version of
+the Lee-Carter model:
+\deqn{D_{x,t} \sim \mathcal{P}(\mu_{x,t} e_{x,t})}
+or
+\deqn{D_{x,t}\sim NB\left(\mu_{x,t} e_{x,t},\phi\right)}
+with
+\deqn{\log \mu_{xt} = \alpha_x + \beta_x\kappa_t.}
+
+To ensure the identifiability of th model, we impose
+\deqn{\sum_x\beta_x = 1,\kappa_1=0.}
+
+For the priors, the model chooses wide priors:
+\deqn{\alpha_x \sim N(0,100),\beta_{x} \sim Dir(1,\dots,1),\frac{1}{\phi} \sim Half-N(0,100).}
+
+For the period term, we consider a first order autoregressive process (AR(1)) with linear trend:
+\deqn{\kappa_{t}=c+\delta t+\rho\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
+with \eqn{c,\delta,\rho \sim N(0,10),\sigma \sim Exp(0.1)}. We note that the random walk with drift appears as a special case.
+By including a linear trend, the model allows for non-linear patterns in the dynamics of \eqn{\kappa_{t}}.
+}
+\examples{
+
+\dontrun{
+#10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
+ages.fit<-50:90
+years.fit<-1970:2017
+deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
+exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
+fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson")
+}
+
+}
+\references{
+Lee, R. D., & Carter, L. R. (1992). Modeling and forecasting U.S. mortality.
+Journal of the American Statistical Association, 87(419), 659-671.
 }
