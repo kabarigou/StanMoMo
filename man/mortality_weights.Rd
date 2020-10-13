@@ -32,10 +32,11 @@ Similar to Yao et al. (2018), we recommend stacking for averaging predictive dis
 as pseudo-BMA tends to select only one model.
 }
 \examples{
+
 \dontrun{
 #10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
 #where the 10 last years are held out for validation. We search for the model weights between
-the Lee-Carter model and the RH model (Lee-Carter with cohort effect).
+#the Lee-Carter model and the RH model (Lee-Carter with cohort effect).
 ages.fit<-50:90
 years.fit<-1970:2017
 deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]

@@ -16,7 +16,7 @@ sim_death_lc <- function(a, b, k, phi, exposure){
 
   gxt_lc <- exp(sapply(k, function(kt) a + b * kt)) * exposure[, 1:length(k)]
   return(apply(gxt_lc, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
-         )
+  )
 }
 
 #' sim_death_apc simulate death counts from Age-Period-Cohort mortality model
@@ -47,6 +47,22 @@ sim_death_apc <- function(a, k, g, phi, years, ages, exposure){
   )
 }
 
+#' sim_mortality_data simulate mortality data from various models
+#'
+#' @param a vector of age component
+#' @param k vector of time component
+#' @param b vector of age/time component
+#' @param g vector of cohort component
+#' @param phi dispersioon parameter
+#' @param years vector of calendar year
+#' @param ages vector of ages
+#' @param exposure matrix of exposure
+#' @param mortality_model name of the mortality model that we simulate from
+#'
+#' @return
+#' @export
+#'
+#' @examples
 sim_mortality_data <- function(a, k, b, g, phi, years, ages, exposure, mortality_model){
   if(mortality_model == "lc"){
     res <- sim_death_lc(a, b, k, phi, exposure)
