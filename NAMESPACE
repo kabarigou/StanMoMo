@@ -2,6 +2,7 @@
 
 export(apc_stan)
 export(cbd_stan)
+export(extract_map)
 export(lc_stan)
 export(load_HMD_data)
 export(m6_stan)
