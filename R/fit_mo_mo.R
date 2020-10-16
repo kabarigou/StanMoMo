@@ -1,5 +1,41 @@
 # Save this file as `R/fit_mo_mo.R`
 
+#' fit_mo_mo return the posterior samples as stan object of the fitted mortality model
+#'
+#' @param mortality_model name of teh mortality model
+#' @param death death matrix
+#' @param exposure exposure matrix
+#' @param ages vector of ages
+#' @param validation size of the validation set
+#' @param forecast number of calendar year to be forecast
+#' @param family underlying count distribution
+#' @param chains number of Markov chains
+#' @param cores number of cores used
+#'
+#' @return a stanfit object
+#' @export
+#'
+#' @examples
+fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposureGBR, ages = 50:90, validation = 0, forecast = 1, family = "nb",
+                      chains=1, cores=4){
+
+  if(mortality_model == "lc"){
+
+    res <- lc_stan(death = death, exposure=exposure, validation=validation, forecast = forecast, family = family ,chains=chains,cores=cores)
+
+  }else if(mortality_model == "apc"){
+
+    res <- apc_stan(death = death,exposure=exposure, validation=validation,forecast = forecast, family = family,chains=chains,cores=cores)
+
+  }else if(mortality_model == "cbd"){
+
+    res <- cbd_stan(death = death,exposure=exposure, age=ages,
+                    validation = validation, forecast = forecast, family = family,chains=chains,cores=cores)
+
+  }
+  return(res)
+}
+
 #' extract_map: function to get the mean a posteriori of the parameters based on a stanfit object
 #'
 #' @param stan_fit a stanfit object
