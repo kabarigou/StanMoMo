@@ -33,9 +33,14 @@ fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposu
                     validation = validation, forecast = forecast, family = family,chains=chains,cores=cores)
 
   }else if(mortality_model == "rh"){
+
     res <- rh_stan(death = death, exposure=exposure, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
+
   }else if(mortality_model == "m6"){
+
     res <- m6_stan(death = death, exposure=exposure,  age=ages, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
+
+
   }
   return(res)
 }
