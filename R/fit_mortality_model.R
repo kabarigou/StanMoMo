@@ -1,4 +1,4 @@
-# Save this file as `R/fit_mo_mo.R`
+# Save this file as `R/fit_mortality_model.R`
 
 #' fit_mo_mo return the posterior samples as stan object of the fitted mortality model
 #'

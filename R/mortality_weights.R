@@ -83,8 +83,8 @@ mortality_weights <- function(X) {
 #' function(mortality_model) stan_mod(mortality_model, validation, forecast, family, death, exposure, ages))
 #' names(stan_models) <- mortality_models
 #'
-stan_mod <- function(mortality_model, validation, forecast, family, death, exposure, age){
-  setwd(getwd())
+stan_mod <- function(mortality_model, validation=0, forecast, family = "nb", death, exposure, age){
+
   if(mortality_model %in% c('lc', 'rh', 'apc')){
     Tval<-0
     if (validation !=0) Tval=validation
@@ -185,9 +185,10 @@ stan_mod <- function(mortality_model, validation, forecast, family, death, expos
 compute_weights_BMA <- function(stan_fits, stan_models, mortality_models){
   names(stan_fits) <- mortality_models
   names(stan_models) <- mortality_models
-  log_marg <- sapply(mortality_models, function(mortality_model) bridge_sampler(stan_fits[[mortality_model]],
+
+  log_marg <- sapply(mortality_models, function(mortality_model) bridgesampling::bridge_sampler(stan_fits[[mortality_model]],
                                                                                 stan_models[[mortality_model]],silent = TRUE)$logml)
-  res <- data.frame(BMA = exp(log_marg - max(log_marg))/ sum(exp(log_marg - max(log_marg))), fitted_model = mortality_models)
+  res <- data.frame(BMA = exp(log_marg - max(log_marg, na.rm = TRUE))/ sum(exp(log_marg - max(log_marg, na.rm = T)), na.rm = TRUE), fitted_model = mortality_models)
 
   rownames(res)<-NULL
   return(res)
