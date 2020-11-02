@@ -11,39 +11,72 @@
 #' @param family underlying count distribution
 #' @param chains number of Markov chains
 #' @param cores number of cores used
+#' @param log_marg Do we compute the marginal likelihood or not?
 #'
 #' @return a stanfit object
 #' @export
 #'
 #' @examples
 fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposureGBR, ages = 50:90, validation = 0, forecast = 1, family = "nb",
-                      chains=1, cores=4){
+                      chains=1, cores=4, log_marg = F, iter = 2000){
+  if(!log_marg){
+    if(mortality_model == "lc"){
 
-  if(mortality_model == "lc"){
+      res <- lc_stan(death = death, exposure=exposure, validation=validation, forecast = forecast, family = family ,chains=chains,cores=cores)
 
-    res <- lc_stan(death = death, exposure=exposure, validation=validation, forecast = forecast, family = family ,chains=chains,cores=cores)
+    }else if(mortality_model == "apc"){
 
-  }else if(mortality_model == "apc"){
+      res <- apc_stan(death = death,exposure=exposure, validation=validation,forecast = forecast, family = family,chains=chains,cores=cores)
 
-    res <- apc_stan(death = death,exposure=exposure, validation=validation,forecast = forecast, family = family,chains=chains,cores=cores)
+    }else if(mortality_model == "cbd"){
 
-  }else if(mortality_model == "cbd"){
+      res <- cbd_stan(death = death,exposure=exposure, age=ages,
+                      validation = validation, forecast = forecast, family = family,chains=chains,cores=cores)
 
-    res <- cbd_stan(death = death,exposure=exposure, age=ages,
-                    validation = validation, forecast = forecast, family = family,chains=chains,cores=cores)
+    }else if(mortality_model == "rh"){
 
-  }else if(mortality_model == "rh"){
+      res <- rh_stan(death = death, exposure=exposure, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
 
-    res <- rh_stan(death = death, exposure=exposure, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
+    }else if(mortality_model == "m6"){
 
-  }else if(mortality_model == "m6"){
-
-    res <- m6_stan(death = death, exposure=exposure,  age=ages, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
+      res <- m6_stan(death = death, exposure=exposure,  age=ages, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
 
 
+    }
+    return(res)
+
+  }else{
+    if(mortality_model == "lc"){
+
+      res <- lc_stan(death = death, exposure=exposure, validation=validation, forecast = forecast, family = family ,chains=chains,cores=cores, iter = iter)
+      logml <- bridgesampling::bridge_sampler(res, silent = TRUE)$logml
+    }else if(mortality_model == "apc"){
+
+      res <- apc_stan(death = death,exposure=exposure, validation=validation,forecast = forecast, family = family,chains=chains,cores=cores, iter = iter)
+      logml <- bridgesampling::bridge_sampler(res, silent = TRUE)$logml
+    }else if(mortality_model == "cbd"){
+
+      res <- cbd_stan(death = death,exposure=exposure, age=ages,
+                      validation = validation, forecast = forecast, family = family,chains=chains,cores=cores, iter = iter)
+      logml <- bridgesampling::bridge_sampler(res, silent = TRUE)$logml
+
+    }else if(mortality_model == "rh"){
+
+      res <- rh_stan(death = death, exposure=exposure, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores, iter = iter)
+      logml <- bridgesampling::bridge_sampler(res, silent = TRUE)$logml
+
+    }else if(mortality_model == "m6"){
+
+      res <- m6_stan(death = death, exposure=exposure,  age=ages, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores, iter = iter)
+      logml <- bridgesampling::bridge_sampler(res, silent = TRUE)$logml
+
+
+    }
+    return(list(stan_output = res, logml = logml))
   }
-  return(res)
 }
+
+
 
 #' extract_map: function to get the mean a posteriori of the parameters based on a stanfit object
 #'
