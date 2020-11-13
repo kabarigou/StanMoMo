@@ -6,46 +6,45 @@ data {
   int d[J*T];                          // vector of deaths
   vector[J* T] e;                      // vector of exposures
   int<lower = 1> Tfor;                  // number of forecast years
-  int<lower = 0> Tval;                  // number of forecast years
-  int dval[J*Tval];
-  vector[J* Tval] eval;
-  int<lower=0,upper=1> family;
-  vector[T-2] index;
+  int<lower = 0> Tval;                  // number of validation years
+  int dval[J*Tval];                     // vector of deaths for validation
+  vector[J* Tval] eval;                 // vector of exposures for validation
+  int<lower=0,upper=1> family;          // family = 0 for Poisson, 1 for NB
 }
 transformed data {
-  vector[J * T] offset = log(e);
-  vector[J * Tval] offset2 = log(eval);
-  int<lower = 1> L;
+  vector[J * T] offset = log(e);        // log exposures
+  vector[J * Tval] offset2 = log(eval);     // log exposures for validation
+  int<lower = 1> L;                     // size of prediction vector
   L=J*Tfor;
 }
 parameters {
-  real<lower=0> aux[family > 0]; // neg. binomial dispersion parameter
+  real<lower=0> aux[family > 0];       // neg. binomial inverse dispersion parameter
   vector[J] a;                          // alpha_x
   simplex[J] b;                        // beta_x, strictly positive and sums to 1
 
-  vector[3] alpha;                          
+  real c;                           // drift term
   vector[T-1] ks;                   // vector of kappa
 
-  real<lower = 0> sigma[1];            // standard deviation of the random walk
+  real<lower = 0> sigma;            // standard deviation of the random walk
 }
 transformed parameters {        // This block defines a new vector where the first component is zero, this is required for identifiability of the Lee-Carter model. Otherwise, the chains will not converge.
   vector[T] k;
-  real phi = negative_infinity();
+  real phi = negative_infinity();       // neg. binomial dispersion parameter
   k[1] = 0;
   k[2:T]=ks;
   if (family > 0) phi = inv(aux[1]);
 }
 
 model {
-  vector[J * T] mu;
+  vector[J * T] mu;           //force of mortality
   int pos = 1;
   for (t in 1:T) for (x in 1:J) {
     mu[pos] = offset[pos]+ a[x] + b[x] * k[t];      // Predictor dynamics
     pos += 1;
   }
 
-  target += normal_lpdf(ks[1]|alpha[1]+2*alpha[2],sigma[1]);
-  target += normal_lpdf(ks[2:(T-1)]|alpha[1]+alpha[2]*index+alpha[3]*ks[1:(T- 2)],sigma[1]);
+  target += normal_lpdf(ks[1]|c,sigma);
+  target += normal_lpdf(ks[2:(T-1)]|c+ks[1:(T- 2)],sigma);    // Random walk with drift prior
   
   if (family ==0){
     target += poisson_log_lpmf(d |mu);                // Poisson log model
@@ -54,22 +53,22 @@ model {
     target +=neg_binomial_2_log_lpmf (d|mu,phi);      // Negative-Binomial log model
   }
   target += normal_lpdf(a|0,10);              // Prior on alpha_x
-  target += normal_lpdf(alpha|0,sqrt(10));              // Prior on alpha_x
-  target += dirichlet_lpdf(b|rep_vector(1, J));              // Prior on alpha_x
-  target += exponential_lpdf(sigma[1] | 0.1);         // Exponential prior for sigma
-  if (family > 0) target += normal_lpdf(aux|0,10);
+  target += normal_lpdf(c|0,sqrt(10));              // Prior on drift
+  target += dirichlet_lpdf(b|rep_vector(1, J));              // Prior on beta_x
+  target += exponential_lpdf(sigma | 0.1);         // Exponential prior for sigma
+  if (family > 0) target += normal_lpdf(aux|0,1)- normal_lcdf(0 | 0, 1);
 }
 
 generated quantities {
   vector[Tfor] k_p;
-  vector[L] mufor;
-  vector[J*T] log_lik;
-  vector[J*Tval] log_lik2;
+  vector[L] mufor; // predicted death rates
+  vector[J*T] log_lik; // log likelihood on data
+  vector[J*Tval] log_lik2; // log likelihood on validation data
   int pos = 1;
   int pos2= 1;
   int pos3= 1;
-  k_p[1] = alpha[1]+alpha[2]*(T+1)+alpha[3]*k[T]+sigma[1] * normal_rng(0,1);
-  for (t in 2:Tfor) k_p[t] = alpha[1]+alpha[2]*(T+t)+alpha[3]*k_p[t - 1] + sigma[1] * normal_rng(0,1);
+  k_p[1] = c+k[T]+sigma * normal_rng(0,1);
+  for (t in 2:Tfor) k_p[t] = c+k_p[t - 1] + sigma * normal_rng(0,1);
   if (family==0){
     for (t in 1:Tfor) for (x in 1:J) {
     mufor[pos] = a[x] + b[x] * k_p[t];
@@ -108,5 +107,5 @@ generated quantities {
   }
     }
 
-  // The generated quantities block generates forecasts but also the matrices of log-likelihood that we need to compute the optimal weights
+  // The generated quantities block generates forecasts but also the matrices of log-likelihood that we need to compute the optimal weights for validation
 
