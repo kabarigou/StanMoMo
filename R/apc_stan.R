@@ -70,7 +70,6 @@ apc_stan <- function(death, exposure,forecast, validation=0, family=c("poisson",
   exposure1<-exposure
   death2<-vector('integer')
   exposure2<-vector('integer')
-  index<-seq(3,ncol(death1))
   } else {
     T<- ncol(death)-Tval
     death1<-death[,1:T]
@@ -78,7 +77,6 @@ apc_stan <- function(death, exposure,forecast, validation=0, family=c("poisson",
 
     exposure1<-exposure[,1:T]
     exposure2<-exposure[,(T+1):ncol(exposure)]
-    index<-seq(3,T)
   }
 
   family<-match.arg(family)
@@ -94,7 +92,7 @@ apc_stan <- function(death, exposure,forecast, validation=0, family=c("poisson",
        dval=as.integer(as.vector(death2)),
        eval=as.integer(as.vector(exposure2)),
        Tfor=forecast,Tval=Tval,
-       family=family,index=index)
+       family=family)
   suppressWarnings( {
     out <- rstan::sampling(stanmodels$APCmodel, data = standata, ...)
       } )

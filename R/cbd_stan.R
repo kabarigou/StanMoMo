@@ -66,7 +66,6 @@ cbd_stan <- function(death, exposure,age,forecast, validation=0, family=c("poiss
   exposure1<-exposure
   death2<-vector('integer')
   exposure2<-vector('integer')
-  index<-seq(2,ncol(death1))
   } else {
     T<- ncol(death)-Tval
     death1<-death[,1:T]
@@ -74,7 +73,6 @@ cbd_stan <- function(death, exposure,age,forecast, validation=0, family=c("poiss
 
     exposure1<-exposure[,1:T]
     exposure2<-exposure[,(T+1):ncol(exposure)]
-    index<-seq(2,T)
   }
 
   family<-match.arg(family)
@@ -91,7 +89,7 @@ cbd_stan <- function(death, exposure,age,forecast, validation=0, family=c("poiss
        dval=as.integer(as.vector(death2)),
        eval=as.integer(as.vector(exposure2)),
        Tfor=forecast,Tval=Tval,
-       family=family,index=index)
+       family=family)
   suppressWarnings( {
     out <- rstan::sampling(stanmodels$CBDmodel, data = standata, ...)
       } )
