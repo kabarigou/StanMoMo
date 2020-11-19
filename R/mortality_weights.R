@@ -65,11 +65,9 @@ mortality_weights <- function(X) {
   return(round(cbind(stacking, pseudobma), 3))
 }
 
-
-#' compute_weights_BMA: compute the model evidence via bridge sampling
+#' compute_weights_BMA: compute the model evidence via bridge sampling (via the harmonic mean estimator if bridge sampling fails)
 #'
-#' @param stan_fits  list of Stan model fits
-#' @param stan_models  list of Stan model
+#' @param stan_fits  list of Stan model fits where the marginal likelihood was computed via bridge sampling
 #' @param mortality_models vector of mortality models names
 #'
 #' @return data frame with model evidence for BMA
@@ -78,14 +76,14 @@ mortality_weights <- function(X) {
 #' @examples
 #'
 #'
-compute_weights_BMA <- function(stan_fits, stan_models, mortality_models){
+compute_weights_BMA <- function(stan_fits, mortality_models){
   names(stan_fits) <- mortality_models
-  names(stan_models) <- mortality_models
-
-  log_marg <- sapply(mortality_models, function(mortality_model) bridgesampling::bridge_sampler(stan_fits[[mortality_model]],
-                                                                                stan_models[[mortality_model]],silent = TRUE)$logml)
+  log_marg <- sapply(mortality_models, function(mortality_model) stan_fits[[mortality_model]]$logml)
+  if(any(is.na(log_marg))){
+    log_lik_list <- sapply(mortality_models, function(mortality_model) rowSums(loo::extract_log_lik(stan_fits[[mortality_model]]$stan_output)))
+    log_marg <- sapply(mortality_models, function(mortality_model) length(log_lik_list[,mortality_model])-log_sum_exp(-log_lik_list[,mortality_model]))
+  }
   res <- data.frame(BMA = exp(log_marg - max(log_marg, na.rm = TRUE))/ sum(exp(log_marg - max(log_marg, na.rm = T)), na.rm = TRUE), fitted_model = mortality_models)
-
   rownames(res)<-NULL
   return(res)
 }
