@@ -65,6 +65,8 @@ mortality_weights <- function(X) {
   return(round(cbind(stacking, pseudobma), 3))
 }
 
+
+
 #' compute_weights_BMA: compute the model evidence via bridge sampling (via the harmonic mean estimator if bridge sampling fails)
 #'
 #' @param stan_fits  list of Stan model fits where the marginal likelihood was computed via bridge sampling
@@ -79,6 +81,7 @@ mortality_weights <- function(X) {
 compute_weights_BMA <- function(stan_fits, mortality_models){
   names(stan_fits) <- mortality_models
   log_marg <- sapply(mortality_models, function(mortality_model) stan_fits[[mortality_model]]$logml)
+  log_sum_exp <- function(u) max(u)+log(sum(exp(u-max(u))))
   if(any(is.na(log_marg))){
     log_lik_list <- sapply(mortality_models, function(mortality_model) rowSums(loo::extract_log_lik(stan_fits[[mortality_model]]$stan_output)))
     log_marg <- sapply(mortality_models, function(mortality_model) length(log_lik_list[,mortality_model])-log_sum_exp(-log_lik_list[,mortality_model]))
