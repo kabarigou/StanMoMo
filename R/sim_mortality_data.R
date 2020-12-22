@@ -121,7 +121,7 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
   gxt_m6 <- 0 * exposure[,1:length(k)]
   for(i in 1:length(ages)){
     for(j in 1:length(k)){
-      gxt_apc[i,j] <- exp(k[j] +(ages[i]-mean(ages))* k2[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
+      gxt_m6[i,j] <- exp(k[j] +(ages[i]-mean(ages))* k2[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
     }
   }
   return(apply(gxt_m6, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
