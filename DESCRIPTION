@@ -1,6 +1,6 @@
 Package: StanMoMo
 Title: Bayesian Mortality Modelling with Stan
-Version: 1.0
+Version: 0.0.0.9001
 Authors@R: c(person(given = "Karim", family = "Barigou", role = c("aut", "cre"), email = "karim.barigou@univ-lyon1.fr"),
     person(given = "Pierre-Olivier", family = "Goffard",role="aut"))
 Description: The StanMoMo package performs Bayesian Mortality Modeling with Stan for a variety of popular mortality models. The current package supports the Lee-Carter (LC) model, 
