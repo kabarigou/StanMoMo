@@ -65,13 +65,13 @@ sim_death_rh <- function(a, b,k, g, phi, years, ages, exposure){
 
   cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
 
-  gxt_apc <- 0 * exposure[,1:length(k)]
+  gxt_rh <- 0 * exposure[,1:length(k)]
   for(i in 1:length(a)){
     for(j in 1:length(k)){
-      gxt_apc[i,j] <- exp(a[i] + b[i]*k[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
+      gxt_rh[i,j] <- exp(a[i] + b[i]*k[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
     }
   }
-  return(apply(gxt_apc, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_rh, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 
@@ -127,6 +127,40 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
   return(apply(gxt_m6, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
+
+#' sim_death_mix_cbd_rh simulates death counts from a hybrid model that average the mortality
+#' rates from cbd and rh model
+#'
+#' @param params_cbd named lsit that contains the parameters of the cbd model
+#' @param params_rh named lsit that contains the parameters of the rh model
+#' @param years vector of calendar year
+#' @param ages vector of ages
+#' @param exposure matrix of exposure data
+#' @param q mixing parameter (0 <- rh, 1 <- cbd)
+#'
+#' @return matrix of death count
+#' @export
+#'
+#' @examples
+sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q){
+
+  cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
+  gxt_rh <- 0 * exposure[,1:length(params_cbd$k)]
+  gxt_cbd <- 0 * exposure[,1:length(params_cbd$k)]
+  gxt_mix <- 0 * exposure[,1:length(params_cbd$k)]
+  for(i in 1:length(ages)){
+    for(j in 1:length(params_cbd$k)){
+      gxt_cbd[i,j] <- exp(params_cbd$k[j] +(ages[i]-mean(ages))*params_cbd$k2[j]) * exposure[i,j]
+      gxt_rh[i,j] <- exp(params_rh$a[i] + params_rh$b[i] * params_rh$k[j] +
+                           params_rh$g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
+      gxt_mix[i,j] <- q * gxt_cbd[i,j] + (1 - q) * gxt_rh[i,j]
+    }
+  }
+  phi <- q * params_cbd$phi + (1 - q) * params_rh$phi
+  return(apply(gxt_mix, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  )
+}
+
 
 
 #' sim_mortality_data simulate mortality data from various models

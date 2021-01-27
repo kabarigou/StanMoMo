@@ -4,12 +4,14 @@
 \alias{sim_mortality_data}
 \title{sim_mortality_data simulate mortality data from various models}
 \usage{
-sim_mortality_data(a, k, b, g, phi, years, ages, exposure, mortality_model)
+sim_mortality_data(a, k, k2, b, g, phi, years, ages, exposure, mortality_model)
 }
 \arguments{
 \item{a}{vector of age component}
 
-\item{k}{vector of time component}
+\item{k}{first vector of time component}
+
+\item{k2}{second vector of time component}
 
 \item{b}{vector of age/time component}
 
