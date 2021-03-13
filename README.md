@@ -1,7 +1,7 @@
 StanMoMo
 ================
 
-The `StanMoMo` package performs Bayesian **Mo**rtality **Mo**deling with **Stan**, which is a C++ package for performing full Bayesian inference (see <https://mc-stan.org/>). The current package supports a variety of popular mortality models: the Lee-Carter (LC) model, the Renshaw-Haberman model (LC with cohort effect), the Age-Period-Cohort (APC) model, the Cairns-Blake-Dowd (CBD) model and the M6 model (CBD with cohort effect). By a simple function call, the user obtains the MCMC simulations for each parameter, the log likelihoods and death rates predictions. Moreover, the package includes tools for model selection and Bayesian model averaging by future-out cross-validation.
+The `StanMoMo` package performs Bayesian **Mo**rtality **Mo**deling with **Stan**, which is a C++ package for performing full Bayesian inference (see <https://mc-stan.org/>). The current package supports a variety of popular mortality models: the Lee-Carter (LC) model, the Renshaw-Haberman model (LC with cohort effect), the Age-Period-Cohort (APC) model, the Cairns-Blake-Dowd (CBD) model and the M6 model (CBD with cohort effect). By a simple function call, the user obtains the MCMC simulations for each parameter, the log likelihoods and death rates predictions. Moreover, the package includes tools for model selection and Bayesian model averaging by leave-future-out validation.
 
 Installation
 ------------
