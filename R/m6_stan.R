@@ -19,16 +19,16 @@
 #' \deqn{\gamma_1=0,\gamma_C=0,}
 #' where \eqn{C} represents the most recent cohort in the data.
 #'
-#' For the period terms, we consider a multivariate first order autoregressive process (AR(1)) with linear trend:
-#' \deqn{\bm{\kappa}_{t}=\bm{c}+\bm{\delta}t+\rho \bm{\kappa}_{t-1}+\boldsymbol{\epsilon}_{t}^{\kappa},\quad \bm{\kappa}_{t}=\left(\begin{array}{c}\kappa_{t}^{(1)} \\\kappa_{t}^{(2)}\end{array}\right), \quad \boldsymbol{\epsilon}_{t}^{\kappa} \sim N\left(\mathbf{0}, \Sigma\right),}
-#' with normal priors: \eqn{\bm{c},\bm{\delta},\rho \sim N(0,10)}.
+#' For the period terms, we consider a multivariate random walk with drift:
+#' \deqn{\boldsymbol{\kappa}_{t}=\boldsymbol{c}+ \boldsymbol{\kappa}_{t-1}+\boldsymbol{\epsilon}_{t}^{\kappa},\quad \boldsymbol{\kappa}_{t}=\left(\begin{array}{c}\kappa_{t}^{(1)} \\\kappa_{t}^{(2)}\end{array}\right), \quad \boldsymbol{\epsilon}_{t}^{\kappa} \sim N\left(\mathbf{0}, \Sigma\right),}
+#' with normal priors: \eqn{\boldsymbol{c} \sim N(0,10)}.
 #'
 #' The variance-covariance matrix of the error term is defined by
 #' \deqn{\boldsymbol{\Sigma}=\left(\begin{array}{cc}\sigma_1^{2} & \rho_{\Sigma} \sigma_1 \sigma_2 \\\rho_{\Sigma} \sigma_1 \sigma_{Y} & \sigma_2^{2}\end{array}\right)}
 #' where the variance coefficients have independent exponential priors: \eqn{\sigma_1, \sigma_2 \sim Exp(0.1)}
 #' and the correlation parameter has a uniform prior: \eqn{\rho_{\Sigma} \sim U\left[-1,1\right]}.
 #' As for the other models, the overdisperion parameter has a prior distribution given by
-#' \deqn{\frac{1}{\phi} \sim Half-N(0,100).}
+#' \deqn{\frac{1}{\phi} \sim Half-N(0,1).}
 #'
 #' For the cohort term, we consider a second order autoregressive process (AR(2)):
 #' \deqn{\gamma_{c}=\psi_1 \gamma_{c-1}+\psi_2 \gamma_{c-2}+\epsilon^{\gamma}_{t},\quad \epsilon^{\gamma}_{t}\sim N(0,\sigma_{\gamma}).}
