@@ -1,6 +1,6 @@
 # Save this file as `R/sim_mortality_data.R`
 
-#' sim_death_lc simulates death counts from the Lee-Carter mortality model
+#' Simulation of death counts from the Lee-Carter mortality model
 #'
 #' @param a vector of age component
 #' @param b vector of age/year component
@@ -18,7 +18,7 @@ sim_death_lc <- function(a, b, k, phi, exposure){
   )
 }
 
-#' sim_death_apc simulates death counts from the Age-Period-Cohort mortality model
+#' Simulation of death counts from the Age-Period-Cohort mortality model
 #'
 #' @param a vector of age component
 #' @param k vector of period component
@@ -45,7 +45,7 @@ sim_death_apc <- function(a, k, g, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_rh simulates death counts from the Renshaw-Haberman mortality model
+#' Simulation of death counts from the Renshaw-Haberman mortality model
 #'
 #' @param a vector of age component
 #' @param k vector of period component
@@ -72,7 +72,7 @@ sim_death_rh <- function(a, b,k, g, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_cbd simulates death counts from the CBD model
+#' Simulation of death counts from the CBD model
 #'
 #' @param k first vector of period component
 #' @param k2 second vector of period component
@@ -97,7 +97,7 @@ sim_death_cbd <- function(k, k2, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_m6 simulates death counts from the M6 model
+#' Simulation of death counts from the M6 model
 #'
 #' @param k first vector of period component
 #' @param k2 second vector of period component
@@ -123,7 +123,7 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_mix_cbd_rh simulates death counts from a hybrid model that averages the mortality
+#' Simulation of death counts from a hybrid model that averages the mortality
 #' rates from the cbd and rh models
 #'
 #' @param params_cbd named lsit that contains the parameters of the cbd model
@@ -157,7 +157,7 @@ sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q
 
 
 
-#' sim_mortality_data simulates mortality data from various models
+#' Simulation of mortality data from various models
 #'
 #' @param a vector of age component
 #' @param k first vector of time component
