@@ -1,0 +1,52 @@
+destination: docs
+template:
+  params:
+    bootswatch: cerulean
+
+reference:
+- title: Bayesian mortality modeling
+  desc:  Fit and forecast mortality models
+  contents:
+  - ends_with("stan")
+
+- title: Bayesian model averaging
+  contents:
+  - mortality_weights
+  - compute_weights_BMA
+
+- title: Functions for simulation study
+  desc: Useful functions to conduct simulation study
+  contents:
+  - starts_with("sim")
+
+- title: Data
+  contents:
+  - FRMaleData
+
+- title: Functions for statistical analysis
+  contents:
+  - extract_map
+  - fit_mo_mo
+
+- title: Data collection
+  contents:
+  - load_HMD_data
+
+- title: Package description
+  contents:
+  - StanMoMo-package
+
+articles:
+- title: Bayesian model averaging
+  navbar: ~
+  contents:
+  - bma
+
+navbar:
+  structure:
+    left:  [home, intro, articles, reference]
+    right: [github]
+  components:
+    articles:
+     text: Bayesian model averaging
+     href: articles/bma.html
