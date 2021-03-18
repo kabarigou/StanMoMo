@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(StanMoMo)
 ```
 
-The `StanMoMo` package includes two methods for model selection and model averaging based on future-out validation, called *stacking* and *pseudo-BMA*. First we briefly discuss why the standard Bayesian model averaging and leave-one-out cross-validation should be avoided for mortality forecasting. Second, we explain with some mathematical details how the methods of *stacking* and *pseudo-BMA* can be used for mortality forecasting based on future-out validation.
+The `StanMoMo` package includes two methods for model selection and model averaging based on leave-future-out validation, called *stacking* and *pseudo-BMA*. First we briefly discuss why the standard Bayesian model averaging and leave-one-out cross-validation should be avoided for mortality forecasting. Second, we explain with some mathematical details how the methods of *stacking* and *pseudo-BMA* can be used for mortality forecasting based on future-out validation.
 
 
 ## Introduction 
@@ -27,7 +27,7 @@ Instead of choosing one model, model averaging stems from the idea that a combin
 
 As an alternative approach, different authors considered model selection and averaging based on prediction performance on hold-out data. For instance, Yao et al. (2018) proposed Bayesian model averaging approaches based on leave-one-out cross-validation (LOO-CV). While this method is valid as a measure of fit, LOO-CV is problematic for forecasting. 
 
-Leaving out only one observation at a time will allow information from the future to influence predictions of the past (i.e., data from times $t + 1, t + 2, \dots,$ would inform predictions for time $t$). Instead, it is more appropriate to use leave-future-out validation. In our context of mortality forecasting, instead of leaving one point out, we leave the last $M$ years of data out and evaluate the prediction performance on these $M$ years. This approach proposed in Barigou et al. (2020) is further discussed in the next section.
+Indeed, leaving out only one observation at a time will allow information from the future to influence predictions of the past (i.e., data from times $t + 1, t + 2, \dots,$ would inform predictions for time $t$). Instead, it is more appropriate to use leave-future-out validation. In our context of mortality forecasting, instead of leaving one point out, we leave the last $M$ years of data out and evaluate the prediction performance on these $M$ years. This approach proposed in Barigou et al. (2021) is further discussed in the next section.
 
 ## Bayesian model averaging via stacking and pseudo-BMA
 
@@ -36,7 +36,7 @@ In order to select the weights by validation, the data is split into a training 
 - $y_{1:N}=(d_{x,t},e_{x,t})$ for all $x$ and $t=t_1,\dots,t_N$ is the data of deaths and exposures for the first $N$ years which is used to fit the model. 
 - $y_{N+1:N+M}=(d_{x,t},e_{x,t})$ for all $x$ and $t=t_{N+1},\dots,t_{N+M}$ is the data of deaths and exposures for the remaining $M$ years which is used to validate the model. 
 
-After fitting the mortality model to $y_{1:N}$, we can obtain an empirical distribution of the future death rates $\mu_{x,t}$ for $t=t_{N+1},\dots,t_{N+M}$ based on the MCMC samples obtained via Stan. The stacking approach searches for the averaged model which maximizes the likelihood of the observed number of deaths on the validation set. In simple words, if the validation length is $M=10$, the stacking approach will obtain the best forecasting averaged model for the last 10 years of data. The **stacking** maximization problem can be expressed as
+After fitting the mortality model to $y_{1:N}$, we can obtain an empirical distribution of the future death rates $\mu_{x,t}$ for $t=t_{N+1},\dots,t_{N+M}$ based on the MCMC samples obtained via Stan. The *stacking* approach searches for the averaged model which maximizes the likelihood of the observed number of deaths on the validation set. In simple words, if the validation length is $M=10$, the stacking approach will obtain the best forecasting averaged model for the last 10 years of data. The **stacking** maximization problem can be expressed as
 $$ 
 \max _{w \in \mathcal{S}_{1}^{K}} \sum_{x=x_1}^{x_n}  \sum_{j=t_{N+1}}^{t_{N+M}} \log \sum_{k=1}^{K} w_{k} p\left(d_{x,j} \mid y_{1: N},M_k\right),
 $$
@@ -46,9 +46,9 @@ where
 - $K$ is the number of models.
 - $p\left(d_{x,j} \mid y_{1: N},M_k\right)$ is the posterior predictive density which can be estimated with the MCMC samples.
 
-By construction, the averaged distribution maximizes the log likelihood of the observed number of deaths in the validation set among all distributions in the convex hull: $\mathcal{C}=\left\{\sum_{k=1}^{K} w_{k} \times p\left(\cdot \mid M_{k}\right): \sum_{k} w_{k}=1, w_{k} \geq 0\right\}$.
+By construction, the averaged distribution maximizes the log likelihood of the observed number of deaths in the validation set among all distributions in the convex hull: $$\mathcal{C}=\left\{\sum_{k=1}^{K} w_{k} \times p\left(\cdot \mid M_{k}\right): \sum_{k} w_{k}=1, w_{k} \geq 0\right\}$$
 
-As an alternative approach, we consider an AIC-type weighting using leave-future-out validation, called pseudo-BMA. This method is based on the expected log predictive density (elpd) which is an aggregate measure of fit which is in our mortality model given by
+As an alternative approach, we consider an AIC-type weighting using leave-future-out validation, called *pseudo-BMA*. This method is based on the expected log predictive density (elpd) which is an aggregate measure of fit which is in our mortality model given by
 $$
 \operatorname{elpd}^{k}= \sum_{x=x_1}^{x_n}  \sum_{j=t_{N+1}}^{t_{N+M}} \log p\left(d_{x,j} \mid y_{1: N},M_k\right).
 $$
@@ -56,7 +56,7 @@ Typically, $\operatorname{elpd}^{k}$ will be higher if the model $M_k$ better pr
 $$ 
 w_{k}=\frac{\exp \left(\operatorname{elpd}^{k}\right)}{\sum_{k=1}^{K} \exp \left(\operatorname{elpd}^{k}\right)}.
 $$
-Hence, the pseudo-BMA finds the relative weights proportional to the elpd of each model. As discussed in our paper Barigou et al. (2020), while this method provides a simple weight mechanism, stacking tends to outperfom pseudo-BMA.
+Hence, the pseudo-BMA finds the relative weights proportional to the elpd of each model. As discussed in our paper Barigou et al. (2021), while this method provides a simple weight mechanism, stacking tends to outperfom pseudo-BMA.
 
 ## Implementation
 
@@ -84,7 +84,7 @@ Fernandez, C., Ley, E., & Steel, M. F. (2001). Benchmark priors for Bayesian mod
 
 Yao, Y., Vehtari, A., Simpson, D., & Gelman, A. (2018). Using stacking to average Bayesian predictive distributions (with discussion). Bayesian Analysis, 13(3), 917-1007.
 
-Barigou K., Goffard P-O., Loisel S., Salhi Y. (2020). Bayesian Model Averaging for mortality forecasting. Working paper.
+Barigou K., Goffard P-O., Loisel S., Salhi Y. (2021). Bayesian Model Averaging for mortality forecasting. Working paper.
 
 
 

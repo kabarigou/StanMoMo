@@ -39,82 +39,91 @@ $$
 \sum_x \beta_x=1,\kappa_1=0
 $$
 
-Moreover, we assume that the period parameter follows a first order autoregressive process (AR(1)) with linear trend:
+Moreover, we assume that the period parameter follows a random walk with drift:
 $$ 
-\kappa_t \sim \mathcal{N}(c+\delta t+\rho \kappa_{t-1},\sigma)
+\kappa_t \sim \mathcal{N}(c+ \kappa_{t-1},\sigma)
 $$
-We note that the random walk with drift appears as a special case. The choice of priors for each parameter can be found in the details of each function.
+The choice of priors for each parameter can be found in the documentation of each function.
 
 ## Bayesian Estimation
 
-All the models can be estimated either under a Poisson model with argument `family = "poisson"` or under a Negative-Binomial model which includes an additional overdispersion parameter $\phi$ with argument `family="nb"`:
+All the parameters can be estimated either under a Poisson model with argument `family = "poisson"` or under a Negative-Binomial model which includes an additional overdispersion parameter $\phi$ with argument `family="nb"`:
 $$
 D_{xt} \sim Poisson (e_{xt}\mu_{xt}) \text{ or } D_{xt} \sim NB (e_{xt}\mu_{xt},\phi)
 $$
-Given the matrix of deaths `deathFR` and the matrix of central exposures `exposureFR`, the model can be estimated and forecast for the next 10 years under a Poisson model by a simple call to the `lc_stan` function: 
+Given the matrix of deaths `deathFR` and the matrix of central exposures `exposureFR`, we can estimate the parameters and obtain death rates forecasts for the next 10 years under a Poisson model by a simple call to the `lc_stan` function: 
 
 ```{r}
 fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",cores=4)
 ```
 
-By default, Stan samples four Markov chains with 2000 iterations with 1000 warmup iterations for each chain (hence, 4000 draws in total). The argument `cores=4` ensures that the four chains are sampled in parallel for time efficiency. The output is an object of class `stanfit` (cf. [the **rstan** package](http://mc-stan.org/rstan/)) which contains the posterior draws of each parameter, the posterior log likelihoods as well as the mortality forecasts.
+By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). The argument `cores=4` ensures that the four chains are sampled in parallel for time efficiency. The output is an object of class `stanfit` (cf. [the **rstan** package](https://mc-stan.org/rstan/articles/stanfit_objects.html)) which contains, among others, posterior draws, posterior summary statistics and convergence diagnostics. 
 
-The user can have access to an interface for interactive MCMC diagnostics, plots and tables helpful for analyzing posterior samples through the `shinystan` package.
+The easiest way to extract the posterior draws is to call the `rstan::extract` function which returns a list with named components corresponding to the model parameters.
+```{r,warning=FALSE}
+#Extract model parameters from the fitted model
+params<-rstan::extract(fitLC)
+print(names(params))
+```
+
+Among these parameters, we find
+
+* `a` : $\alpha_x$.
+* `b` : $\beta_x$.
+* `k` : $\kappa_t$.
+* `k_p` : forecasts of $ \kappa_t$.
+* `mufor` : forecasts of death rates $ \mu_{xt}$.
+* `log_lik` : log-likelihoods.
+* `phi` : overdispersion parameter for the NB model. 
+* `c` and `sigma` : drift and standard deviation of the random walk with drift.
+
+The user can have access to an interface for interactive MCMC diagnostics, plots and tables helpful for analyzing posterior samples through the `shinystan` package (fore more details, you can check the [shinystan web page](http://mc-stan.org/shinystan/))
 
 ```{r,eval=FALSE}
 library(shinystan)
 launch_shinystan(fitLC)
 ```
 
-We can also plot the sampling for each parameter with the use of the `bayesplot` package. For instance, the posterior uncertainty intervals for $\alpha_x$, for $x=50, 51, 52, 53$, based on the 4000 draws can be obtained via 
-```{r,warning=FALSE}
-library(bayesplot)
-posterior <- as.array(fitLC)
-mcmc_areas(posterior,pars = c("a[1]", "a[2]", "a[3]", "a[4]"),prob = 0.8, prob_outer = 0.99, point_est = "mean")
-```
 
-We can also use the output to produce fan charts depicting the uncertainty around each parameter of the model fit.
+As an illustration, we produce fan charts depicting the parameter uncertainty from the Lee-Carter model with the `fanplot` package.
+
 ```{r , echo=TRUE,warning=FALSE}
 library("fanplot")
 library("RColorBrewer")
 library(latex2exp)
-#Extract samples from the fitted model
-params<-rstan::extract(fitLC)
 #Alpha
 plot(ages.fit, colMeans(params$a), ylim=range(params$a),ylab=TeX("$\\alpha_x$"), xlab="Age: x")
-fan(data=params$a, start=ages.fit[1],type = "interval", ln=NULL,probs = c(0.5,0.8,0.95,0.995),
-    fan.col = colorRampPalette(c("Orange", "white")))
+fan(data=params$a, start=ages.fit[1],type = "interval", ln=NULL,probs = c(0.5,0.8,0.95,0.995),fan.col = colorRampPalette(c("Orange", "white")))
 #Beta
 plot(ages.fit, colMeans(params$b), ylim=range(params$b),ylab=TeX("$\\beta_x$"), xlab="Age: x")
-fan(data=params$b, start=ages.fit[1],type = "interval", ln = NULL,probs = c(0.5,0.8,0.95,0.995),
-    fan.col = colorRampPalette(c("red", "white")))
+fan(data=params$b, start=ages.fit[1],type = "interval", ln = NULL,probs = c(0.5,0.8,0.95,0.995),  fan.col = colorRampPalette(c("red", "white")))
 #Kappa
 plot(years.fit, colMeans(params$k), ylim=range(params$k),ylab=TeX("$\\kappa_t$"), xlab="Year: t")
-fan(data=params$k, start=years.fit[1],type = "interval",ln = NULL, probs = c(0.5,0.8,0.95,0.995),
-    fan.col = colorRampPalette(c("blue", "white")))
+fan(data=params$k, start=years.fit[1],type = "interval",ln = NULL, probs = c(0.5,0.8,0.95,0.995),fan.col = colorRampPalette(c("blue", "white")))
 ```
 
 ## Forecasting
 
-Predictions of death rates for the next 10 years with confidence intervals can be obtained as follows: 
+All forecast death rates $\mu_{xt}$ are stored in the output `mufor`. We point out that the output `mufor` is a matrix of dimension $N$ $\times$ $(A . M)$ where  the number of rows $N$ is the posterior sample size and the number of columns $A.M$ is the product of $A$ the age dimension and $M$ the number of forecast years.
+
+Predictions of death rates for the next 10 years with prediction intervals can be obtained as follows: 
 
 ```{r , echo=TRUE}
 # Resize the forecast deaths rates as an array "Number of draws X Ages X Years to predict"
 samplesize<-4000
 years.predict<-2018:2027
-pred<-array(params$mufor,dim=list(samplesize,length(ages.fit),length(years.predict)),
-            dimnames = list(c(1:samplesize),formatC(ages.fit),formatC(years.predict)))
+pred<-array(params$mufor,dim=list(samplesize,length(ages.fit),length(years.predict)),dimnames = list(c(1:samplesize),formatC(ages.fit),formatC(years.predict)))
 #Fan plots for ages 65,75,85
 probs = c(0.5,0.8,0.95,0.995)
 qxt <- deathFR / exposureFR
 matplot(years.fit, t(qxt[c("65", "75", "85"), ]),
         xlim = c(1970, 2027), ylim = c(0.0025, 0.2), pch = 20, col = "black",
         log = "y", xlab = "year", ylab = "death rate (log scale)")
-fan(pred[,"65" , ], start = 2018, probs = probs, n.fan = 4,
+fan(pred[,"65" , ], start = 2018, probs = probs, n.fan = 5,
     fan.col =  colorRampPalette(c("green", "white")), ln = NULL)
-fan(pred[,"75" , ], start = 2018, probs = probs, n.fan = 4,
+fan(pred[,"75" , ], start = 2018, probs = probs, n.fan = 5,
     fan.col =  colorRampPalette(c("red", "white")), ln = NULL)
-fan(pred[,"85" , ], start = 2018, probs = probs, n.fan = 4,
+fan(pred[,"85" , ], start = 2018, probs = probs, n.fan = 5,
     fan.col =  colorRampPalette(c("blue", "white")), ln = NULL)
 text(1980, qxt[c("65", "75", "85"), "2000"],
      labels = c("x = 65", "x = 75", "x = 85"))
@@ -122,10 +131,10 @@ text(1980, qxt[c("65", "75", "85"), "2000"],
 
 ## Other models
 
-In a similar fashion, the models RH, APC, CBD and M6 can be fitted with the following functions: 
+In a similar fashion, the models RH, APC, CBD and M6 can be estimated with the following functions: 
 
 | Model| Predictor | 
-|------:|:-----|
+|:------|:-----|
 |   LC  |  $\log \mu_{xt} = \alpha_x + \beta_x\kappa_t$ | 
 |   RH  |  $\log \mu_{xt} = \alpha_x + \beta_x\kappa_t+\gamma_{t-x}$ | 
 |   APC |  $\log \mu_{xt} = \alpha_x + \kappa_t +\gamma_{t-x}$ |   
@@ -138,3 +147,8 @@ fitAPC=apc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "po
 fitCBD=cbd_stan(death = deathFR,exposure=exposureFR, age=ages.fit, forecast=10,family = "poisson",cores=4)
 fitM6=m6_stan(death = deathFR,exposure=exposureFR, age=ages.fit,forecast = 10, family = "poisson",cores=4)
 ```
+
+For information, the estimated parameters $\kappa_t^{(1)}$, $\kappa_t^{(2)}$ and $\gamma_{t-x}$ are respectively stored in the variables `k`,`k2` and `g`. The forecast parameters are respectively stored in the variables `k_p`,`k2_p` and `g_p`.
+
+You can check the next vignette to know more about model averaging techniques based on leave-future-out validation.
+
