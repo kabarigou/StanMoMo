@@ -71,8 +71,8 @@ Among these parameters, we find
 * `a` : $\alpha_x$.
 * `b` : $\beta_x$.
 * `k` : $\kappa_t$.
-* `k_p` : forecasts of $ \kappa_t$.
-* `mufor` : forecasts of death rates $ \mu_{xt}$.
+* `k_p` : forecasts of $\kappa_t$.
+* `mufor` : forecasts of death rates $\mu_{xt}$.
 * `log_lik` : log-likelihoods.
 * `phi` : overdispersion parameter for the NB model. 
 * `c` and `sigma` : drift and standard deviation of the random walk with drift.
