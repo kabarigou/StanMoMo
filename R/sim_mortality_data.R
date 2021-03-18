@@ -1,6 +1,6 @@
 # Save this file as `R/sim_mortality_data.R`
 
-#' sim_death_lc simulate death counts from Lee-Carter mortality model
+#' sim_death_lc simulates death counts from the Lee-Carter mortality model
 #'
 #' @param a vector of age component
 #' @param b vector of age/year component
@@ -11,7 +11,6 @@
 #' @return matrix of death count
 #' @export
 #'
-#' @examples
 sim_death_lc <- function(a, b, k, phi, exposure){
 
   gxt_lc <- exp(sapply(k, function(kt) a + b * kt)) * exposure[, 1:length(k)]
@@ -19,7 +18,7 @@ sim_death_lc <- function(a, b, k, phi, exposure){
   )
 }
 
-#' sim_death_apc simulate death counts from Age-Period-Cohort mortality model
+#' sim_death_apc simulates death counts from the Age-Period-Cohort mortality model
 #'
 #' @param a vector of age component
 #' @param k vector of period component
@@ -32,7 +31,6 @@ sim_death_lc <- function(a, b, k, phi, exposure){
 #' @return matrix of death count
 #' @export
 #'
-#' @examples
 sim_death_apc <- function(a, k, g, phi, years, ages, exposure){
 
   cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
@@ -47,7 +45,7 @@ sim_death_apc <- function(a, k, g, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_rh simulate death counts from Renshaw-Haberman mortality model
+#' sim_death_rh simulates death counts from the Renshaw-Haberman mortality model
 #'
 #' @param a vector of age component
 #' @param k vector of period component
@@ -60,7 +58,6 @@ sim_death_apc <- function(a, k, g, phi, years, ages, exposure){
 #' @return matrix of death count
 #' @export
 #'
-#' @examples
 sim_death_rh <- function(a, b,k, g, phi, years, ages, exposure){
 
   cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
@@ -75,7 +72,7 @@ sim_death_rh <- function(a, b,k, g, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_cbd simulate death counts from the CBD model
+#' sim_death_cbd simulates death counts from the CBD model
 #'
 #' @param k first vector of period component
 #' @param k2 second vector of period component
@@ -87,7 +84,6 @@ sim_death_rh <- function(a, b,k, g, phi, years, ages, exposure){
 #' @return matrix of death count
 #' @export
 #'
-#' @examples
 sim_death_cbd <- function(k, k2, phi, years, ages, exposure){
 
 
@@ -114,7 +110,6 @@ sim_death_cbd <- function(k, k2, phi, years, ages, exposure){
 #' @return matrix of death count
 #' @export
 #'
-#' @examples
 sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
   cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
 
@@ -128,8 +123,8 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
   )
 }
 
-#' sim_death_mix_cbd_rh simulates death counts from a hybrid model that average the mortality
-#' rates from cbd and rh model
+#' sim_death_mix_cbd_rh simulates death counts from a hybrid model that averages the mortality
+#' rates from the cbd and rh models
 #'
 #' @param params_cbd named lsit that contains the parameters of the cbd model
 #' @param params_rh named lsit that contains the parameters of the rh model
@@ -141,7 +136,6 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
 #' @return matrix of death count
 #' @export
 #'
-#' @examples
 sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q){
 
   cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
@@ -163,7 +157,7 @@ sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q
 
 
 
-#' sim_mortality_data simulate mortality data from various models
+#' sim_mortality_data simulates mortality data from various models
 #'
 #' @param a vector of age component
 #' @param k first vector of time component
@@ -179,7 +173,6 @@ sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q
 #' @return
 #' @export
 #'
-#' @examples
 sim_mortality_data <- function(a, k, k2,b, g, phi, years, ages, exposure, mortality_model){
   if(mortality_model == "lc"){
     res <- sim_death_lc(a, b, k, phi, exposure)

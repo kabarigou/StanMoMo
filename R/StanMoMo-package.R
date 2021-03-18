@@ -5,7 +5,7 @@
 #' the Age-Period-Cohort (APC) model, the Cairns-Blake-Dowd (CBD) model and the M6 model (CBD with cohort effect).
 #' By a simple call, the user inputs deaths and exposures and the package outputs the MCMC simulations for each parameter,
 #' the log likelihoods and predictions. Moreover, the package includes tools for model selection and Bayesian model averaging
-#' by future-out cross-validation.
+#' by leave-future-out validation.
 #'
 #' @docType package
 #' @name StanMoMo-package
