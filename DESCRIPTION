@@ -37,3 +37,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/kabarigou/StanMoMo
+BugReports: https://github.com/kabarigou/StanMoMo/issues
