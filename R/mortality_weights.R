@@ -67,7 +67,7 @@ mortality_weights <- function(X) {
 
 
 
-#' compute_weights_BMA: compute the model evidence via bridge sampling (via the harmonic mean estimator if bridge sampling fails)
+#' Compute the model evidence/marginal likelihood via bridge sampling (or via the harmonic mean estimator if bridge sampling fails)
 #'
 #' @param stan_fits  list of Stan model fits where the marginal likelihood was computed via bridge sampling
 #' @param mortality_models vector of mortality models names
