@@ -1,13 +1,13 @@
 # Save this file as `R/fit_mortality_model.R`
 
-#' fit_mo_mo return the posterior samples as stan object of the fitted mortality model
+#' Wrapper function to fit and forecast mortality models
 #'
-#' @param mortality_model name of teh mortality model
+#' @param mortality_model name of the mortality model
 #' @param death death matrix
 #' @param exposure exposure matrix
 #' @param ages vector of ages
 #' @param validation size of the validation set
-#' @param forecast number of calendar year to be forecast
+#' @param forecast number of calendar years to be forecast
 #' @param family underlying count distribution
 #' @param chains number of Markov chains
 #' @param cores number of cores used
@@ -16,7 +16,6 @@
 #' @return a stanfit object
 #' @export
 #'
-#' @examples
 fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposureGBR, ages = 50:90, validation = 0, forecast = 1, family = "nb",
                       chains=1, cores=4, log_marg = F, iter = 2000){
   if(!log_marg){
@@ -78,14 +77,13 @@ fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposu
 
 
 
-#' extract_map: function to get the mean a posteriori of the parameters based on a stanfit object
+#' Function to get the a posterior means of the parameters based on a stanfit object
 #'
 #' @param stan_fit a stanfit object
 #'
 #' @return named list with the point estimates of the parameters
 #' @export
 #'
-#' @examples
 extract_map <- function(stan_fit){
   post_mean <-  summarise(dplyr::select(as.data.frame(stan_fit),
                                         starts_with('a['),
