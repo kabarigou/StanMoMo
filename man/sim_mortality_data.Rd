@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_mortality_data}
 \alias{sim_mortality_data}
-\title{sim_mortality_data simulate mortality data from various models}
+\title{Simulation of mortality data from various models}
 \usage{
 sim_mortality_data(a, k, k2, b, g, phi, years, ages, exposure, mortality_model)
 }
@@ -31,5 +31,5 @@ sim_mortality_data(a, k, k2, b, g, phi, years, ages, exposure, mortality_model)
 
 }
 \description{
-sim_mortality_data simulate mortality data from various models
+Simulation of mortality data from various models
 }

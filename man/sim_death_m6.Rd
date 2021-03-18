@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_death_m6}
 \alias{sim_death_m6}
-\title{sim_death_m6 simulates death counts from the M6 model}
+\title{Simulation of death counts from the M6 model}
 \usage{
 sim_death_m6(k, k2, g, phi, years, ages, exposure)
 }
@@ -25,5 +25,5 @@ sim_death_m6(k, k2, g, phi, years, ages, exposure)
 matrix of death count
 }
 \description{
-sim_death_m6 simulates death counts from the M6 model
+Simulation of death counts from the M6 model
 }

@@ -46,16 +46,15 @@ with
 \deqn{\log \mu_{xt} = \alpha_x + \beta_x\kappa_t+\gamma_{t-x}.}
 
 To ensure the identifiability of th model, we impose
-\deqn{\kappa_1=0, \gamma_1=0,\gamma_C=0,}
+\deqn{\kappa_1=0, \gamma_1=0,\sum gamma_i =0, \gamma_C=0,}
 where \eqn{C} represents the most recent cohort in the data.
 
 For the priors, the model chooses wide priors:
-\deqn{\alpha_x \sim N(0,100),\beta_{x} \sim Dir(1,\dots,1),\frac{1}{\phi} \sim Half-N(0,100).}
+\deqn{\alpha_x \sim N(0,100),\beta_{x} \sim Dir(1,\dots,1),\frac{1}{\phi} \sim Half-N(0,1).}
 
-For the period term, we consider a first order autoregressive process (AR(1)) with linear trend:
-\deqn{\kappa_{t}=c+\delta t+\rho\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
-with \eqn{c,\delta,\rho \sim N(0,10),\sigma \sim Exp(0.1)}. We note that the random walk with drift appears as a special case.
-By including a linear trend, the model allows for non-linear patterns in the dynamics of \eqn{\kappa_{t}}.
+For the period term, we consider the standard random walk with drift:
+\deqn{\kappa_{t}=c+\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
+with \eqn{c \sim N(0,10),\sigma \sim Exp(0.1)}.
 
 For the cohort term, we consider a second order autoregressive process (AR(2)):
 \deqn{\gamma_{c}=\psi_1 \gamma_{c-1}+\psi_2 \gamma_{c-2}+\epsilon^{\gamma}_{t},\quad \epsilon^{\gamma}_{t}\sim N(0,\sigma_{\gamma}).}

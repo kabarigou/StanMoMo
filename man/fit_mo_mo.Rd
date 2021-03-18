@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_mortality_model.R
 \name{fit_mo_mo}
 \alias{fit_mo_mo}
-\title{fit_mo_mo return the posterior samples as stan object of the fitted mortality model}
+\title{Wrapper function to fit and forecast mortality models}
 \usage{
 fit_mo_mo(
   mortality_model = "lc",
@@ -19,7 +19,7 @@ fit_mo_mo(
 )
 }
 \arguments{
-\item{mortality_model}{name of teh mortality model}
+\item{mortality_model}{name of the mortality model}
 
 \item{death}{death matrix}
 
@@ -29,7 +29,7 @@ fit_mo_mo(
 
 \item{validation}{size of the validation set}
 
-\item{forecast}{number of calendar year to be forecast}
+\item{forecast}{number of calendar years to be forecast}
 
 \item{family}{underlying count distribution}
 
@@ -43,5 +43,5 @@ fit_mo_mo(
 a stanfit object
 }
 \description{
-fit_mo_mo return the posterior samples as stan object of the fitted mortality model
+Wrapper function to fit and forecast mortality models
 }

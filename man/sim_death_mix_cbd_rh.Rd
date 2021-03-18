@@ -2,8 +2,8 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_death_mix_cbd_rh}
 \alias{sim_death_mix_cbd_rh}
-\title{sim_death_mix_cbd_rh simulates death counts from a hybrid model that average the mortality
-rates from cbd and rh model}
+\title{Simulation of death counts from a hybrid model that averages the mortality
+rates from the cbd and rh models}
 \usage{
 sim_death_mix_cbd_rh(params_cbd, params_rh, years, ages, exposure, q)
 }
@@ -24,6 +24,6 @@ sim_death_mix_cbd_rh(params_cbd, params_rh, years, ages, exposure, q)
 matrix of death count
 }
 \description{
-sim_death_mix_cbd_rh simulates death counts from a hybrid model that average the mortality
-rates from cbd and rh model
+Simulation of death counts from a hybrid model that averages the mortality
+rates from the cbd and rh models
 }

@@ -48,13 +48,12 @@ with
 To ensure the identifiability of th model, we impose
 \deqn{\sum_x\beta_x = 1,\kappa_1=0.}
 
-For the priors, the model chooses wide priors:
-\deqn{\alpha_x \sim N(0,100),\beta_{x} \sim Dir(1,\dots,1),\frac{1}{\phi} \sim Half-N(0,100).}
+For the priors, the model chooses relatively wide priors:
+\deqn{\alpha_x \sim N(0,100),\beta_{x} \sim Dir(1,\dots,1),\frac{1}{\phi} \sim Half-N(0,1).}
 
 For the period term, we consider a first order autoregressive process (AR(1)) with linear trend:
-\deqn{\kappa_{t}=c+\delta t+\rho\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
-with \eqn{c,\delta,\rho \sim N(0,10),\sigma \sim Exp(0.1)}. We note that the random walk with drift appears as a special case.
-By including a linear trend, the model allows for non-linear patterns in the dynamics of \eqn{\kappa_{t}}.
+\deqn{\kappa_{t}=c+\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
+with \eqn{c \sim N(0,10),\sigma \sim Exp(0.1)}.
 }
 \examples{
 

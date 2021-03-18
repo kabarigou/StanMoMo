@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_mortality_model.R
 \name{extract_map}
 \alias{extract_map}
-\title{extract_map: function to get the mean a posteriori of the parameters based on a stanfit object}
+\title{Function to get the a posterior means of the parameters based on a stanfit object}
 \usage{
 extract_map(stan_fit)
 }
@@ -13,5 +13,5 @@ extract_map(stan_fit)
 named list with the point estimates of the parameters
 }
 \description{
-extract_map: function to get the mean a posteriori of the parameters based on a stanfit object
+Function to get the a posterior means of the parameters based on a stanfit object
 }

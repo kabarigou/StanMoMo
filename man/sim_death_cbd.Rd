@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_death_cbd}
 \alias{sim_death_cbd}
-\title{sim_death_cbd simulate death counts from the CBD model}
+\title{Simulation of death counts from the CBD model}
 \usage{
 sim_death_cbd(k, k2, phi, years, ages, exposure)
 }
@@ -23,5 +23,5 @@ sim_death_cbd(k, k2, phi, years, ages, exposure)
 matrix of death count
 }
 \description{
-sim_death_cbd simulate death counts from the CBD model
+Simulation of death counts from the CBD model
 }

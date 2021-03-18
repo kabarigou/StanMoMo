@@ -50,11 +50,11 @@ To ensure the identifiability of th model, we impose
 where \eqn{C} represents the most recent cohort in the data.
 
 For the priors, we assume that
-\deqn{\alpha_x \sim N(0,100),\frac{1}{\phi} \sim Half-N(0,100).}
+\deqn{\alpha_x \sim N(0,100),\frac{1}{\phi} \sim Half-N(0,1).}
 
-For the period term, similar to the LC model, we consider a first order autoregressive process (AR(1)) with linear trend:
-\deqn{\kappa_{t}=c+\delta t+\rho\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
-with the following hyperparameters assumptions: \eqn{c,\delta,\rho \sim N(0,10),\sigma \sim Exp(0.1)}.
+For the period term, similar to the LC model, we consider a random walk with drift:
+\deqn{\kappa_{t}=c+\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
+with the following hyperparameters assumptions: \eqn{c \sim N(0,10),\sigma \sim Exp(0.1)}.
 
 For the cohort term, we consider a second order autoregressive process (AR(2)):
 \deqn{\gamma_{c}=\psi_1 \gamma_{c-1}+\psi_2 \gamma_{c-2}+\epsilon^{\gamma}_{t},\quad \epsilon^{\gamma}_{t}\sim N(0,\sigma_{\gamma}).}

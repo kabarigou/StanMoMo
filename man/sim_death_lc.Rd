@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_death_lc}
 \alias{sim_death_lc}
-\title{sim_death_lc simulate death counts from Lee-Carter mortality model}
+\title{Simulation of death counts from the Lee-Carter mortality model}
 \usage{
 sim_death_lc(a, b, k, phi, exposure)
 }
@@ -21,5 +21,5 @@ sim_death_lc(a, b, k, phi, exposure)
 matrix of death count
 }
 \description{
-sim_death_lc simulate death counts from Lee-Carter mortality model
+Simulation of death counts from the Lee-Carter mortality model
 }

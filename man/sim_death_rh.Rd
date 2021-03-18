@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_death_rh}
 \alias{sim_death_rh}
-\title{sim_death_rh simulate death counts from Renshaw-Haberman mortality model}
+\title{Simulation of death counts from the Renshaw-Haberman mortality model}
 \usage{
 sim_death_rh(a, b, k, g, phi, years, ages, exposure)
 }
@@ -25,5 +25,5 @@ sim_death_rh(a, b, k, g, phi, years, ages, exposure)
 matrix of death count
 }
 \description{
-sim_death_rh simulate death counts from Renshaw-Haberman mortality model
+Simulation of death counts from the Renshaw-Haberman mortality model
 }

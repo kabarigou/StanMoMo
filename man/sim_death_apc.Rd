@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_mortality_data.R
 \name{sim_death_apc}
 \alias{sim_death_apc}
-\title{sim_death_apc simulate death counts from Age-Period-Cohort mortality model}
+\title{Simulation of death counts from the Age-Period-Cohort mortality model}
 \usage{
 sim_death_apc(a, k, g, phi, years, ages, exposure)
 }
@@ -25,5 +25,5 @@ sim_death_apc(a, k, g, phi, years, ages, exposure)
 matrix of death count
 }
 \description{
-sim_death_apc simulate death counts from Age-Period-Cohort mortality model
+Simulation of death counts from the Age-Period-Cohort mortality model
 }

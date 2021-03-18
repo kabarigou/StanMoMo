@@ -2,7 +2,7 @@
 % Please edit documentation in R/mortality_weights.R
 \name{compute_weights_BMA}
 \alias{compute_weights_BMA}
-\title{compute_weights_BMA: compute the model evidence via bridge sampling (via the harmonic mean estimator if bridge sampling fails)}
+\title{Compute the model evidence/marginal likelihood via bridge sampling (or via the harmonic mean estimator if bridge sampling fails)}
 \usage{
 compute_weights_BMA(stan_fits, mortality_models)
 }
@@ -15,7 +15,7 @@ compute_weights_BMA(stan_fits, mortality_models)
 data frame with model evidence for BMA
 }
 \description{
-compute_weights_BMA: compute the model evidence via bridge sampling (via the harmonic mean estimator if bridge sampling fails)
+Compute the model evidence/marginal likelihood via bridge sampling (or via the harmonic mean estimator if bridge sampling fails)
 }
 \examples{
 
