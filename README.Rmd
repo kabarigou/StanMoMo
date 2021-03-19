@@ -17,6 +17,7 @@ To install `StanMoMo` from GitHub you will need `devtools`:
 install.packages("devtools")
 devtools::install_github('kabarigou/StanMoMo')
 ```
+The installation may take a few minutes (models need to be compiled). However, once installed, you can perform Bayesian mortality forecasting in a matter of seconds.
 
 After installing the package, you have to load the package via: 
 ```{r}
