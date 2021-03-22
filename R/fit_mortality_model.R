@@ -12,11 +12,12 @@
 #' @param chains number of Markov chains
 #' @param cores number of cores used
 #' @param log_marg Do we compute the marginal likelihood or not?
+#' @param iter Length of the Markov chain trajectory
 #'
 #' @return a stanfit object
 #' @export
 #'
-fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposureGBR, ages = 50:90, validation = 0, forecast = 1, family = "nb",
+fit_mo_mo <- function(mortality_model ="lc", death, exposure, ages = 50:90, validation = 0, forecast = 1, family = "nb",
                       chains=1, cores=4, log_marg = F, iter = 2000){
   if(!log_marg){
     if(mortality_model == "lc"){
@@ -85,20 +86,20 @@ fit_mo_mo <- function(mortality_model ="lc", death = deathGBR, exposure = exposu
 #' @export
 #'
 extract_map <- function(stan_fit){
-  post_mean <-  summarise(dplyr::select(as.data.frame(stan_fit),
-                                        starts_with('a['),
-                                        starts_with('b['),
-                                        starts_with('k['),
-                                        starts_with('k2['),
-                                        starts_with('g['),
+  post_mean <-  dplyr::summarise(dplyr::select(as.data.frame(stan_fit),
+                                        tidyselect::starts_with('a['),
+                                        tidyselect::starts_with('b['),
+                                        tidyselect::starts_with('k['),
+                                        tidyselect::starts_with('k2['),
+                                        tidyselect::starts_with('g['),
                                         'phi'),
-                          across(everything(), mean))
-  res <- list(a = as.vector(t(select(post_mean, starts_with('a[')))),
-              b = as.vector(t(select(post_mean,starts_with('b[')))),
-              k = as.vector(t(select(post_mean, starts_with('k[')))),
-              k2 = as.vector(t(select(post_mean, starts_with('k2[')))),
-              g = as.vector(t(select(post_mean, starts_with('g[')))),
-              phi = as.vector(t(select(post_mean, starts_with('phi'))))
+                          dplyr::across(tidyselect::everything(), mean))
+  res <- list(a = as.vector(t(dplyr::select(post_mean, tidyselect::starts_with('a[')))),
+              b = as.vector(t(dplyr::select(post_mean,tidyselect::starts_with('b[')))),
+              k = as.vector(t(dplyr::select(post_mean, tidyselect::starts_with('k[')))),
+              k2 = as.vector(t(dplyr::select(post_mean, tidyselect::starts_with('k2[')))),
+              g = as.vector(t(dplyr::select(post_mean, tidyselect::starts_with('g[')))),
+              phi = as.vector(t(dplyr::select(post_mean, tidyselect::starts_with('phi'))))
   )
   return(res)
 }

@@ -27,7 +27,7 @@ load_HMD_data <- function(CNTRY, item, cal_year_range, age_range, gender){
   TEXT <- httr::GET(path, httr::authenticate(username, password),
                     httr::config(ssl_verifypeer = 0L))
   status <- httr::http_status(TEXT)
-  DF <- read.table(text = httr::content(TEXT, encoding = "UTF-8"),
+  DF <- utils::read.table(text = httr::content(TEXT, encoding = "UTF-8"),
                    header = TRUE, skip = 2, na.strings = ".",
                    as.is = TRUE)
   DF <- dplyr::filter(DF, (Age %in% age_range) & (Year %in% cal_year_range))

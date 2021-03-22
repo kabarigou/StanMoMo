@@ -6,8 +6,8 @@
 \usage{
 fit_mo_mo(
   mortality_model = "lc",
-  death = deathGBR,
-  exposure = exposureGBR,
+  death,
+  exposure,
   ages = 50:90,
   validation = 0,
   forecast = 1,
@@ -38,6 +38,8 @@ fit_mo_mo(
 \item{cores}{number of cores used}
 
 \item{log_marg}{Do we compute the marginal likelihood or not?}
+
+\item{iter}{Length of the Markov chain trajectory}
 }
 \value{
 a stanfit object

@@ -14,7 +14,7 @@
 sim_death_lc <- function(a, b, k, phi, exposure){
 
   gxt_lc <- exp(sapply(k, function(kt) a + b * kt)) * exposure[, 1:length(k)]
-  return(apply(gxt_lc, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_lc, 1:2, function(gxt) stats::rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 
@@ -41,13 +41,14 @@ sim_death_apc <- function(a, k, g, phi, years, ages, exposure){
       gxt_apc[i,j] <- exp(a[i] + k[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
     }
   }
-  return(apply(gxt_apc, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_apc, 1:2, function(gxt) stats::rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 
 #' Simulation of death counts from the Renshaw-Haberman mortality model
 #'
 #' @param a vector of age component
+#' @param b vector of age/year component
 #' @param k vector of period component
 #' @param g vector of cohort component
 #' @param phi dispersion parameter
@@ -68,7 +69,7 @@ sim_death_rh <- function(a, b,k, g, phi, years, ages, exposure){
       gxt_rh[i,j] <- exp(a[i] + b[i]*k[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
     }
   }
-  return(apply(gxt_rh, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_rh, 1:2, function(gxt) stats::rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 
@@ -93,7 +94,7 @@ sim_death_cbd <- function(k, k2, phi, years, ages, exposure){
       gxt_cbd[i,j] <- exp(k[j] +(ages[i]-mean(ages))*k2[j]) * exposure[i,j]
     }
   }
-  return(apply(gxt_cbd, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_cbd, 1:2, function(gxt) stats::rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 
@@ -119,7 +120,7 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
       gxt_m6[i,j] <- exp(k[j] +(ages[i]-mean(ages))* k2[j] + g[match(years[j] - ages[i], cohorts)]) * exposure[i,j]
     }
   }
-  return(apply(gxt_m6, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_m6, 1:2, function(gxt) stats::rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 
@@ -151,7 +152,7 @@ sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q
     }
   }
   phi <- q * params_cbd$phi + (1 - q) * params_rh$phi
-  return(apply(gxt_mix, 1:2, function(gxt) rnbinom(1,size = phi, prob = phi / (phi + gxt)))
+  return(apply(gxt_mix, 1:2, function(gxt) stats::rnbinom(1,size = phi, prob = phi / (phi + gxt)))
   )
 }
 

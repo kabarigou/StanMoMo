@@ -9,6 +9,8 @@ sim_death_rh(a, b, k, g, phi, years, ages, exposure)
 \arguments{
 \item{a}{vector of age component}
 
+\item{b}{vector of age/year component}
+
 \item{k}{vector of period component}
 
 \item{g}{vector of cohort component}
