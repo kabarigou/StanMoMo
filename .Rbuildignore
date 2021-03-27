@@ -9,3 +9,4 @@
 ^Meta$
 ^script$
 ^vignettes$
+^\.travis\.yml$
