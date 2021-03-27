@@ -10,3 +10,4 @@
 ^script$
 ^vignettes$
 ^\.travis\.yml$
+^\.github$
