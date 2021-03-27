@@ -10,7 +10,7 @@ library(ggfan)
 library(abind)
 library(ggpubr)
 
-#This script details how to reproduce the results of our paper from
+#This script details how to reproduce the results of our paper from 
 #Section 5: Application to real mortality data
 
 #In a first step we compute the weights from stacking, pseudo-BMA and BMA for French data.
