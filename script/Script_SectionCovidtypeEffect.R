@@ -5,7 +5,7 @@ library(matrixcalc)
 library(StanMoMo)
 library(tidyverse)
 
-#This script details how to reproduce the results of our paper of 
+#This script details how to reproduce the results of our paper from the
 #Section 6: Impact of Covid-type effect
 
 #The first part of the script explains how to compute model weights when data 
