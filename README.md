@@ -1,3 +1,6 @@
+
+ [![R-CMD-check](https://github.com/kabarigou/StanMoMo/workflows/R-CMD-check/badge.svg)](https://github.com/kabarigou/StanMoMo/actions)
+
 StanMoMo
 ================
 
