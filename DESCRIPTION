@@ -42,7 +42,11 @@ LinkingTo:
 SystemRequirements: GNU make
 Suggests: 
     knitr,
-    rmarkdown
-VignetteBuilder: knitr
+    rmarkdown,
+    shinystan,
+    fanplot,
+    RColorBrewer,
+    latex2exp
+VignetteBuilder: rmarkdown
 URL: https://github.com/kabarigou/StanMoMo
 BugReports: https://github.com/kabarigou/StanMoMo/issues
