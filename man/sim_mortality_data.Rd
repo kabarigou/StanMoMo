@@ -27,9 +27,7 @@ sim_mortality_data(a, k, k2, b, g, phi, years, ages, exposure, mortality_model)
 
 \item{mortality_model}{name of the mortality model that we simulate from}
 }
-\value{
 
-}
 \description{
 Simulation of mortality data from various models
 }

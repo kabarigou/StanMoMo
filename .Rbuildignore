@@ -7,6 +7,5 @@
 ^pkgdown$
 ^doc$
 ^script$
-^vignettes$
 ^\.travis\.yml$
 ^\.github$
