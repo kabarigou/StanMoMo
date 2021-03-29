@@ -43,10 +43,7 @@ SystemRequirements: GNU make
 Suggests: 
     knitr,
     rmarkdown,
-    shinystan,
-    fanplot,
-    RColorBrewer,
-    latex2exp
+    shinystan
 VignetteBuilder: rmarkdown
 URL: https://github.com/kabarigou/StanMoMo
 BugReports: https://github.com/kabarigou/StanMoMo/issues
