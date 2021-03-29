@@ -75,7 +75,6 @@ mortality_weights <- function(X) {
 #' @return data frame with model evidence for BMA
 #' @export
 #'
-#' @examples
 #'
 #'
 compute_weights_BMA <- function(stan_fits, mortality_models){

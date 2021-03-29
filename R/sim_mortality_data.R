@@ -171,7 +171,7 @@ sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q
 #' @param exposure matrix of exposure
 #' @param mortality_model name of the mortality model that we simulate from
 #'
-#' @return
+#' @return matrix of death counts
 #' @export
 #'
 sim_mortality_data <- function(a, k, k2,b, g, phi, years, ages, exposure, mortality_model){
