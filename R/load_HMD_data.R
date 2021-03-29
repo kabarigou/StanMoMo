@@ -20,6 +20,8 @@
 #' exposure_fra <- load_HMD_data('FRATNP', 'Exposures_1x1', 1970:2017, 50:90, "Male")
 
 load_HMD_data <- function(CNTRY, item, cal_year_range, age_range, gender){
+  Age<-NULL
+  Year<-NULL
   username <- 'pierre.olivier.goffard@gmail.com'
   password <- 'StanMoMo'
   path <- paste0("https://www.mortality.org/hmd/", CNTRY,
