@@ -43,7 +43,8 @@ SystemRequirements: GNU make
 Suggests: 
     knitr,
     rmarkdown,
-    shinystan
+    shinystan,
+    Cairo
 VignetteBuilder: knitr
 URL: https://github.com/kabarigou/StanMoMo
 BugReports: https://github.com/kabarigou/StanMoMo/issues
