@@ -54,10 +54,10 @@ $$
 Given the matrix of deaths `deathFR` and the matrix of central exposures `exposureFR`, we can estimate the parameters and obtain death rates forecasts for the next 10 years under a Poisson model by a simple call to the `lc_stan` function: 
 
 ```{r}
-fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",cores=4)
+fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",cores=2)
 ```
 
-By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). The argument `cores=4` ensures that the four chains are sampled in parallel for time efficiency. The output is an object of class `stanfit` (cf. [the **rstan** package](https://mc-stan.org/rstan/articles/stanfit_objects.html)) which contains, among others, posterior draws, posterior summary statistics and convergence diagnostics. 
+By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). One can use the argument `cores=4` to ensure that the four chains are sampled in parallel for time efficiency. The output is an object of class `stanfit` (cf. [the **rstan** package](https://mc-stan.org/rstan/articles/stanfit_objects.html)) which contains, among others, posterior draws, posterior summary statistics and convergence diagnostics. 
 
 The easiest way to extract the posterior draws is to call the `rstan::extract` function which returns a list with named components corresponding to the model parameters.
 ```{r,warning=FALSE}
