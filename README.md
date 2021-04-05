@@ -1,6 +1,3 @@
-
- [![R-CMD-check](https://github.com/kabarigou/StanMoMo/workflows/R-CMD-check/badge.svg)](https://github.com/kabarigou/StanMoMo/actions)
-
 StanMoMo
 ================
 
@@ -13,20 +10,30 @@ Renshaw-Haberman model (LC with cohort effect), the Age-Period-Cohort
 with cohort effect). By a simple function call, the user obtains the
 MCMC simulations for each parameter, the log likelihoods and death rates
 predictions. Moreover, the package includes tools for model selection
-and Bayesian model averaging by future-out cross-validation.
+and Bayesian model averaging by leave-future-out validation.
 
 ## Installation
 
-To install `StanMoMo` from GitHub you will need `devtools`:
+If you have R 4.0.0 or later and use Windows or Mac, you can directly
+install the binary package via
+
+``` r
+install.packages("StanMoMo",repos=c("https://cloud.r-project.org",
+"https://kabarigou.github.io/drat"),type = "binary",dependencies = TRUE)
+```
+
+Otherwise, you can also install the source package from Github via
+`devtools`:
 
 ``` r
 install.packages("devtools")
 devtools::install_github('kabarigou/StanMoMo')
 ```
 
-The installation may take a few minutes (models need to be compiled).
-However, once installed, you can perform Bayesian mortality forecasting
-in a matter of seconds.
+The installation of the source package may take a few minutes (models
+need to be compiled). For this reason, we recommend to install the
+binary package instead. Once the package is installed, you can perform
+Bayesian mortality forecasting in a matter of seconds.
 
 After installing the package, you have to load the package via:
 
@@ -34,20 +41,20 @@ After installing the package, you have to load the package via:
 library(StanMoMo)
 ```
 
-## Important note
+## Important note if you install from source (install\_github)
 
 The main purpose of this package is to provide users high-level
 functions for estimating and forecasting mortality models in a Bayesian
 setting without requiring any knowledge of the Stan modeling language.
 This package depends on the [rstan](https://mc-stan.org/rstan/) package,
 which translates the Stan model to C++ code, which is compiled into a
-dynamic shared object (DSO). During the package installation, the
-mortality models are pre-compiled and therefore you need a C++ compiler
-on your machine (for instance, Rtools for Windows or Xcode on Mac, see
+dynamic shared object (DSO). If you install the binary package (what we
+recommend), the mortality models are already pre-compiled. If you
+install the source package, the models are compiled during the
+installation and therefore you need a C++ compiler on your machine (for
+instance, Rtools for Windows or Xcode on Mac, see
 [here](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) for
-more details). Once the package will be released on CRAN (date not
-defined yet), all mortality models will be already pre-compiled in order
-to run immediately when called, avoiding compilation time.
+more details).
 
 If you have any comments or suggestions about the package, feel free to
 email <karim.barigou@univ-lyon1.fr>
