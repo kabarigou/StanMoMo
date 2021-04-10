@@ -50,3 +50,10 @@ navbar:
     articles:
      text: Bayesian model averaging
      href: articles/bma.html
+
+
+authors:
+  Karim Barigou:
+    href: https://karimbarigou.com/
+  Pierre-Olivier Goffard:
+    href: http://pierre-olivier.goffard.me/
