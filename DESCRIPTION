@@ -32,7 +32,8 @@ Imports:
     RColorBrewer, 
     fanplot, 
     latex2exp, 
-    tidyr
+    tidyr,
+    ggplot2
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
