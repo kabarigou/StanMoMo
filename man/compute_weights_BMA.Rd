@@ -17,4 +17,3 @@ data frame with model evidence for BMA
 \description{
 Compute the model evidence/marginal likelihood via bridge sampling (or via the harmonic mean estimator if bridge sampling fails)
 }
-

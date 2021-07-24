@@ -84,7 +84,7 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">StanMoMo</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kabarigou/StanMoMo">StanMoMo</a></span><span class="op">)</span></code></pre></div>
 <p>The <code>StanMoMo</code> package includes two methods for model selection and model averaging based on leave-future-out validation, called <em>stacking</em> and <em>pseudo-BMA</em>. First we briefly discuss why the standard Bayesian model averaging and leave-one-out cross-validation should be avoided for mortality forecasting. Second, we explain with some mathematical details how the methods of <em>stacking</em> and <em>pseudo-BMA</em> can be used for mortality forecasting based on future-out validation.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
@@ -144,7 +144,7 @@ w_{k}=\frac{\exp \left(\operatorname{elpd}^{k}\right)}{\sum_{k=1}^{K} \exp \left
 <a href="#references" class="anchor"></a>References</h2>
 <p>Fernandez, C., Ley, E., &amp; Steel, M. F. (2001). Benchmark priors for Bayesian model averaging. Journal of Econometrics, 100(2), 381-427.</p>
 <p>Yao, Y., Vehtari, A., Simpson, D., &amp; Gelman, A. (2018). Using stacking to average Bayesian predictive distributions (with discussion). Bayesian Analysis, 13(3), 917-1007.</p>
-<p>Barigou K., Goffard P-O., Loisel S., Salhi Y. (2021). Bayesian Model Averaging for mortality forecasting. Working paper.</p>
+<p>Barigou K., Goffard P-O., Loisel S., Salhi Y. (2021). Bayesian model averaging for mortality forecasting using leave-future-out validation. arXiv preprint arXiv:2103.15434.</p>
 </div>
   </div>
 
@@ -159,7 +159,7 @@ w_{k}=\frac{\exp \left(\operatorname{elpd}^{k}\right)}{\sum_{k=1}^{K} \exp \left
 
 
       <footer><div class="copyright">
-  <p>Developed by Karim Barigou, Pierre-Olivier Goffard.</p>
+  <p>Developed by <a href="https://karimbarigou.com/">Karim Barigou</a>, <a href="http://pierre-olivier.goffard.me/">Pierre-Olivier Goffard</a>.</p>
 </div>
 
 <div class="pkgdown">

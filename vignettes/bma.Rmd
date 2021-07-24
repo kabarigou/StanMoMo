@@ -84,7 +84,7 @@ Fernandez, C., Ley, E., & Steel, M. F. (2001). Benchmark priors for Bayesian mod
 
 Yao, Y., Vehtari, A., Simpson, D., & Gelman, A. (2018). Using stacking to average Bayesian predictive distributions (with discussion). Bayesian Analysis, 13(3), 917-1007.
 
-Barigou K., Goffard P-O., Loisel S., Salhi Y. (2021). Bayesian Model Averaging for mortality forecasting. Working paper.
+Barigou K., Goffard P-O., Loisel S., Salhi Y. (2021). Bayesian model averaging for mortality forecasting using leave-future-out validation. arXiv preprint arXiv:2103.15434.
 
 
 

@@ -171,7 +171,7 @@ boxplot_post_dist <- function(stan_fit, parm_name, ages, years){
     }
     else if(parm_name %in% c('k', 'k2')){
       years_df <- data.frame("stan" = names(dplyr::select(as.data.frame(stan_fit), tidyselect::starts_with(paste0(parm_name , "[")))),
-                             "t" = years[-1])
+                             "t" = years)
       post_df <- dplyr::select(
         dplyr::left_join(
           tidyr::pivot_longer(

@@ -13,13 +13,13 @@ mortality_weights(X)
 A matrix containing one weight for each model and each approach.
 }
 \description{
-Mortality Model averaging via stacking of predictive distributions and Pseudo-BMA weighting. Based on Yao et al. (2018) but adapted by Barigou et al. (2020)
+Mortality Model averaging via stacking of predictive distributions and Pseudo-BMA weighting. Based on Yao et al. (2018) but adapted by Barigou et al. (2021)
 for mortality forecasting.
 }
 \details{
 Mortality model averaging via stacking of predictive distributions or pseudo-BMA weighting.
 Both approaches were proposed in Yao et al. (2018) based leave-one-out cross-validation which is not suited for forecasting.
-Barigou et al. (2020) adapted both appraoches based on leave-future-out validation which is more appropriate for mortality forecasting.
+Barigou et al. (2021) adapted both appraoches based on leave-future-out validation which is more appropriate for mortality forecasting.
 
 The stacking method combines all models by maximizing the leave-future-out
 predictive density of the combination distribution. That is, it finds the
@@ -50,5 +50,6 @@ model_weights<-mortality_weights(list(fitLC,fitRH))
 Yao, Y., Vehtari, A., Simpson, D., & Gelman, A. (2018). Using stacking to average Bayesian predictive distributions (with discussion).
 Bayesian Analysis, 13(3), 917-1007.
 
-Barigou K., Goffard P-O., Loisel S., Salhi Y. (2020). Bayesian Model Averaging for mortality forecasting. Working paper.
+Barigou K., Goffard P-O., Loisel S., Salhi Y. (2021). Bayesian model averaging for mortality forecasting using leave-future-out validation.
+arXiv preprint arXiv:2103.15434.
 }

@@ -1,6 +1,3 @@
-[![R-CMD-check](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml)
-
-Check the [package website](https://kabarigou.github.io/StanMoMo/)
 
 StanMoMo
 ================

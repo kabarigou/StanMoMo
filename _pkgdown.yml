@@ -19,6 +19,11 @@ reference:
   contents:
   - starts_with("sim")
 
+- title: Plotting functions
+  contents:
+  - boxplot_post_dist
+  - forecasting_plot
+
 - title: Data
   contents:
   - FRMaleData
@@ -48,8 +53,10 @@ navbar:
     right: [github]
   components:
     articles:
-     text: Bayesian model averaging
-     href: articles/bma.html
+    text: Bayesian mortality modelling
+    href: articles/StanMoMo.html
+    text: Bayesian model averaging
+    href: articles/bma.html
 
 
 authors:

@@ -29,11 +29,10 @@ Imports:
     stats, 
     utils, 
     tidyselect, 
-    RColorBrewer, 
-    fanplot, 
     latex2exp, 
     tidyr,
-    ggplot2
+    ggplot2,
+    ggfan
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
