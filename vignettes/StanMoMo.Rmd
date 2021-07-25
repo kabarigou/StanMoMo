@@ -57,7 +57,7 @@ Given the matrix of deaths `deathFR` and the matrix of central exposures `exposu
 fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",chains=2,cores=2)
 ```
 
-Internally, the sampling is performed through the `rstan::sampling` function. By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). Moreover, by default, Stan uses 1 core but we recommend using as many processors as the hardware and RAM allow (up to the number of chains). All this can be set using additional arguments : for instance, if one wants to sample 3 chains of 3000 iterations with 1000 warm-up samples, the call is: 
+Internally, the sampling is performed through the `rstan::sampling` function. By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). Moreover, by default, Stan uses 1 core but we recommend using as many processors as the hardware and RAM allow (up to the number of chains). All this can be set using additional arguments : for instance, if one wants to sample 2 chains of 3000 iterations with 1000 warm-up samples, the call is: 
 ```{r,eval=FALSE}
 fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson",chains=2,iter=3000,warmup=1000,cores=2)
 ```
