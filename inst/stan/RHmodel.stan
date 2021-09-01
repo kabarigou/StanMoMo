@@ -41,8 +41,8 @@ transformed parameters {      // This block defines a new vector where the first
   k[1] = 0;
   k[2:T]=ks;
   g[1]=0;
-  g[2:(C-2)]=gs;
-  g[C-1]=-sum(gs[1:(C-3)]);
+  g[2]=-sum(gs[1:(C-3)]);
+  g[3:(C-1)]=gs;
   g[C]=0;
   if (family > 0) phi = inv(aux[1]);
     }
@@ -57,8 +57,8 @@ model {
   target += normal_lpdf(ks[1]|c,sigma[1]);
   target += normal_lpdf(ks[2:(T-1)]|c+ks[1:(T- 2)],sigma[1]);    // Random walk with drift prior
 
- target+=normal_lpdf(gs[1]|0,sigma[2]) ;
- target+=normal_lpdf(gs[2]|psi*gs[1],sigma[2]) ;
+ target+=normal_lpdf(gs[1]|psi*g[2],sigma[2]) ;
+ target+=normal_lpdf(gs[2]|psi*gs[1]+psi2*g[2],sigma[2]) ;
  target+=normal_lpdf(gs[3:(C-3)]|psi*gs[2:(C- 4)]+psi2*gs[1:(C- 5)],sigma[2]) ;
 
   if (family ==0){
