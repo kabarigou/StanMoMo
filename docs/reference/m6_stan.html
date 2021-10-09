@@ -42,7 +42,7 @@
 <meta property="og:title" content="Bayesian M6 model with Stan — m6_stan" />
 <meta property="og:description" content="Fit and Forecast Bayesian M6 model (CBD with cohort effect) introduced in Cairns et al (2009).
 The model can be fitted with a Poisson or Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
-predicted death rates and log-likehoods." />
+predicted death rates and log-likelihoods." />
 
 
 
@@ -89,11 +89,23 @@ predicted death rates and log-likehoods." />
 <li>
   <a href="../articles/StanMoMo.html">Get started</a>
 </li>
-<li>
-  <a href="../articles/bma.html">Bayesian model averaging</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/bma.html">Bayesian Model Averaging</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -124,7 +136,7 @@ predicted death rates and log-likehoods." />
     <div class="ref-description">
     <p>Fit and Forecast Bayesian M6 model (CBD with cohort effect) introduced in Cairns et al (2009).
 The model can be fitted with a Poisson or Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
-predicted death rates and log-likehoods.</p>
+predicted death rates and log-likelihoods.</p>
     </div>
 
     <pre class="usage"><span class='fu'>m6_stan</span><span class='op'>(</span>
@@ -195,7 +207,7 @@ with normal priors: \(\boldsymbol{c} \sim N(0,10)\).</p>
 $$\boldsymbol{\Sigma}=\left(\begin{array}{cc}\sigma_1^{2} &amp; \rho_{\Sigma} \sigma_1 \sigma_2 \\\rho_{\Sigma} \sigma_1 \sigma_{Y} &amp; \sigma_2^{2}\end{array}\right)$$
 where the variance coefficients have independent exponential priors: \(\sigma_1, \sigma_2 \sim Exp(0.1)\)
 and the correlation parameter has a uniform prior: \(\rho_{\Sigma} \sim U\left[-1,1\right]\).
-As for the other models, the overdisperion parameter has a prior distribution given by
+As for the other models, the overdispersion parameter has a prior distribution given by
 $$\frac{1}{\phi} \sim Half-N(0,1).$$</p>
 <p>For the cohort term, we consider a second order autoregressive process (AR(2)):
 $$\gamma_{c}=\psi_1 \gamma_{c-1}+\psi_2 \gamma_{c-2}+\epsilon^{\gamma}_{t},\quad \epsilon^{\gamma}_{t}\sim N(0,\sigma_{\gamma}).$$</p>
@@ -209,18 +221,20 @@ mortality models using data from England and Wales and the United States.
 North American Actuarial Journal, 13(1), 1-35.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples">
+
 <span class='co'>#10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model</span>
-<span class='va'>ages.fit</span><span class='op'>&lt;-</span><span class='fl'>50</span><span class='op'>:</span><span class='fl'>90</span>
-<span class='va'>years.fit</span><span class='op'>&lt;-</span><span class='fl'>1970</span><span class='op'>:</span><span class='fl'>2017</span>
+<span class='va'>ages.fit</span><span class='op'>&lt;-</span><span class='fl'>70</span><span class='op'>:</span><span class='fl'>90</span>
+<span class='va'>years.fit</span><span class='op'>&lt;-</span><span class='fl'>1990</span><span class='op'>:</span><span class='fl'>2010</span>
 <span class='va'>deathFR</span><span class='op'>&lt;-</span><span class='va'>FRMaleData</span><span class='op'>$</span><span class='va'>Dxt</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>ages.fit</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>years.fit</span><span class='op'>)</span><span class='op'>]</span>
 <span class='va'>exposureFR</span><span class='op'>&lt;-</span><span class='va'>FRMaleData</span><span class='op'>$</span><span class='va'>Ext</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>ages.fit</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>years.fit</span><span class='op'>)</span><span class='op'>]</span>
-<span class='va'>fitM6</span><span class='op'>=</span><span class='fu'>m6_stan</span><span class='op'>(</span>death <span class='op'>=</span> <span class='va'>deathFR</span>,exposure<span class='op'>=</span><span class='va'>exposureFR</span>, age<span class='op'>=</span><span class='va'>ages.fit</span>,forecast <span class='op'>=</span> <span class='fl'>10</span>, family <span class='op'>=</span> <span class='st'>"poisson"</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>iterations</span><span class='op'>&lt;-</span><span class='fl'>50</span> <span class='co'># Toy example, consider at least 2000 iterations</span>
+<span class='va'>fitM6</span><span class='op'>=</span><span class='fu'>m6_stan</span><span class='op'>(</span>death <span class='op'>=</span> <span class='va'>deathFR</span>,exposure<span class='op'>=</span><span class='va'>exposureFR</span>, age<span class='op'>=</span><span class='va'>ages.fit</span>,forecast <span class='op'>=</span> <span class='fl'>5</span>,
+family <span class='op'>=</span> <span class='st'>"poisson"</span>,iter<span class='op'>=</span><span class='va'>iterations</span>,chains<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
 
 
-</div></pre>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

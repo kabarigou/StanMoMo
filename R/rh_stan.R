@@ -4,7 +4,7 @@
 #'
 #' Fit and Forecast Bayesian Renshaw-Haberman model (Lee-Carter with cohort effect) introduced in Renshaw and Haberman (2006).
 #' The model can be fitted with a Poisson or Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
-#' predicted death rates and log-likehoods.
+#' predicted death rates and log-likelihoods.
 #'
 #' The created model is either a log-Poisson or a log-Negative-Binomial version of
 #' the Renshaw-Haberman model:
@@ -49,14 +49,16 @@
 #'
 #' @examples
 #'
-#' \dontrun{
+#'
 #' #10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
-#' ages.fit<-50:90
-#' years.fit<-1970:2017
+#' ages.fit<-70:90
+#' years.fit<-1990:2010
 #' deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
 #' exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
-#' fitRH=rh_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson")
-#' }
+#' iterations<-50 # Toy example, consider at least 2000 iterations
+#' fitRH=rh_stan(death = deathFR,exposure=exposureFR, forecast = 5, family = "poisson",
+#' iter=iterations,chains=1)
+#'
 #'
 rh_stan <- function(death, exposure,forecast, validation=0, family=c("poisson","nb"), ...) {
   Tval<-0

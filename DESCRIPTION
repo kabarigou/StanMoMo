@@ -1,16 +1,18 @@
 Package: StanMoMo
-Title: Bayesian Mortality Modelling with Stan
+Title: Bayesian Mortality Modelling with 'Stan'
 Version: 1.0.0
-Authors@R: c(person(given = "Karim", family = "Barigou", role = c("aut", "cre"), email = "karim.barigou@univ-lyon1.fr",comment = c(ORCID = "0000-0003-3389-9596")),
+Authors@R: c(person(given = "Karim", family = "Barigou", role = c("aut", "cre"), email = "karim290492@gmail.com",comment = c(ORCID = "0000-0003-3389-9596")),
     person(given = "Pierre-Olivier", family = "Goffard",role="aut",comment = c(ORCID = "0000-0002-2667-6207")))
-Description: The StanMoMo package performs Bayesian Mortality Modeling with Stan 
-    for a variety of popular mortality models. The current package supports the 
-    Lee-Carter (LC) model, the RH model (LC with cohort effect), the APC model, 
-    the CBD model and the M6 model (CBD with cohort effect). By a simple call, 
-    the user inputs deaths and exposures and the package outputs the MCMC 
-    simulations for each parameter, the log likelihoods and predictions. 
-    Moreover, the package includes tools for model selection and Bayesian model 
-    averaging by leave future-out validation.
+Description: Implementation of popular mortality models using the 'rstan' 
+    package, which provides the R interface to the 'Stan' C++ library for 
+    Bayesian estimation. The package supports well-known models proposed in the 
+    actuarial and demographic literature including the Lee-Carter (1992) 
+    <doi:10.1080/01621459.1992.10475265> and the Cairns-Blake-Dowd (2006) 
+    <doi:10.1111/j.1539-6975.2006.00195.x> models. By a simple call, the user 
+    inputs deaths and exposures and the package outputs the MCMC simulations for
+    each parameter, the log likelihoods and predictions. Moreover, the package 
+    includes tools for model selection and Bayesian model averaging by leave 
+    future-out validation.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

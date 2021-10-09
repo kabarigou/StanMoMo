@@ -4,7 +4,7 @@
 #'
 #' Fit and Forecast Bayesian Lee-Carter model. The model can be fitted with a Poisson or
 #' Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
-#' predicted death rates and log-likehoods.
+#' predicted death rates and log-likelihoods.
 #'
 #' The created model is either a log-Poisson or a log-Negative-Binomial version of
 #' the Lee-Carter model:
@@ -22,7 +22,7 @@
 #'
 #' For the period term, we consider a first order autoregressive process (AR(1)) with linear trend:
 #' \deqn{\kappa_{t}=c+\kappa_{t-1}+\epsilon_{t},\epsilon_{t}\sim N(0,\sigma^2)}
-#' with \eqn{c \sim N(0,10),\sigma \sim Exp(0.1)}. 
+#' with \eqn{c \sim N(0,10),\sigma \sim Exp(0.1)}.
 #'
 #' @export
 #' @param death Matrix of deaths.
@@ -41,14 +41,16 @@
 #'
 #' @examples
 #'
-#' \dontrun{
+#'
 #' #10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
 #' ages.fit<-50:90
 #' years.fit<-1970:2017
 #' deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
 #' exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
-#' fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson")
-#' }
+#' iterations<-50 # Toy example, consider at least 2000 iterations
+#' fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10,
+#' family = "poisson",iter=iterations,chains=1)
+#'
 #'
 lc_stan <- function(death, exposure,forecast, validation=0, family=c("poisson","nb"), ...) {
   Tval<-0

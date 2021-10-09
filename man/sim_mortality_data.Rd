@@ -17,7 +17,7 @@ sim_mortality_data(a, k, k2, b, g, phi, years, ages, exposure, mortality_model)
 
 \item{g}{vector of cohort component}
 
-\item{phi}{dispersioon parameter}
+\item{phi}{dispersion parameter}
 
 \item{years}{vector of calendar year}
 

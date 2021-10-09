@@ -34,7 +34,7 @@ An object of class \code{stanfit} returned by \code{rstan::sampling}.
 \description{
 Fit and Forecast Bayesian Lee-Carter model. The model can be fitted with a Poisson or
 Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
-predicted death rates and log-likehoods.
+predicted death rates and log-likelihoods.
 }
 \details{
 The created model is either a log-Poisson or a log-Negative-Binomial version of
@@ -57,14 +57,16 @@ with \eqn{c \sim N(0,10),\sigma \sim Exp(0.1)}.
 }
 \examples{
 
-\dontrun{
+
 #10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
 ages.fit<-50:90
 years.fit<-1970:2017
 deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
 exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
-fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, family = "poisson")
-}
+iterations<-50 # Toy example, consider at least 2000 iterations
+fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10,
+family = "poisson",iter=iterations,chains=1)
+
 
 }
 \references{

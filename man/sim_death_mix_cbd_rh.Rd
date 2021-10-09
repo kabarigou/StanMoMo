@@ -8,9 +8,9 @@ rates from the cbd and rh models}
 sim_death_mix_cbd_rh(params_cbd, params_rh, years, ages, exposure, q)
 }
 \arguments{
-\item{params_cbd}{named lsit that contains the parameters of the cbd model}
+\item{params_cbd}{named list that contains the parameters of the cbd model}
 
-\item{params_rh}{named lsit that contains the parameters of the rh model}
+\item{params_rh}{named list that contains the parameters of the rh model}
 
 \item{years}{vector of calendar year}
 

@@ -37,7 +37,7 @@ An object of class \code{stanfit} returned by \code{rstan::sampling}.
 \description{
 Fit and Forecast Bayesian M6 model (CBD with cohort effect) introduced in Cairns et al (2009).
 The model can be fitted with a Poisson or Negative-Binomial distribution. The function outputs posteriors distributions for each parameter,
-predicted death rates and log-likehoods.
+predicted death rates and log-likelihoods.
 }
 \details{
 The created model is either a log-Poisson or a log-Negative-Binomial version of
@@ -61,7 +61,7 @@ The variance-covariance matrix of the error term is defined by
 \deqn{\boldsymbol{\Sigma}=\left(\begin{array}{cc}\sigma_1^{2} & \rho_{\Sigma} \sigma_1 \sigma_2 \\\rho_{\Sigma} \sigma_1 \sigma_{Y} & \sigma_2^{2}\end{array}\right)}
 where the variance coefficients have independent exponential priors: \eqn{\sigma_1, \sigma_2 \sim Exp(0.1)}
 and the correlation parameter has a uniform prior: \eqn{\rho_{\Sigma} \sim U\left[-1,1\right]}.
-As for the other models, the overdisperion parameter has a prior distribution given by
+As for the other models, the overdispersion parameter has a prior distribution given by
 \deqn{\frac{1}{\phi} \sim Half-N(0,1).}
 
 For the cohort term, we consider a second order autoregressive process (AR(2)):
@@ -72,14 +72,16 @@ To close the model specification, we impose some vague priors assumptions on the
 }
 \examples{
 
-\dontrun{
+
 #10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
-ages.fit<-50:90
-years.fit<-1970:2017
+ages.fit<-70:90
+years.fit<-1990:2010
 deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
 exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
-fitM6=m6_stan(death = deathFR,exposure=exposureFR, age=ages.fit,forecast = 10, family = "poisson")
-}
+iterations<-50 # Toy example, consider at least 2000 iterations
+fitM6=m6_stan(death = deathFR,exposure=exposureFR, age=ages.fit,forecast = 5,
+family = "poisson",iter=iterations,chains=1)
+
 
 
 }

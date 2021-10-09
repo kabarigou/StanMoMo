@@ -127,8 +127,8 @@ sim_death_m6 <- function(k, k2, g, phi, years, ages, exposure){
 #' Simulation of death counts from a hybrid model that averages the mortality
 #' rates from the cbd and rh models
 #'
-#' @param params_cbd named lsit that contains the parameters of the cbd model
-#' @param params_rh named lsit that contains the parameters of the rh model
+#' @param params_cbd named list that contains the parameters of the cbd model
+#' @param params_rh named list that contains the parameters of the rh model
 #' @param years vector of calendar year
 #' @param ages vector of ages
 #' @param exposure matrix of exposure data
@@ -165,7 +165,7 @@ sim_death_mix_cbd_rh <- function(params_cbd, params_rh, years, ages, exposure, q
 #' @param k2 second vector of time component
 #' @param b vector of age/time component
 #' @param g vector of cohort component
-#' @param phi dispersioon parameter
+#' @param phi dispersion parameter
 #' @param years vector of calendar year
 #' @param ages vector of ages
 #' @param exposure matrix of exposure

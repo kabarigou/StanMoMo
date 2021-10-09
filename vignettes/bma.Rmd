@@ -56,7 +56,7 @@ Typically, $\operatorname{elpd}^{k}$ will be higher if the model $M_k$ better pr
 $$ 
 w_{k}=\frac{\exp \left(\operatorname{elpd}^{k}\right)}{\sum_{k=1}^{K} \exp \left(\operatorname{elpd}^{k}\right)}.
 $$
-Hence, the pseudo-BMA finds the relative weights proportional to the elpd of each model. As discussed in our paper Barigou et al. (2021), while this method provides a simple weight mechanism, stacking tends to outperfom pseudo-BMA.
+Hence, the pseudo-BMA finds the relative weights proportional to the elpd of each model. As discussed in our paper Barigou et al. (2021), while this method provides a simple weight mechanism, stacking tends to outperform pseudo-BMA.
 
 ## Implementation
 

@@ -506,13 +506,13 @@ public:
                         "assigning variable g");
             current_statement_begin__ = 44;
             stan::model::assign(g, 
-                        stan::model::cons_list(stan::model::index_min_max(2, (C - 2)), stan::model::nil_index_list()), 
-                        gs, 
+                        stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
+                        -(sum(stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(1, (C - 3)), stan::model::nil_index_list()), "gs"))), 
                         "assigning variable g");
             current_statement_begin__ = 45;
             stan::model::assign(g, 
-                        stan::model::cons_list(stan::model::index_uni((C - 1)), stan::model::nil_index_list()), 
-                        -(sum(stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(1, (C - 3)), stan::model::nil_index_list()), "gs"))), 
+                        stan::model::cons_list(stan::model::index_min_max(3, (C - 1)), stan::model::nil_index_list()), 
+                        gs, 
                         "assigning variable g");
             current_statement_begin__ = 46;
             stan::model::assign(g, 
@@ -581,9 +581,9 @@ public:
             current_statement_begin__ = 58;
             lp_accum__.add(normal_log(stan::model::rvalue(ks, stan::model::cons_list(stan::model::index_min_max(2, (T - 1)), stan::model::nil_index_list()), "ks"), add(c, stan::model::rvalue(ks, stan::model::cons_list(stan::model::index_min_max(1, (T - 2)), stan::model::nil_index_list()), "ks")), get_base1(sigma, 1, "sigma", 1)));
             current_statement_begin__ = 60;
-            lp_accum__.add(normal_log(get_base1(gs, 1, "gs", 1), 0, get_base1(sigma, 2, "sigma", 1)));
+            lp_accum__.add(normal_log(get_base1(gs, 1, "gs", 1), (psi * get_base1(g, 2, "g", 1)), get_base1(sigma, 2, "sigma", 1)));
             current_statement_begin__ = 61;
-            lp_accum__.add(normal_log(get_base1(gs, 2, "gs", 1), (psi * get_base1(gs, 1, "gs", 1)), get_base1(sigma, 2, "sigma", 1)));
+            lp_accum__.add(normal_log(get_base1(gs, 2, "gs", 1), ((psi * get_base1(gs, 1, "gs", 1)) + (psi2 * get_base1(g, 2, "g", 1))), get_base1(sigma, 2, "sigma", 1)));
             current_statement_begin__ = 62;
             lp_accum__.add(normal_log(stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(3, (C - 3)), stan::model::nil_index_list()), "gs"), add(multiply(psi, stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(2, (C - 4)), stan::model::nil_index_list()), "gs")), multiply(psi2, stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(1, (C - 5)), stan::model::nil_index_list()), "gs"))), get_base1(sigma, 2, "sigma", 1)));
             current_statement_begin__ = 64;
@@ -816,13 +816,13 @@ public:
                         "assigning variable g");
             current_statement_begin__ = 44;
             stan::model::assign(g, 
-                        stan::model::cons_list(stan::model::index_min_max(2, (C - 2)), stan::model::nil_index_list()), 
-                        gs, 
+                        stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
+                        -(sum(stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(1, (C - 3)), stan::model::nil_index_list()), "gs"))), 
                         "assigning variable g");
             current_statement_begin__ = 45;
             stan::model::assign(g, 
-                        stan::model::cons_list(stan::model::index_uni((C - 1)), stan::model::nil_index_list()), 
-                        -(sum(stan::model::rvalue(gs, stan::model::cons_list(stan::model::index_min_max(1, (C - 3)), stan::model::nil_index_list()), "gs"))), 
+                        stan::model::cons_list(stan::model::index_min_max(3, (C - 1)), stan::model::nil_index_list()), 
+                        gs, 
                         "assigning variable g");
             current_statement_begin__ = 46;
             stan::model::assign(g, 

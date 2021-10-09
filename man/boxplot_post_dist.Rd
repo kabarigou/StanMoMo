@@ -23,15 +23,17 @@ The function generates boxplots for the posterior distribution of the main param
 }
 \examples{
 
-\dontrun{
-years <- 1959:2019
+
+years <- 1990:2017
 ages <- 50:90
 cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
-death <- load_HMD_data('BEL', 'Deaths_1x1', years, ages, "Male")$mat
-exposure <- load_HMD_data('BEL', 'Exposures_1x1', years, ages, "Male")$mat
-stan_fit <- fit_mo_mo("m6", death , exposure, ages, 0, 5, "nb", 1, 4, log_marg = F)
+death <- FRMaleData$Dxt[formatC(ages),formatC(years)]
+exposure <- FRMaleData$Ext[formatC(ages),formatC(years)]
+iterations<-50 # Toy example, consider at least 2000 iterations
+stan_fit <- fit_mo_mo("m6", death , exposure, ages, 0, 5, "nb", 1, 4,
+log_marg = FALSE,iter=iterations)
 boxplot_post_dist(stan_fit, "k", ages, years)
 boxplot_post_dist(stan_fit, "g", ages, years)
-}
+
 
 }

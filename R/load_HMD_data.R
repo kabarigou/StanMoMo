@@ -16,8 +16,12 @@
 #' @export
 #'
 #' @examples
+#'
+#'
 #' death_fra <- load_HMD_data('FRATNP', 'Deaths_1x1', 1970:2017, 50:90, "Male")
 #' exposure_fra <- load_HMD_data('FRATNP', 'Exposures_1x1', 1970:2017, 50:90, "Male")
+#'
+#'
 
 load_HMD_data <- function(CNTRY, item, cal_year_range, age_range, gender){
   Age<-NULL

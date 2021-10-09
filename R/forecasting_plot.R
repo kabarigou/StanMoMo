@@ -10,18 +10,19 @@
 #' @param exposure matrix of observed exposures
 #' @param ages.plot ages to be plotted
 #'
-#'
+#' @return A ggplot object that can be further customized using the **ggplot2** package.
 #' @export
 #'
 #' @examples
 #'
-#' \dontrun{
-#' years <- 1980:2018
+#' \donttest{
+#' years <- 1980:2017
 #' ages <- 50:90
-#' death <- load_HMD_data('BEL', 'Deaths_1x1', years, ages, "Male")$mat
-#' exposure <- load_HMD_data('BEL', 'Exposures_1x1', years, ages, "Male")$mat
-#' fitLC<-lc_stan(death = deathFR,exposure=exposureFR, forecast = 10,
-#' family = "poisson",chains=1,cores=1)
+#' death <- FRMaleData$Dxt[formatC(ages),formatC(years)]
+#' exposure <- FRMaleData$Ext[formatC(ages),formatC(years)]
+#' iterations<-1000 # Toy example, consider at least 2000 iterations
+#' fitLC<-lc_stan(death = death,exposure=exposure, forecast = 10,
+#' family = "poisson",chains=1,cores=1,iter=iterations)
 #' forecasting_plot(fitLC,ages,years,death,exposure,c(65,75,85))
 #' }
 #'

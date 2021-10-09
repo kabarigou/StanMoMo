@@ -26,6 +26,10 @@ Extract different quantities of interest from the HMD website, for instance deat
 for a certain age range and year range.
 }
 \examples{
+
+
 death_fra <- load_HMD_data('FRATNP', 'Deaths_1x1', 1970:2017, 50:90, "Male")
 exposure_fra <- load_HMD_data('FRATNP', 'Exposures_1x1', 1970:2017, 50:90, "Male")
+
+
 }

@@ -19,40 +19,41 @@
 #'
 #'@examples
 #'
-#'\dontrun{
-#' years <- 1959:2019
+#'
+#' years <- 1990:2017
 #' ages <- 50:90
 #' cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
-#' death <- load_HMD_data('BEL', 'Deaths_1x1', years, ages, "Male")$mat
-#' exposure <- load_HMD_data('BEL', 'Exposures_1x1', years, ages, "Male")$mat
-#' stan_fit <- fit_mo_mo("m6", death , exposure, ages, 0, 5, "nb", 1, 4, log_marg = F)
+#' death <- FRMaleData$Dxt[formatC(ages),formatC(years)]
+#' exposure <- FRMaleData$Ext[formatC(ages),formatC(years)]
+#' stan_fit <- fit_mo_mo("m6", death , exposure, ages, 0, 5, "nb", 1, 4,
+#' log_marg = FALSE,iter=50)
 #' boxplot_post_dist(stan_fit, "k", ages, years)
 #' boxplot_post_dist(stan_fit, "g", ages, years)
-#'}
+#'
 #'
 fit_mo_mo <- function(mortality_model ="lc", death, exposure, ages = 50:90, validation = 0, forecast = 1, family = "nb",
-                      chains=1, cores=4, log_marg = F, iter = 2000){
+                      chains=1, cores=4, log_marg = FALSE, iter = 2000){
   if(!log_marg){
     if(mortality_model == "lc"){
 
-      res <- lc_stan(death = death, exposure=exposure, validation=validation, forecast = forecast, family = family ,chains=chains,cores=cores)
+      res <- lc_stan(death = death, exposure=exposure, validation=validation, forecast = forecast, family = family ,chains=chains,cores=cores, iter = iter)
 
     }else if(mortality_model == "apc"){
 
-      res <- apc_stan(death = death,exposure=exposure, validation=validation,forecast = forecast, family = family,chains=chains,cores=cores)
+      res <- apc_stan(death = death,exposure=exposure, validation=validation,forecast = forecast, family = family,chains=chains,cores=cores, iter = iter)
 
     }else if(mortality_model == "cbd"){
 
       res <- cbd_stan(death = death,exposure=exposure, age=ages,
-                      validation = validation, forecast = forecast, family = family,chains=chains,cores=cores)
+                      validation = validation, forecast = forecast, family = family,chains=chains,cores=cores, iter = iter)
 
     }else if(mortality_model == "rh"){
 
-      res <- rh_stan(death = death, exposure=exposure, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
+      res <- rh_stan(death = death, exposure=exposure, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores, iter = iter)
 
     }else if(mortality_model == "m6"){
 
-      res <- m6_stan(death = death, exposure=exposure,  age=ages, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores)
+      res <- m6_stan(death = death, exposure=exposure,  age=ages, validation=validation,forecast = forecast, family = family, chains=chains,cores=cores, iter = iter)
 
 
     }
@@ -133,16 +134,18 @@ extract_map <- function(stan_fit){
 #'
 #' @examples
 #'
-#' \dontrun{
-#' years <- 1959:2019
+#'
+#' years <- 1990:2017
 #' ages <- 50:90
 #' cohorts <- sort(unique(as.vector(sapply(years, function(year) year - ages))))
-#' death <- load_HMD_data('BEL', 'Deaths_1x1', years, ages, "Male")$mat
-#' exposure <- load_HMD_data('BEL', 'Exposures_1x1', years, ages, "Male")$mat
-#' stan_fit <- fit_mo_mo("m6", death , exposure, ages, 0, 5, "nb", 1, 4, log_marg = F)
+#' death <- FRMaleData$Dxt[formatC(ages),formatC(years)]
+#' exposure <- FRMaleData$Ext[formatC(ages),formatC(years)]
+#' iterations<-50 # Toy example, consider at least 2000 iterations
+#' stan_fit <- fit_mo_mo("m6", death , exposure, ages, 0, 5, "nb", 1, 4,
+#' log_marg = FALSE,iter=iterations)
 #' boxplot_post_dist(stan_fit, "k", ages, years)
 #' boxplot_post_dist(stan_fit, "g", ages, years)
-#' }
+#'
 #'
 boxplot_post_dist <- function(stan_fit, parm_name, ages, years){
   x<- parm <- g_t_x <- phi <- NULL
@@ -189,7 +192,7 @@ boxplot_post_dist <- function(stan_fit, parm_name, ages, years){
           plot.title = ggplot2::element_text(size = 24, hjust = 0.5))
     }
     else if(parm_name ==  "g"){
-      cohorts_df <- data.frame(c = sort(unique(as.vector(sapply(years[-1], function(year) year - ages)))),
+      cohorts_df <- data.frame(c = sort(unique(as.vector(sapply(years, function(year) year - ages)))),
                                g_stan = names(dplyr::select(as.data.frame(stan_fit), tidyselect::starts_with("g["))))
       post_df <-dplyr::select(
         dplyr::left_join(

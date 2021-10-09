@@ -3,6 +3,12 @@ template:
   params:
     bootswatch: cerulean
 
+authors:
+  Karim Barigou:
+    href: https://karimbarigou.com/
+  Pierre-Olivier Goffard:
+    href: http://pierre-olivier.goffard.me/
+
 reference:
 - title: Bayesian mortality modeling
   desc:  Fit and forecast mortality models
@@ -41,26 +47,11 @@ reference:
   contents:
   - StanMoMo-package
 
-articles:
-- title: Bayesian model averaging
-  navbar: ~
-  contents:
-  - bma
 
 navbar:
   structure:
-    left:  [home, intro, articles, reference]
+    left: [home, intro, articles, reference, news]
     right: [github]
-  components:
-    articles:
-    text: Bayesian mortality modelling
-    href: articles/StanMoMo.html
-    text: Bayesian model averaging
-    href: articles/bma.html
 
 
-authors:
-  Karim Barigou:
-    href: https://karimbarigou.com/
-  Pierre-Olivier Goffard:
-    href: http://pierre-olivier.goffard.me/
+

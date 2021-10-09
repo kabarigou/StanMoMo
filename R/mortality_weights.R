@@ -7,7 +7,7 @@
 #'
 #' Mortality model averaging via stacking of predictive distributions or pseudo-BMA weighting.
 #' Both approaches were proposed in Yao et al. (2018) based leave-one-out cross-validation which is not suited for forecasting.
-#' Barigou et al. (2021) adapted both appraoches based on leave-future-out validation which is more appropriate for mortality forecasting.
+#' Barigou et al. (2021) adapted both approaches based on leave-future-out validation which is more appropriate for mortality forecasting.
 #'
 #'@details
 #'
@@ -35,7 +35,7 @@
 #'
 #'@examples
 #'
-#' \dontrun{
+#' \donttest{
 #' #10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model
 #' #where the 10 last years are held out for validation. We search for the model weights between
 #' #the Lee-Carter model and the RH model (Lee-Carter with cohort effect).
@@ -43,10 +43,14 @@
 #' years.fit<-1970:2017
 #' deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
 #' exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
-#' fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, validation=10,family = "poisson")
-#' fitRH=rh_stan(death = deathFR,exposure=exposureFR, forecast = 10, validation=10,family = "poisson")
+#' iterations<-1000 # Toy example, consider at least 2000 iterations
+#' fitLC=lc_stan(death = deathFR,exposure=exposureFR, forecast = 10, validation=10,
+#' family = "poisson",iter=iterations,chains=1)
+#' fitRH=rh_stan(death = deathFR,exposure=exposureFR, forecast = 10, validation=10,
+#' family = "poisson",iter=iterations,chains=1)
 #' model_weights<-mortality_weights(list(fitLC,fitRH))
 #' }
+#'
 mortality_weights <- function(X) {
 
   log_lik_list <- lapply(X, loo::extract_log_lik,parameter_name = "log_lik2")

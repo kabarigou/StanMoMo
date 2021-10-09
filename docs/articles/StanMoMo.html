@@ -40,24 +40,36 @@
 <li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-
+     
   </a>
 </li>
 <li>
   <a href="../articles/StanMoMo.html">Get started</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../articles/bma.html">Bayesian model averaging</a>
+      <a href="../articles/bma.html">Bayesian Model Averaging</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/kabarigou/StanMoMo/">
     <span class="fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
@@ -68,39 +80,40 @@
 </div>
 <!--/.navbar -->
 
-
+      
 
       </header><script src="StanMoMo_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Bayesian Mortality Modeling</h1>
-
-
+            
+      
       <small class="dont-index">Source: <a href="https://github.com/kabarigou/StanMoMo/blob/master/vignettes/StanMoMo.Rmd"><code>vignettes/StanMoMo.Rmd</code></a></small>
       <div class="hidden name"><code>StanMoMo.Rmd</code></div>
 
     </div>
 
-
-
+    
+    
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kabarigou/StanMoMo">StanMoMo</a></span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: package 'StanMoMo' was built under R version 4.0.5</code></pre>
 <div id="introduction-bayesian-lee-carter-with-stan" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction-bayesian-lee-carter-with-stan" class="anchor"></a>Introduction: Bayesian Lee-Carter with Stan</h2>
 <p>First, we explain how to estimate the Lee-Carter model using the <code>lc_stan</code> function in the <code>StanMoMo</code> package.</p>
-<p>For illustration, the package already includes the object <code>FRMaleData</code> containing deaths (<code>FRMaleData$Dxt</code>) and central exposures (<code>FRMaleData$Ext</code>) of French males for the period 1816-2017 and for ages 0-110 extracted from the <a href="https://www.mortality.org/">Human Mortality Database</a>. In this example, we focus on ages 50-90 and the period 1970-2017. This can be obtained via:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ages.fit</span><span class="op">&lt;-</span><span class="fl">50</span><span class="op">:</span><span class="fl">90</span>
-<span class="va">years.fit</span><span class="op">&lt;-</span><span class="fl">1970</span><span class="op">:</span><span class="fl">2017</span>
+<p>For illustration, the package already includes the object <code>FRMaleData</code> containing deaths (<code>FRMaleData$Dxt</code>) and central exposures (<code>FRMaleData$Ext</code>) of French males for the period 1816-2017 and for ages 0-110 extracted from the <a href="https://www.mortality.org/">Human Mortality Database</a>. In this example, we focus on ages 60-90 and the period 1980-2010. This can be obtained via:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ages.fit</span><span class="op">&lt;-</span><span class="fl">60</span><span class="op">:</span><span class="fl">90</span>
+<span class="va">years.fit</span><span class="op">&lt;-</span><span class="fl">1980</span><span class="op">:</span><span class="fl">2010</span>
 <span class="va">deathFR</span><span class="op">&lt;-</span><span class="va">FRMaleData</span><span class="op">$</span><span class="va">Dxt</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="va">ages.fit</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="va">years.fit</span><span class="op">)</span><span class="op">]</span>
 <span class="va">exposureFR</span><span class="op">&lt;-</span><span class="va">FRMaleData</span><span class="op">$</span><span class="va">Ext</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="va">ages.fit</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/formatc.html">formatC</a></span><span class="op">(</span><span class="va">years.fit</span><span class="op">)</span><span class="op">]</span></code></pre></div>
-<p>As a reminder, the Lee-Carter model assumes that the log death rates are given by <span class="math display">\[
+<p>As a reminder, the Lee-Carter model assumes that the log death rates are given by <span class="math display">\[ 
 \log \mu_{xt}=\alpha_x+\beta_x \kappa_t
 \]</span> To ensure identifiability of the model, we assume that <span class="math display">\[
 \sum_x \beta_x=1,\kappa_1=0
 \]</span></p>
-<p>Moreover, we assume that the period parameter follows a random walk with drift: <span class="math display">\[
+<p>Moreover, we assume that the period parameter follows a random walk with drift: <span class="math display">\[ 
 \kappa_t \sim \mathcal{N}(c+ \kappa_{t-1},\sigma)
 \]</span> The choice of priors for each parameter can be found in the documentation of each function.</p>
 </div>
@@ -110,19 +123,42 @@
 <p>All the parameters can be estimated either under a Poisson model with argument <code>family = "poisson"</code> or under a Negative-Binomial model which includes an additional overdispersion parameter <span class="math inline">\(\phi\)</span> with argument <code>family="nb"</code>: <span class="math display">\[
 D_{xt} \sim Poisson (e_{xt}\mu_{xt}) \text{ or } D_{xt} \sim NB (e_{xt}\mu_{xt},\phi)
 \]</span> Given the matrix of deaths <code>deathFR</code> and the matrix of central exposures <code>exposureFR</code>, we can infer the posterior distribution of all the parameters and obtain death rates forecasts for the next 10 years under a Poisson model by a simple call to the <code>lc_stan</code> function:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fitLC</span><span class="op">=</span><span class="fu"><a href="../reference/lc_stan.html">lc_stan</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">deathFR</span>,exposure<span class="op">=</span><span class="va">exposureFR</span>, forecast <span class="op">=</span> <span class="fl">10</span>, family <span class="op">=</span> <span class="st">"poisson"</span>,chains<span class="op">=</span><span class="fl">2</span>,cores<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p>Internally, the sampling is performed through the <code><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">rstan::sampling</a></code> function. By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). Moreover, by default, Stan uses 1 core but we recommend using as many processors as the hardware and RAM allow (up to the number of chains). All this can be set using additional arguments : for instance, if one wants to sample 2 chains of 3000 iterations with 1000 warm-up samples, the call is:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fitLC</span><span class="op">=</span><span class="fu"><a href="../reference/lc_stan.html">lc_stan</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">deathFR</span>,exposure<span class="op">=</span><span class="va">exposureFR</span>, forecast <span class="op">=</span> <span class="fl">10</span>, family <span class="op">=</span> <span class="st">"poisson"</span>,chains<span class="op">=</span><span class="fl">2</span>,iter<span class="op">=</span><span class="fl">3000</span>,warmup<span class="op">=</span><span class="fl">1000</span>,cores<span class="op">=</span><span class="fl">2</span><span class="op">)</span></code></pre></div>
-<p>For additional arguments, the reader can refer to the <code><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">rstan::sampling</a></code> documentation.</p>
+<code class="sourceCode R"><span class="va">fitLC</span><span class="op">=</span><span class="fu"><a href="../reference/lc_stan.html">lc_stan</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">deathFR</span>,exposure<span class="op">=</span><span class="va">exposureFR</span>, forecast <span class="op">=</span> <span class="fl">10</span>, family <span class="op">=</span> <span class="st">"poisson"</span>,chains<span class="op">=</span><span class="fl">1</span>,iter<span class="op">=</span><span class="fl">1000</span>,cores<span class="op">=</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## SAMPLING FOR MODEL 'leecarter' NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:   1 / 1000 [  0%]  (Warmup)
+## Chain 1: Iteration: 100 / 1000 [ 10%]  (Warmup)
+## Chain 1: Iteration: 200 / 1000 [ 20%]  (Warmup)
+## Chain 1: Iteration: 300 / 1000 [ 30%]  (Warmup)
+## Chain 1: Iteration: 400 / 1000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 500 / 1000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 501 / 1000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 600 / 1000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 700 / 1000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 800 / 1000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 900 / 1000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 1000 / 1000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 5.952 seconds (Warm-up)
+## Chain 1:                2.437 seconds (Sampling)
+## Chain 1:                8.389 seconds (Total)
+## Chain 1:</code></pre>
+<p>Internally, the sampling is performed through the <code><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">rstan::sampling</a></code> function. By default, Stan samples four Markov chains of 2000 iterations. For each chain, there are 1000 warmup iterations (hence, 4000 post warm-up draws in total). Moreover, by default, Stan uses 1 core but we recommend using as many processors as the hardware and RAM allow (up to the number of chains). All this can be set using the following additional arguments : for instance, if one wants to sample 2 chains of 3000 iterations with 1000 warm-up samples, one can add <code>chains=2,iter=3000,warmup=1000</code>.</p>
+<p>For additional arguments, the reader may refer to the <code><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">rstan::sampling</a></code> documentation.</p>
 <p>The output is an object of class <code>stanfit</code> (cf. <a href="https://mc-stan.org/rstan/articles/stanfit_objects.html">the <strong>rstan</strong> package</a>) which contains, among others, posterior draws, posterior summary statistics and convergence diagnostics.</p>
 <p>The easiest way to extract the posterior draws is to call the <code><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">rstan::extract</a></code> function which returns a list with named components corresponding to the model parameters.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Extract model parameters from the fitted model</span>
 <span class="va">params</span><span class="op">&lt;-</span><span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span><span class="op">(</span><span class="va">fitLC</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "a"       "b"       "c"       "ks"      "sigma"   "k"       "phi"
+<pre><code>##  [1] "a"       "b"       "c"       "ks"      "sigma"   "k"       "phi"    
 ##  [8] "k_p"     "mufor"   "log_lik" "pos"     "pos2"    "pos3"    "lp__"</code></pre>
 <p>Among these parameters, we find</p>
 <ul>
@@ -144,30 +180,30 @@ D_{xt} \sim Poisson (e_{xt}\mu_{xt}) \text{ or } D_{xt} \sim NB (e_{xt}\mu_{xt},
 <code>c</code> and <code>sigma</code> : drift and standard deviation of the random walk with drift.</li>
 </ul>
 <p>The user can have access to an interface for interactive MCMC diagnostics, plots and tables helpful for analyzing posterior samples through the <code>shinystan</code> package (fore more details, you can check the <a href="http://mc-stan.org/shinystan/">shinystan web page</a>)</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://mc-stan.org/">shinystan</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/shinystan/man/launch_shinystan.html">launch_shinystan</a></span><span class="op">(</span><span class="va">fitLC</span><span class="op">)</span></code></pre></div>
 <p>Note: you need to close the shiny app before continuing in R.</p>
 <p>Moreover, the package also includes functions to represent boxplots of the posterior distribution as well as fan plots for death rates predictions based on the <code>ggplot2</code> and <code>ggfan</code> packages.</p>
 <p>For instance, boxplots for the parameters from the Lee-Carter model can be obtained via:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/boxplot_post_dist.html">boxplot_post_dist</a></span><span class="op">(</span><span class="va">fitLC</span>, <span class="st">"a"</span>, <span class="va">ages.fit</span>, <span class="va">years.fit</span><span class="op">)</span></code></pre></div>
-<p><img src="StanMoMo_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/boxplot_post_dist.html">boxplot_post_dist</a></span><span class="op">(</span><span class="va">fitLC</span>, <span class="st">"b"</span>, <span class="va">ages.fit</span>, <span class="va">years.fit</span><span class="op">)</span></code></pre></div>
-<p><img src="StanMoMo_files/figure-html/unnamed-chunk-7-2.png" width="700"></p>
+<code class="sourceCode R"><span class="fu"><a href="../reference/boxplot_post_dist.html">boxplot_post_dist</a></span><span class="op">(</span><span class="va">fitLC</span>, <span class="st">"a"</span>, <span class="va">ages.fit</span>, <span class="va">years.fit</span><span class="op">)</span></code></pre></div>
+<p><img src="StanMoMo_files/figure-html/unnamed-chunk-6-1.png" width="60%" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/boxplot_post_dist.html">boxplot_post_dist</a></span><span class="op">(</span><span class="va">fitLC</span>, <span class="st">"b"</span>, <span class="va">ages.fit</span>, <span class="va">years.fit</span><span class="op">)</span></code></pre></div>
+<p><img src="StanMoMo_files/figure-html/unnamed-chunk-6-2.png" width="60%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/boxplot_post_dist.html">boxplot_post_dist</a></span><span class="op">(</span><span class="va">fitLC</span>, <span class="st">"k"</span>, <span class="va">ages.fit</span>, <span class="va">years.fit</span><span class="op">)</span></code></pre></div>
-<p><img src="StanMoMo_files/figure-html/unnamed-chunk-7-3.png" width="700"></p>
+<p><img src="StanMoMo_files/figure-html/unnamed-chunk-6-3.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="forecasting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#forecasting" class="anchor"></a>Forecasting</h2>
 <p>All forecast death rates <span class="math inline">\(\mu_{xt}\)</span> are stored in the output <code>mufor</code>. We point out that the output <code>mufor</code> is a matrix of dimension <span class="math inline">\(N\)</span> <span class="math inline">\(\times\)</span> <span class="math inline">\((A . M)\)</span> where the number of rows <span class="math inline">\(N\)</span> is the posterior sample size and the number of columns <span class="math inline">\(A.M\)</span> is the product of <span class="math inline">\(A\)</span> the age dimension and <span class="math inline">\(M\)</span> the number of forecast years.</p>
 <p>Predictions of death rates for the next 10 years for ages 65, 75 and 85 with prediction intervals can be obtained as follows via</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/forecasting_plot.html">forecasting_plot</a></span><span class="op">(</span><span class="va">fitLC</span>,<span class="va">ages.fit</span>,<span class="va">years.fit</span>,<span class="va">deathFR</span>,<span class="va">exposureFR</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">65</span>,<span class="fl">75</span>,<span class="fl">85</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="StanMoMo_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="StanMoMo_files/figure-html/unnamed-chunk-7-1.png" width="60%" style="display: block; margin: auto;"></p>
 </div>
 <div id="other-models" class="section level2">
 <h2 class="hasAnchor">
@@ -205,7 +241,7 @@ D_{xt} \sim Poisson (e_{xt}\mu_{xt}) \text{ or } D_{xt} \sim NB (e_{xt}\mu_{xt},
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fitRH</span><span class="op">=</span><span class="fu"><a href="../reference/rh_stan.html">rh_stan</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">deathFR</span>,exposure<span class="op">=</span><span class="va">exposureFR</span>, forecast <span class="op">=</span> <span class="fl">10</span>, family <span class="op">=</span> <span class="st">"poisson"</span>,cores<span class="op">=</span><span class="fl">4</span><span class="op">)</span>
 <span class="va">fitAPC</span><span class="op">=</span><span class="fu"><a href="../reference/apc_stan.html">apc_stan</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">deathFR</span>,exposure<span class="op">=</span><span class="va">exposureFR</span>, forecast <span class="op">=</span> <span class="fl">10</span>, family <span class="op">=</span> <span class="st">"poisson"</span>,cores<span class="op">=</span><span class="fl">4</span><span class="op">)</span>
 <span class="va">fitCBD</span><span class="op">=</span><span class="fu"><a href="../reference/cbd_stan.html">cbd_stan</a></span><span class="op">(</span>death <span class="op">=</span> <span class="va">deathFR</span>,exposure<span class="op">=</span><span class="va">exposureFR</span>, age<span class="op">=</span><span class="va">ages.fit</span>, forecast<span class="op">=</span><span class="fl">10</span>,family <span class="op">=</span> <span class="st">"poisson"</span>,cores<span class="op">=</span><span class="fl">4</span><span class="op">)</span>
@@ -236,7 +272,7 @@ D_{xt} \sim Poisson (e_{xt}\mu_{xt}) \text{ or } D_{xt} \sim NB (e_{xt}\mu_{xt},
       </footer>
 </div>
 
-
+  
 
 
   </body>
