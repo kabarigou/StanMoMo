@@ -1,3 +1,6 @@
+[![R-CMD-check](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml)  [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/StanMoMo)](https://cran.r-project.org/package=StanMoMo)
+
+[Package Website](https://kabarigou.github.io/StanMoMo/)
 
 StanMoMo
 ================
@@ -15,16 +18,13 @@ and Bayesian model averaging by leave-future-out validation.
 
 ## Installation
 
-If you have R 4.0.0 or later and use Windows or Mac, you can directly
-install the binary package via
+To install the stable version on CRAN:
 
 ``` r
-install.packages("StanMoMo",repos=c("https://cloud.r-project.org",
-"https://kabarigou.github.io/drat"),type = "binary",dependencies = TRUE)
+install.packages("StanMoMo")
 ```
 
-Otherwise, you can also install the source package from Github via
-`devtools`:
+To install the source package from Github: 
 
 ``` r
 install.packages("devtools")
@@ -42,7 +42,7 @@ After installing the package, you have to load the package via:
 library(StanMoMo)
 ```
 
-## Important note if you install from source (install\_github)
+## Comments if you install from source (install\_github)
 
 The main purpose of this package is to provide users high-level
 functions for estimating and forecasting mortality models in a Bayesian
@@ -57,5 +57,7 @@ instance, Rtools for Windows or Xcode on Mac, see
 [here](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) for
 more details).
 
-If you have any comments or suggestions about the package, feel free to
+## Feedback is greatly appreciated
+
+If you have any comments, suggestions for improvements or if you are motivated to contribute to the package, feel free to
 email <karim.barigou@univ-lyon1.fr>
