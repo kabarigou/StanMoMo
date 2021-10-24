@@ -61,3 +61,10 @@ more details).
 
 If you have any comments, suggestions for improvements or if you are motivated to contribute to the package, feel free to
 email <karim.barigou@univ-lyon1.fr>
+
+## Citation
+
+This package is related to our [paper](https://arxiv.org/abs/2103.15434). When referring to this package, please cite as 
+
+> Barigou, K., Goffard, P. O., Loisel, S., & Salhi, Y. (2021). Bayesian model averaging for mortality forecasting using leave-future-out validation. arXiv preprint 
+> arXiv:2103.15434.
