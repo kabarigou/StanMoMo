@@ -93,6 +93,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+
+<p><a href="https://kabarigou.github.io/StanMoMo/">Package Website</a></p>
 <div id="stanmomo" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#stanmomo" class="anchor"></a>StanMoMo</h1></div>
@@ -100,26 +103,38 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>If you have R 4.0.0 or later and use Windows or Mac, you can directly install the binary package via</p>
+<p>To install the stable version on CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"StanMoMo"</span>,repos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"https://cloud.r-project.org"</span>,
-<span class="st">"https://kabarigou.github.io/drat"</span><span class="op">)</span>,type <span class="op">=</span> <span class="st">"binary"</span>,dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Otherwise, you can also install the source package from Github via <code>devtools</code>:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"StanMoMo"</span><span class="op">)</span></code></pre></div>
+<p>To install the source package from Github:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">'kabarigou/StanMoMo'</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">'kabarigou/StanMoMo'</span><span class="op">)</span></code></pre></div>
 <p>The installation of the source package may take a few minutes (models need to be compiled). For this reason, we recommend to install the binary package instead. Once the package is installed, you can perform Bayesian mortality forecasting in a matter of seconds.</p>
 <p>After installing the package, you have to load the package via:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kabarigou/StanMoMo">StanMoMo</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="important-note-if-you-install-from-source-install_github" class="section level2">
+<div id="comments-if-you-install-from-source-install_github" class="section level2">
 <h2 class="hasAnchor">
-<a href="#important-note-if-you-install-from-source-install_github" class="anchor"></a>Important note if you install from source (install_github)</h2>
+<a href="#comments-if-you-install-from-source-install_github" class="anchor"></a>Comments if you install from source (install_github)</h2>
 <p>The main purpose of this package is to provide users high-level functions for estimating and forecasting mortality models in a Bayesian setting without requiring any knowledge of the Stan modeling language. This package depends on the <a href="https://mc-stan.org/rstan/">rstan</a> package, which translates the Stan model to C++ code, which is compiled into a dynamic shared object (DSO). If you install the binary package (what we recommend), the mortality models are already pre-compiled. If you install the source package, the models are compiled during the installation and therefore you need a C++ compiler on your machine (for instance, Rtools for Windows or Xcode on Mac, see <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">here</a> for more details).</p>
-<p>If you have any comments or suggestions about the package, feel free to email <a href="mailto:karim.barigou@univ-lyon1.fr" class="email">karim.barigou@univ-lyon1.fr</a></p>
+</div>
+<div id="feedback-is-greatly-appreciated" class="section level2">
+<h2 class="hasAnchor">
+<a href="#feedback-is-greatly-appreciated" class="anchor"></a>Feedback is greatly appreciated</h2>
+<p>If you have any comments, suggestions for improvements or if you are motivated to contribute to the package, feel free to email <a href="mailto:karim.barigou@univ-lyon1.fr" class="email">karim.barigou@univ-lyon1.fr</a></p>
+</div>
+<div id="citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#citation" class="anchor"></a>Citation</h2>
+<p>This package is related to our <a href="https://arxiv.org/abs/2103.15434">paper</a>. When referring to this package, please cite as</p>
+<blockquote>
+<p>Barigou, K., Goffard, P. O., Loisel, S., &amp; Salhi, Y. (2021). Bayesian model averaging for mortality forecasting using leave-future-out validation. arXiv preprint arXiv:2103.15434.</p>
+</blockquote>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -151,7 +166,14 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://cran.r-project.org/package=StanMoMo"><img src="https://www.r-pkg.org/badges/version/StanMoMo" alt="CRAN_Status_Badge"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
