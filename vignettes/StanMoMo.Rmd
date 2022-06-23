@@ -34,13 +34,6 @@ deathFR<-FRMaleData$Dxt[formatC(ages.fit),formatC(years.fit)]
 exposureFR<-FRMaleData$Ext[formatC(ages.fit),formatC(years.fit)]
 ```
 
-Alternatively, the package also includes the `load_HMD_data` function to extract mortality data from the [Human Mortality Database](https://www.mortality.org/). We can extract the mortality data on ages 60-90 and the period 1980-2010 via: 
-```{r}
-ages.fit<-60:90
-years.fit<-1980:2010
-deathFR<-load_HMD_data('FRATNP', 'Deaths_1x1', years.fit, ages.fit, "Male")$mat
-exposureFR<-load_HMD_data('FRATNP', 'Exposures_1x1', years.fit, ages.fit, "Male")$mat
-```
 
 As a reminder, the Lee-Carter model assumes that the log death rates are given by 
 $$ 

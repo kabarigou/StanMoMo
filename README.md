@@ -60,7 +60,7 @@ more details).
 ## Feedback is greatly appreciated
 
 If you have any comments, suggestions for improvements or if you are motivated to contribute to the package, feel free to
-email <karim.barigou@univ-lyon1.fr>
+email <karim290492@gmail.com>
 
 ## Citation
 

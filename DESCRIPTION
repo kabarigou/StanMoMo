@@ -1,6 +1,6 @@
 Package: StanMoMo
 Title: Bayesian Mortality Modelling with 'Stan'
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(person(given = "Karim", family = "Barigou", role = c("aut", "cre"), email = "karim290492@gmail.com",comment = c(ORCID = "0000-0003-3389-9596")),
     person(given = "Pierre-Olivier", family = "Goffard",role="aut",comment = c(ORCID = "0000-0002-2667-6207")))
 Description: Implementation of popular mortality models using the 'rstan' 
