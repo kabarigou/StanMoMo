@@ -74,7 +74,7 @@ predicted death rates and log-likelihoods." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">StanMoMo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -221,19 +221,52 @@ mortality models using data from England and Wales and the United States.
 North American Actuarial Journal, 13(1), 1-35.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples">
-
-<span class='co'>#10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model</span>
-<span class='va'>ages.fit</span><span class='op'>&lt;-</span><span class='fl'>70</span><span class='op'>:</span><span class='fl'>90</span>
-<span class='va'>years.fit</span><span class='op'>&lt;-</span><span class='fl'>1990</span><span class='op'>:</span><span class='fl'>2010</span>
-<span class='va'>deathFR</span><span class='op'>&lt;-</span><span class='va'>FRMaleData</span><span class='op'>$</span><span class='va'>Dxt</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>ages.fit</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>years.fit</span><span class='op'>)</span><span class='op'>]</span>
-<span class='va'>exposureFR</span><span class='op'>&lt;-</span><span class='va'>FRMaleData</span><span class='op'>$</span><span class='va'>Ext</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>ages.fit</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>years.fit</span><span class='op'>)</span><span class='op'>]</span>
-<span class='va'>iterations</span><span class='op'>&lt;-</span><span class='fl'>50</span> <span class='co'># Toy example, consider at least 2000 iterations</span>
-<span class='va'>fitM6</span><span class='op'>=</span><span class='fu'>m6_stan</span><span class='op'>(</span>death <span class='op'>=</span> <span class='va'>deathFR</span>,exposure<span class='op'>=</span><span class='va'>exposureFR</span>, age<span class='op'>=</span><span class='va'>ages.fit</span>,forecast <span class='op'>=</span> <span class='fl'>5</span>,
-family <span class='op'>=</span> <span class='st'>"poisson"</span>,iter<span class='op'>=</span><span class='va'>iterations</span>,chains<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
-
-
-
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#10-year forecasts for French data for ages 50-90 and years 1970-2017 with a log-Poisson model</span></span>
+<span class='r-in'><span class='va'>ages.fit</span><span class='op'>&lt;-</span><span class='fl'>70</span><span class='op'>:</span><span class='fl'>90</span></span>
+<span class='r-in'><span class='va'>years.fit</span><span class='op'>&lt;-</span><span class='fl'>1990</span><span class='op'>:</span><span class='fl'>2010</span></span>
+<span class='r-in'><span class='va'>deathFR</span><span class='op'>&lt;-</span><span class='va'>FRMaleData</span><span class='op'>$</span><span class='va'>Dxt</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>ages.fit</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>years.fit</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>exposureFR</span><span class='op'>&lt;-</span><span class='va'>FRMaleData</span><span class='op'>$</span><span class='va'>Ext</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>ages.fit</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/formatc.html'>formatC</a></span><span class='op'>(</span><span class='va'>years.fit</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>iterations</span><span class='op'>&lt;-</span><span class='fl'>50</span> <span class='co'># Toy example, consider at least 2000 iterations</span></span>
+<span class='r-in'><span class='va'>fitM6</span><span class='op'>=</span><span class='fu'>m6_stan</span><span class='op'>(</span>death <span class='op'>=</span> <span class='va'>deathFR</span>,exposure<span class='op'>=</span><span class='va'>exposureFR</span>, age<span class='op'>=</span><span class='va'>ages.fit</span>,forecast <span class='op'>=</span> <span class='fl'>5</span>,</span>
+<span class='r-in'>family <span class='op'>=</span> <span class='st'>"poisson"</span>,iter<span class='op'>=</span><span class='va'>iterations</span>,chains<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> SAMPLING FOR MODEL 'M6model' NOW (CHAIN 1).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Gradient evaluation took 0.004 seconds</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 40 seconds.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: WARNING: There aren't enough warmup iterations to fit the</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:          three stages of adaptation as currently configured.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:          Reducing each adaptation stage to 15%/75%/10% of</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:          the given number of warmup iterations:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:            init_buffer = 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:            adapt_window = 20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:            term_buffer = 2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration:  1 / 50 [  2%]  (Warmup)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration:  5 / 50 [ 10%]  (Warmup)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 10 / 50 [ 20%]  (Warmup)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 15 / 50 [ 30%]  (Warmup)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 20 / 50 [ 40%]  (Warmup)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 25 / 50 [ 50%]  (Warmup)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 26 / 50 [ 52%]  (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 30 / 50 [ 60%]  (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 35 / 50 [ 70%]  (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 40 / 50 [ 80%]  (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 45 / 50 [ 90%]  (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: Iteration: 50 / 50 [100%]  (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:  Elapsed Time: 0.021 seconds (Warm-up)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:                0.027 seconds (Sampling)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1:                0.048 seconds (Total)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chain 1: </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
