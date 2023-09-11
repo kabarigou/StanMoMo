@@ -1,4 +1,4 @@
-[![R-CMD-check](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check.yaml)  [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/StanMoMo)](https://cran.r-project.org/package=StanMoMo)
+[![R-CMD-check](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check-2.yaml/badge.svg)](https://github.com/kabarigou/StanMoMo/actions/workflows/R-CMD-check-2.yaml)  [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/StanMoMo)](https://cran.r-project.org/package=StanMoMo)
 
 [Package Website](https://kabarigou.github.io/StanMoMo/)
 
