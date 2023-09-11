@@ -3,17 +3,17 @@
 data {
   int<lower = 1> J;                    // number of age categories
   int<lower = 1> T;                    // number of years
-  int d[J*T];                          // vector of deaths
+  array[J*T] int d;                          // vector of deaths
   vector[J* T] e;                      // vector of exposures
   vector[J] age;                        // vector of ages
   int<lower = 1> Tfor;                  // number of forecast years
    int<lower = 0> Tval;                  // number of validation years
-  int dval[J*Tval];                     // vector of deaths for validation
+  array[J*Tval] int dval;                     // vector of deaths for validation
   vector[J* Tval] eval;                 // vector of exposures for validation
   int<lower=0,upper=1> family;          // family = 0 for Poisson, 1 for NB
 }
 transformed data {
-  vector[J * T] offset = log(e);
+  vector[J * T] input_offset = log(e);
   vector[J * Tval] offset2 = log(eval);
   int<lower = 1> C;                     // index for the cohort parameter
   int<lower = 1> L;
@@ -21,10 +21,10 @@ transformed data {
   L=J*Tfor;
 }
 parameters {
-  real<lower=0> aux[family > 0]; // neg. binomial dispersion parameter
+  array[family > 0] real<lower=0> aux; // neg. binomial dispersion parameter
   real c1;                           // drift term for kappa_1
   real c2;                           // drift term for kappa_2
-  real<lower = 0> sigma[3];            // standard deviations for kappa_1 and kappa_2
+  array[3] real<lower = 0> sigma;            // standard deviations for kappa_1 and kappa_2
   vector[T] k;                          // vector of kappa_1
   vector[T] k2;                          // vector of kappa_2
   real<lower=-1,upper=1> rho;
@@ -47,7 +47,7 @@ model {
   vector[J * T] mu;
   int pos = 1;
   for (t in 1:T) for (x in 1:J) {
-    mu[pos] = offset[pos]+k[t]+(age[x]-mean(age))*k2[t]+g[t-x+J];      //Predictor dynamics
+    mu[pos] = input_offset[pos]+k[t]+(age[x]-mean(age))*k2[t]+g[t-x+J];      //Predictor dynamics
     pos += 1;
   }
 
@@ -108,7 +108,7 @@ generated quantities {
   }
   mufor=exp(mufor);
   for (t in 1:T) for (x in 1:J) {
-    log_lik[pos2] = poisson_log_lpmf (d[pos2] | offset[pos2]+ k[t]+(age[x]-mean(age))*k2[t]+g[t-x+J]);
+    log_lik[pos2] = poisson_log_lpmf (d[pos2] | input_offset[pos2]+ k[t]+(age[x]-mean(age))*k2[t]+g[t-x+J]);
      pos2 += 1;
 }
 
@@ -119,7 +119,7 @@ generated quantities {
   }
   else if (family > 0){
      for (t in 1:Tfor) for (x in 1:J) {
-      if ( fabs(k_p[t]+(age[x]-mean(age))*k2_p[t]+gf[T+t-x+J])>15   ){
+      if ( abs(k_p[t]+(age[x]-mean(age))*k2_p[t]+gf[T+t-x+J])>15   ){
          mufor[pos] = 0;
     pos += 1;
       } else {
@@ -128,7 +128,7 @@ generated quantities {
           }
   }
   for (t in 1:T) for (x in 1:J) {
-     log_lik[pos2] = neg_binomial_2_log_lpmf (d[pos2] | offset[pos2]+ k[t]+(age[x]-mean(age))*k2[t]+g[t-x+J],phi);
+     log_lik[pos2] = neg_binomial_2_log_lpmf (d[pos2] | input_offset[pos2]+ k[t]+(age[x]-mean(age))*k2[t]+g[t-x+J],phi);
      pos2 += 1;
 }
 

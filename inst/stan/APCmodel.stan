@@ -3,16 +3,16 @@
 data {
    int<lower = 1> J;                    // number of age categories
   int<lower = 1> T;                    // number of years
-  int d[J*T];                          // vector of deaths
+  array[J*T] int d;                          // vector of deaths
   vector[J* T] e;                      // vector of exposures
   int<lower = 1> Tfor;                  // number of forecast years
    int<lower = 0> Tval;                  // number of validation years
-  int dval[J*Tval];                     // vector of deaths for validation
+  array[J*Tval] int dval;                     // vector of deaths for validation
   vector[J* Tval] eval;                 // vector of exposures for validation
   int<lower=0,upper=1> family;          // family = 0 for Poisson, 1 for NB
 }
 transformed data {
-  vector[J * T] offset = log(e);        // log exposures
+  vector[J * T] input_offset = log(e);        // log exposures
   vector[J * Tval] offset2 = log(eval);     // log exposures for validation
   int<lower = 1> C;                     // index for the cohort parameter
   int<lower = 1> L;                     // size of prediction vector
@@ -20,7 +20,7 @@ transformed data {
   L=J*Tfor;
 }
 parameters {
-  real<lower=0> aux[family > 0];      // neg. binomial inverse dispersion parameter
+  array[family > 0] real<lower=0> aux;      // neg. binomial inverse dispersion parameter
   vector[J] a;                         // alpha_x
 
   real c;                           // drift term
@@ -30,7 +30,7 @@ parameters {
   real psi2;
   vector[C-2] gs;                       //vector of gamma
 
-  real<lower = 0> sigma[2];            // standard deviation for the random walk and AR(2) process
+  array[2] real<lower = 0> sigma;            // standard deviation for the random walk and AR(2) process
 }
 transformed parameters {      // This block defines a new vector where the first component of kappa and the first and last component of gamma is zero, this is required for identifiability of the RH model. Otherwise, the chains will not converge.
   vector[T] k;
@@ -48,7 +48,7 @@ model {
   vector[J * T] mu; // force of mortality
   int pos = 1;
   for (t in 1:T) for (x in 1:J) {
-    mu[pos] = offset[pos]+ a[x] + k[t]+g[t-x+J];         // Predictor dynamics
+    mu[pos] = input_offset[pos]+ a[x] + k[t]+g[t-x+J];         // Predictor dynamics
     pos += 1;
   }
 
@@ -101,7 +101,7 @@ generated quantities {
   }
   mufor = exp(mufor);
   for (t in 1:T) for (x in 1:J) {
-    log_lik[pos2] = poisson_log_lpmf (d[pos2] | offset[pos2]+ a[x] + k[t]+g[t-x+J]);
+    log_lik[pos2] = poisson_log_lpmf (d[pos2] | input_offset[pos2]+ a[x] + k[t]+g[t-x+J]);
      pos2 += 1;
 }
 
@@ -112,7 +112,7 @@ generated quantities {
   }
   else if (family > 0){
     for (t in 1:Tfor) for (x in 1:J) {
-      if ( fabs(a[x] + k_p[t]+gf[T+t-x+J])>15   ){
+      if ( abs(a[x] + k_p[t]+gf[T+t-x+J])>15   ){
          mufor[pos] = 0;
     pos += 1;
       } else {
@@ -121,7 +121,7 @@ generated quantities {
           }
   }
   for (t in 1:T) for (x in 1:J) {
-     log_lik[pos2] = neg_binomial_2_log_lpmf (d[pos2] | offset[pos2]+ a[x] + k[t]+g[t-x+J],phi);
+     log_lik[pos2] = neg_binomial_2_log_lpmf (d[pos2] | input_offset[pos2]+ a[x] + k[t]+g[t-x+J],phi);
      pos2 += 1;
 }
 
