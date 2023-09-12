@@ -32,7 +32,7 @@ library(StanMoMo)
 
 The main purpose of this package is to provide users high-level functions for estimating and forecasting mortality models in a Bayesian setting without requiring any knowledge of the Stan modeling language. This package depends on the [rstan](https://mc-stan.org/rstan/) package, which translates the Stan model to C++ code, which is compiled into a dynamic shared object (DSO). If you install the binary package (what we recommend), the mortality models are already pre-compiled. If you install the source package, the models are compiled during the installation and therefore you need a C++ compiler on your machine (for instance, Rtools for Windows or Xcode on Mac, see [here](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) for more details).
 
-If you have any comments or suggestions about the package, feel free to email <karim.barigou@univ-lyon1.fr>
+If you have any comments or suggestions about the package, feel free to email <karim290492@gmail.com>
 
 
 
